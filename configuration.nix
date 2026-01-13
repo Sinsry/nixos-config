@@ -118,13 +118,7 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    theme = "breeze-papirus";
-
-    settings = {
-    General = {
-      GreeterEnvironment = "ICONTHEME=Papirus-Dark,QT_ICON_THEME=Papirus-Dark";
-    };
-  };
+    theme = "breeze";
 
     extraPackages = with pkgs; [
     papirus-icon-theme
@@ -211,12 +205,17 @@
     papirus-icon-theme
     plasma-panel-colorizer
 
-     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
-    [General]
-    background=/etc/nixos/asset/sinsry/diabloIII.png
-  '')
+    (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
+      [General]
+      background=/etc/nixos/asset/sinsry/diabloIII.png
+    '')
 
-    ];
+    (pkgs.writeTextDir "etc/xdg/kdeglobals" ''
+      [Icons]
+      Theme=Papirus-Dark
+    '')
+
+ ];
 
 
 
