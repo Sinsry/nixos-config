@@ -118,8 +118,7 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    theme = "breeze";
-
+    theme = "breeze-papirus";
 
     };
 
@@ -202,10 +201,14 @@
     papirus-icon-theme
     plasma-panel-colorizer
 
-    (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
-    [General]
-    background=/etc/nixos/asset/sinsry/diabloIII.png
-  '')
+    (pkgs.stdenv.mkDerivation {
+     name = "sddm-breeze-papirus";
+     src = ./sddm-themes/breeze-papirus;
+     installPhase = ''
+       mkdir -p $out/share/sddm/themes/breeze-papirus
+       cp -r * $out/share/sddm/themes/breeze-papirus/
+     '';
+   })
 
     ];
 
@@ -295,8 +298,12 @@
   };
   
   # Thème de curseur uniforme.
-  environment.variables.XCURSOR_THEME = "breeze_cursors";
-  
+  environment.variables = {
+    XCURSOR_THEME = "breeze_cursors";
+    QT_QPA_PLATFORMTHEME = "kde";
+  };
+
+
   # Permet aux applications de sauvegarder leurs réglages.
   programs.dconf.enable = true;
 
