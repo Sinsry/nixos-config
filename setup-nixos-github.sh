@@ -56,13 +56,13 @@ echo "3. Titre : 'NixOS $(date +%Y-%m-%d)'"
 echo "4. Clique sur 'Add SSH key'"
 echo ""
 while true; do
-    read -n 1 -s -p "Appuie sur Entrée quand c'est fait..." key
-    if [[ $key == "" ]]; then
+    IFS= read -r -n 1 -s -p "Appuie sur Entrée quand c'est fait..." key
+    if [[ -z $key ]]; then
         echo ""
         break
     else
         echo ""
-        echo "❌ Appuie sur ENTRÉE !"
+        echo "❌ Appuie sur ENTRÉE uniquement !"
     fi
 done
 
