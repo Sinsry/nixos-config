@@ -189,7 +189,7 @@
 
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
-      background=/etc/nixos/asset/sinsry/diabloIII.png
+      background=/etc/nixos/asset/sinsry/wallpaper-sddm.png.png
      '')
     (pkgs.writeTextDir "etc/xdg/kdeglobals" ''
       [Icons]
