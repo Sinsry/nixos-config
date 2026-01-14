@@ -211,12 +211,12 @@
       [General]
       background=/etc/nixos/asset/sinsry/diabloIII.png
 
+     '')
+
+    (pkgs.writeTextDir "etc/xdg/kdeglobals" ''
       [Theme]
       Current=breeze-dark
 
-    '')
-
-    (pkgs.writeTextDir "etc/xdg/kdeglobals" ''
       [Icons]
       Theme=Papirus-Dark
     '')
