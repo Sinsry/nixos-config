@@ -95,6 +95,7 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
+    theme = "breeze";
 
     extraPackages = with pkgs; [
     papirus-icon-theme
