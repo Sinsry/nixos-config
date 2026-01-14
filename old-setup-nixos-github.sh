@@ -33,11 +33,6 @@ sudo git clone https://github.com/Sinsry/nixos-maousse /etc/nixos
 echo "Restauration du hardware-configuration.nix de cette machine..."
 sudo cp /tmp/hardware-configuration.nix.backup /etc/nixos/hardware-configuration.nix
 
-# 5.5 Renomme la partition système
-echo "Renommage de la partition système..."
-sudo parted /dev/nvme0n1 name 2 NixOS
-sudo btrfs filesystem label / NixOS
-
 # 6. Configure SSH
 echo ""
 echo "Configuration SSH..."
@@ -82,6 +77,14 @@ sudo git remote set-url origin git@github.com:Sinsry/nixos-maousse.git
 echo ""
 echo "Rebuild du système avec ta configuration..."
 sudo nixos-rebuild switch --flake path:/etc/nixos#maousse
+
+# 10. Finalisation des droits et sécurité Git
+echo "Configuration des droits pour l'utilisateur sinsry..."
+# On donne la propriété du dossier à ton utilisateur (groupe 'users' par défaut sur NixOS)
+sudo chown -R sinsry:users /mnt/etc/nixos
+# On autorise Git à travailler dans ce dossier pour éviter l'erreur 'dubious ownership'
+# On utilise sudo -u sinsry pour que la config git soit écrite pour ton utilisateur, pas pour root
+sudo -u sinsry git config --global --add safe.directory /etc/nixos
 
 echo ""
 echo "✅ Configuration terminée !"
