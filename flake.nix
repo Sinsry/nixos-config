@@ -41,7 +41,7 @@
                 theme = "breeze-dark";
                 iconTheme = "Papirus-Dark";
                 cursor.theme = "breeze_cursors";
-                wallpaper = "/etc/nixos/asset/sinsry/diabloIII.png";
+                wallpaper = toString ./asset/sinsry/diabloIII.png;
               };
               configFile = {
                 "klaunchrc"."BusyCursorSettings"."Bouncing" = false;
