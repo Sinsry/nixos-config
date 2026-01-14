@@ -95,7 +95,6 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    theme = "breeze";
 
     extraPackages = with pkgs; [
     papirus-icon-theme
@@ -177,13 +176,15 @@
     ffmpeg
     gamescope
     papirus-icon-theme
-    plasma-panel-colorizer
     wowup-cf
     fastfetch
+    bup
+    rsync
     kdePackages.kate
     kdePackages.breeze-gtk
     kdePackages.partitionmanager
     kdePackages.filelight
+    kdePackages.kup
 
 
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
@@ -248,6 +249,8 @@
       ];
     };
   };
+
+  services.dbus.packages = [ pkgs.kdePackages.kup ];
 
   zramSwap = {
     enable = true;
