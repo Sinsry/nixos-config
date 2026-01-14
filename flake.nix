@@ -28,6 +28,7 @@
 
             home.stateVersion = "25.11";
             home.file.".face.icon".source = ./asset/sinsry/Gruul.png;
+            home.file.".config/MangoHud/MangoHud.conf".source = ./asset/sinsry/MangoHud.conf;
 
             programs.plasma = {
               enable = true;

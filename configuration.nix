@@ -187,17 +187,17 @@
 
   # Utilitaires système installés en natif.
   environment.systemPackages = with pkgs; [
-    nvd                       # Pour comparer les versions de NixOS
-    libnotify                 # Pour envoyer des bulles de notification
-    google-chrome             # Navigateur interne
-    meld                      # Pour comparer des fichiers
-    cifs-utils                # Pour SMB/CIFS
-    samba                     # Client Samba
-    nfs-utils                 # Pour NFS
-    nil                       # Nix Language Server
-    nixfmt                    # Formateur Nix (optionnel)
-    psmisc                    # Contient killall, fuser, etc.
-    kdePackages.breeze-gtk  # Thème Breeze pour GTK
+    nvd
+    libnotify
+    google-chrome
+    meld
+    cifs-utils
+    samba
+    nfs-utils
+    nil
+    nixfmt
+    psmisc
+    kdePackages.breeze-gtk
     kdePackages.partitionmanager
     git
     discord
@@ -211,6 +211,8 @@
     gamescope
     papirus-icon-theme
     plasma-panel-colorizer
+    kdePackages.filelight
+    wowup-cf
 
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
@@ -328,6 +330,12 @@
     '';
     nixpush = "cd /etc/nixos && sudo git add . && sudo git commit -m 'Update' && sudo git push";
   };
+
+  environment.etc."libinput/local-overrides.quirks".text = ''
+  [Logitech G903 LS]
+  MatchName=Logitech G903 LS
+  AttrEventCode=-REL_WHEEL_HI_RES;-REL_HWHEEL_HI_RES;
+'';
 
   # Version de NixOS d'origine (ne pas changer sans lire la doc).
   system.stateVersion = "25.11";
