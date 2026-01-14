@@ -29,6 +29,23 @@
             home.stateVersion = "25.11";
             home.file.".face.icon".source = ./asset/sinsry/Gruul.png;
             home.file.".config/MangoHud/MangoHud.conf".source = ./asset/sinsry/MangoHud.conf;
+            home.file.".inputrc".text = ''
+            # Complétion insensible à la casse
+            set completion-ignore-case on
+
+            # Affiche toutes les possibilités si ambiguë
+            set show-all-if-ambiguous on
+
+            # Complétion partielle insensible à la casse
+            set completion-map-case on
+            '';
+
+            programs.bash = {
+              enable = true;
+              initExtra = ''
+              fastfetch
+             '';
+                };
 
             programs.plasma = {
               enable = true;
@@ -40,7 +57,10 @@
                 iconTheme = "Papirus-Dark";
                 cursor.theme = "breeze_cursors";
                 wallpaper = "/etc/nixos/asset/sinsry/diabloIII.png";
+
+
               };
+
               # Désactiver le retour de lancement
               configFile = {
                 "klaunchrc"."BusyCursorSettings"."Bouncing" = false;
