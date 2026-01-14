@@ -72,7 +72,7 @@ sudo git remote set-url origin git@github.com:Sinsry/nixos-maousse.git
 # 9. Rebuild avec ta vraie config
 echo ""
 echo "Rebuild du système avec ta configuration..."
-sudo nixos-rebuild switch --flake /etc/nixos#maousse
+sudo nixos-rebuild switch --flake path:/etc/nixos#maousse
 
 echo ""
 echo "✅ Configuration terminée !"
