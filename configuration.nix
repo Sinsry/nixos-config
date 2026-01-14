@@ -186,7 +186,6 @@
     kdePackages.filelight
     kdePackages.kup
 
-
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
       background=/etc/nixos/asset/sinsry/wallpaper-sddm.png.png
