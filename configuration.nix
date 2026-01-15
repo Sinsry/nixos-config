@@ -249,8 +249,6 @@
     };
   };
 
-  services.dbus.packages = [ pkgs.kdePackages.kup ];
-
   zramSwap = {
     enable = true;
     memoryPercent = 12;
