@@ -181,6 +181,7 @@
     fastfetch
     rsync
     backintime
+    backintime-common
     kdePackages.kate
     kdePackages.breeze-gtk
     kdePackages.partitionmanager
