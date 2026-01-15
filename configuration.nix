@@ -180,6 +180,8 @@
     wowup-cf
     fastfetch
     rsync
+    kup
+    bup
     kdePackages.kate
     kdePackages.breeze-gtk
     kdePackages.partitionmanager
@@ -286,6 +288,7 @@
     GTK_THEME = "Breeze-Dark";
   };
 
+  services.kup.enable = true;
 
   environment.shellAliases = {
     rebuild = ''
