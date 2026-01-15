@@ -180,10 +180,6 @@
     wowup-cf
     fastfetch
     rsync
-    backintime
-    backintime-common
-    cron
-    fcron
     kdePackages.kate
     kdePackages.breeze-gtk
     kdePackages.partitionmanager
