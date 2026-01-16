@@ -337,8 +337,13 @@
     fastfetch
   '';
 
+  security.sudo.extraRules = [{
+  users = [ "sinsry" ];
+  commands = [{
+    command = "${pkgs.vorta}/bin/vorta";
+    options = [ "NOPASSWD" ];
+  }];
+}];
+
   system.stateVersion = "25.11";
 }
-
-
-
