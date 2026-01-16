@@ -215,7 +215,7 @@
     preferences = {
       "intl.locale.requested" = "fr";
     };
-    nativeMessagingHosts = [ pkgs.plasma-browser-integration ];
+    nativeMessagingHosts.packages = [ pkgs.kdePackages.plasma-browser-integration ];
   };
 
 
@@ -224,7 +224,7 @@
   enable = true;
   extraOpts = {
     "NativeMessagingHosts" = {
-      "org.kde.plasma.browser_integration" = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+      "org.kde.plasma.browser_integration" = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
     };
   };
 };
