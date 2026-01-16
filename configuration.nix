@@ -197,6 +197,7 @@
     kdePackages.breeze-gtk
     kdePackages.partitionmanager
     kdePackages.filelight
+    kdePackages.plasma-browser-integration
 
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
