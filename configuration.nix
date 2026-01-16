@@ -337,17 +337,5 @@
     fastfetch
   '';
 
-  security.polkit.enable = true;security.polkit.extraConfig = ''
-  polkit.addRule(function(action, subject) {
-    if (action.id == "org.freedesktop.policykit.exec" &&
-        action.lookup("program") == "${pkgs.borgbackup}/bin/borg" &&
-        subject.isInGroup("wheel")) {
-      return polkit.Result.YES;
-    }
-  });
-'';
-
-
-
   system.stateVersion = "25.11";
 }
