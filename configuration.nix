@@ -336,14 +336,5 @@
   programs.bash.interactiveShellInit = ''
     fastfetch
   '';
-
-  security.sudo.extraRules = [{
-  users = [ "sinsry" ];
-  commands = [{
-    command = "${pkgs.vorta}/bin/vorta";
-    options = [ "NOPASSWD" "SETENV" ];
-  }];
-}];
-
   system.stateVersion = "25.11";
 }
