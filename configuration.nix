@@ -341,7 +341,7 @@
   users = [ "sinsry" ];
   commands = [{
     command = "${pkgs.vorta}/bin/vorta";
-    options = [ "NOPASSWD" ];
+    options = [ "NOPASSWD" "SETENV" ];
   }];
 }];
 
