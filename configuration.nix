@@ -25,6 +25,12 @@
           ];
           sha256 = "0i4ynz01vdv4lmiv8r58i0vjaj2d71lk5lw6r0wjzsldjl06zrrx";
         };
+        patches = builtins.filter (p:
+        !(builtins.match ".*musl.patch" (toString p) != null)
+      ) (oldAttrs.patches or []);
+
+
+
       });
     })
   ];
