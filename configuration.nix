@@ -112,7 +112,7 @@
 
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+    capSysNice = false;
   };
 
   programs.steam = {
@@ -144,8 +144,6 @@
     xterm
   ];
 
-
-  
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -231,7 +229,7 @@
     vlc
     mpv
     ffmpeg
-    gamescope
+    gamescope-wsi
     papirus-icon-theme
     wowup-cf
     fastfetch
