@@ -110,13 +110,6 @@
   services.lact.enable = true;
   hardware.amdgpu.overdrive.enable = true;
 
-  security.wrappers.bwrap = {
-    setuid = true;
-    owner = "root";
-    group = "root";
-    source = "${pkgs.bubblewrap}/bin/bwrap";
-  };
-
   programs.gamescope = {
     enable = true;
     capSysNice = true;
@@ -135,7 +128,7 @@
       extraEnv = {
         STEAM_FORCE_DESKTOPUI_SCALING = "1";
       };
-      extraArgs = "-language french -no-cef-sandbox";
+      extraArgs = "-language french";
     };
   };
 
@@ -238,7 +231,7 @@
     vlc
     mpv
     ffmpeg
-    gamescope-wsi
+    gamescope
     papirus-icon-theme
     wowup-cf
     fastfetch
