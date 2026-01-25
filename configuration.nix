@@ -110,6 +110,11 @@
   services.lact.enable = true;
   hardware.amdgpu.overdrive.enable = true;
 
+  programs.xwayland = {
+    enable = true;
+  };
+
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;  # Ouvre les ports pour Remote Play
