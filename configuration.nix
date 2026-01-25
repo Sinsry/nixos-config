@@ -46,6 +46,7 @@
 
   boot = {
     initrd.kernelModules = [ "amdgpu" ];
+    initrd.systemd.enable = true;
     consoleLogLevel = 0;
     initrd.verbose = false;
     kernelParams = [
@@ -77,6 +78,7 @@
       systemd-boot = {
         enable = true;
         consoleMode = "max";
+        timeout = 0;
       };
 
       efi.canTouchEfiVariables = true;
