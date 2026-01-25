@@ -91,6 +91,8 @@
     networkmanager.enable = true;
   };
 
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   time.timeZone = "Europe/Paris";
   i18n = {
     defaultLocale = "fr_FR.UTF-8";
