@@ -223,7 +223,7 @@
     niri
     alacritty
     fuzzel
-
+    xeyes
 
     ntfs3g
     exfatprogs
