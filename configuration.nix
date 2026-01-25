@@ -87,10 +87,11 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  networking.firewall.enable = false;
   networking = {
     hostName = "maousse";
     networkmanager.enable = true;
+    firewall.enable = false;
+
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -219,7 +220,6 @@
     google-chrome
     meld
     cifs-utils
-    samba
     nfs-utils
     nil
     nixfmt
@@ -347,10 +347,10 @@
     style = "breeze";
   };
 
-  environment.variables = {
-    XCURSOR_THEME = "breeze_cursors";
-    QT_QPA_PLATFORMTHEME = "kde";
-  };
+ environment.variables = {
+ #  XCURSOR_THEME = "breeze_cursors";
+ #   QT_QPA_PLATFORMTHEME = "kde";
+ };
 
   programs.dconf.enable = true;
 
