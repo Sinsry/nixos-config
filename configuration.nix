@@ -47,7 +47,7 @@
   boot = {
     initrd.kernelModules = [ "amdgpu" ];
     initrd.systemd.enable = true;
-    consoleLogLevel = 0;
+     # consoleLogLevel = 0;
     initrd.verbose = false;
     kernelParams = [
       "video=2160x1440@165"
@@ -212,8 +212,8 @@
   services.desktopManager.plasma6.enable = true;
 
   environment.systemPackages = with pkgs; [
-    ntfs3g
-    exfatprogs
+   # ntfs3g
+   # exfatprogs
     nvd
     rar
     libnotify
@@ -347,12 +347,7 @@
     style = "breeze";
   };
 
- environment.variables = {
- #  XCURSOR_THEME = "breeze_cursors";
- #   QT_QPA_PLATFORMTHEME = "kde";
- };
-
-  programs.dconf.enable = true;
+ programs.dconf.enable = true;
 
   environment.sessionVariables = {
     GTK_THEME = "Breeze-Dark";
