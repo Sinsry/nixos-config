@@ -135,8 +135,20 @@
     videoDrivers = [ "amdgpu" ];
   };
   
-#  services.desktopManager.plasma6.enable = true;
-services.dbus.packages = [ pkgs.kdePackages.plasma-workspace ];
+##### KDE - NOTOFICATIO pour Niri #####
+
+systemd.user.services.plasma-knotifications = {
+  description = "KDE Notification System";
+  wantedBy = [ "graphical-session.target" ];
+  serviceConfig = {
+    ExecStart = "${pkgs.kdePackages.plasma-workspace}/libexec/knotificationd";
+    Restart = "on-failure";
+  };
+};
+
+
+##### KDE - NOTOFICATIO pour Niri #####
+
 
   console.keyMap = "us";
 
@@ -234,7 +246,7 @@ services.dbus.packages = [ pkgs.kdePackages.plasma-workspace ];
     xwayland-satellite
     kdePackages.konsole
     kdePackages.ocean-sound-theme
-#    kdePackages.knotifications
+    kdePackages.plasma-workspace
     kdePackages.dolphin
 
 
