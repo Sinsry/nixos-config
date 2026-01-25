@@ -134,6 +134,9 @@
     xkb.layout = "us";
     videoDrivers = [ "amdgpu" ];
   };
+  
+  services.xserver.desktopManager.plasma6.enable = true;
+
 
   console.keyMap = "us";
 
