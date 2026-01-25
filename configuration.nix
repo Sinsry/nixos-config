@@ -223,6 +223,8 @@
   environment.systemPackages = with pkgs; [
 
     niri
+    nwg-look
+    adw-gtk3
     alacritty
     fuzzel
     xeyes
