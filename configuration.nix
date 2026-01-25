@@ -135,7 +135,9 @@
     videoDrivers = [ "amdgpu" ];
   };
   
-##### KDE - NOTOFICATIO pour Niri #####
+##### KDE - NOTIFICATION pour Niri #####
+
+services.desktopManager.plasma6.enable = true;
 
 systemd.user.services.plasma-knotifications = {
   description = "KDE Notification System";
