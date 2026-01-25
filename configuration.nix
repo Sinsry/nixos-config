@@ -139,14 +139,14 @@
 
 services.desktopManager.plasma6.enable = true;
 
-systemd.user.services.plasma-knotifications = {
-  description = "KDE Notification System";
-  wantedBy = [ "graphical-session.target" ];
-  serviceConfig = {
-    ExecStart = "${pkgs.kdePackages.plasma-workspace}/libexec/knotificationd";
-    Restart = "on-failure";
-  };
-};
+#systemd.user.services.plasma-knotifications = {
+#  description = "KDE Notification System";
+#  wantedBy = [ "graphical-session.target" ];
+#  serviceConfig = {
+#    ExecStart = "${pkgs.kdePackages.plasma-workspace}/libexec/knotificationd";
+#    Restart = "on-failure";
+#  };
+#};
 
 
 ##### KDE - NOTOFICATIO pour Niri #####
