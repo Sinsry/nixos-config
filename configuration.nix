@@ -1,4 +1,4 @@
-{ _config, pkgs, ... }:
+{ _config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -92,6 +92,9 @@
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services.samba-smbd.wantedBy = lib.mkForce [];
+  systemd.services.samba-nmbd.wantedBy = lib.mkForce [];
+  systemd.services.samba-winbindd.wantedBy = lib.mkForce [];
 
   time.timeZone = "Europe/Paris";
   i18n = {
