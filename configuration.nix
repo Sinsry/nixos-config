@@ -110,7 +110,7 @@
   services.lact.enable = true;
   hardware.amdgpu.overdrive.enable = true;
 
-  programs.xwayland.enable = true;
+#  programs.xwayland.enable = true;
   
   programs.steam = {
     enable = true;
@@ -151,16 +151,6 @@
      ];
 
  };
-
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --cmd niri-session";
-        user = "greeter";
-      };
-    };
-  };
 
   # Bluetooth
   hardware.bluetooth = {
