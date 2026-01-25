@@ -135,7 +135,7 @@
     videoDrivers = [ "amdgpu" ];
   };
   
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
 
   console.keyMap = "us";
