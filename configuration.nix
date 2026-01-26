@@ -130,13 +130,6 @@
       vulkan-validation-layers
     ];
   };
-  services.udisks2.settings = {
-  "mount_options.conf" = {
-    defaults = {
-      exfat_defaults = "uid=$UID,gid=$GID,exec";
-    };
-  };
-};
   services.samba = {
     enable = true;
     openFirewall = true;

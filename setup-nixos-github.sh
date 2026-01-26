@@ -3,9 +3,9 @@
 
 echo "=== Configuration post-installation NixOS ==="
 echo ""
-echo "⚠️  Lance ce script APRÈS l'installation graphique, AVANT de redémarrer !"
+echo "⚠️  Lance ce script APRÈS l'installation graphique ET APRÈS le redémarrage !"
 echo ""
-read -p "L'installation graphique est terminée ? (y/n) " -n 1 -r
+read -p "L'installation graphique est terminée et la clé SSH copier dans /root ? (y/n) " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "Lance d'abord l'installeur graphique !"
