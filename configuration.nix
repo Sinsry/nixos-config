@@ -186,6 +186,7 @@
     kdePackages.kate
     kdePackages.partitionmanager
     kdePackages.plasma-browser-integration
+    kdePackages.qtwebengine
     libnotify
     mangohud
     meld
