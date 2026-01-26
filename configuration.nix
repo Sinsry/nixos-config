@@ -195,6 +195,7 @@
     nixfmt
     nvd
     papirus-icon-theme
+    pascube
     protonvpn-gui
     psmisc
     rar
