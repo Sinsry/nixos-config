@@ -34,42 +34,42 @@ echo "Restauration du hardware-configuration.nix de cette machine..."
 sudo cp /tmp/hardware-configuration.nix.backup /etc/nixos/hardware-configuration.nix
 
 # 6. Configure SSH
-echo ""
-echo "Configuration SSH..."
-ssh-keygen -t ed25519 -C "Sinsry@users.noreply.github.com" -f ~/.ssh/id_ed25519 -N ""
-
-echo ""
-echo "=== 🔑 Clé publique SSH (à copier) ==="
-echo ""
-cat ~/.ssh/id_ed25519.pub
-echo ""
-echo "=================================="
-echo ""
-echo "1. Va sur https://github.com/settings/ssh/new"
-echo "2. Colle la clé ci-dessus"
-echo ""
-echo "NixOS - Maousse $(date +"%d-%m-%Y - %H:%M")"
-echo ""
-echo "4. Clique sur 'Add SSH key'"
-echo ""
-while true; do
-    IFS= read -r -n 1 -s -p "Appuie sur Entrée quand c'est fait..." key
-    if [[ -z $key ]]; then
-        echo ""
-        break
-    else
-        echo ""
-        echo "❌ Appuie sur ENTRÉE uniquement !"
-    fi
-done
-
+#echo ""
+#echo "Configuration SSH..."
+#ssh-keygen -t ed25519 -C "Sinsry@users.noreply.github.com" -f ~/.ssh/id_ed25519 -N ""
+#
+#echo ""
+#echo "=== 🔑 Clé publique SSH (à copier) ==="
+#echo ""
+#cat ~/.ssh/id_ed25519.pub
+#echo ""
+#echo "=================================="
+#echo ""
+#echo "1. Va sur https://github.com/settings/ssh/new"
+#echo "2. Colle la clé ci-dessus"
+#echo ""
+#echo "NixOS - Maousse $(date +"%d-%m-%Y - %H:%M")"
+#echo ""
+#echo "4. Clique sur 'Add SSH key'"
+#echo ""
+#while true; do
+    #IFS= read -r -n 1 -s -p "Appuie sur Entrée quand c'est fait..." key
+    #if [[ -z $key ]]; then
+        #echo ""
+        #break
+    #else
+        #echo ""
+        #echo "❌ Appuie sur ENTRÉE uniquement !"
+    #fi
+#done
+#
 # 7. Copie SSH pour root
-echo ""
-echo "Configuration SSH pour root..."
-sudo mkdir -p /root/.ssh
-sudo cp ~/.ssh/id_ed25519* /root/.ssh/
-sudo chmod 600 /root/.ssh/id_ed25519
-sudo chmod 644 /root/.ssh/id_ed25519.pub
+#echo ""
+#echo "Configuration SSH pour root..."
+#sudo mkdir -p /root/.ssh
+#sudo cp ~/.ssh/id_ed25519* /root/.ssh/
+#sudo chmod 600 /root/.ssh/id_ed25519
+#sudo chmod 644 /root/.ssh/id_ed25519.pub
 
 # 8. Change vers SSH
 cd /etc/nixos
