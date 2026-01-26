@@ -1,14 +1,16 @@
-{ _config, pkgs, lib, ... }:
-
+{
+  _config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
     ./network-mounts.nix
     ./disks-mounts.nix
   ];
-
-#=========================================================================
-
+  #======================MESA26_RC1========================================
   nixpkgs.overlays = [
     (self: super: {
       mesa = super.mesa.overrideAttrs (oldAttrs: rec {
@@ -20,17 +22,15 @@
           ];
           sha256 = "0i4ynz01vdv4lmiv8r58i0vjaj2d71lk5lw6r0wjzsldjl06zrrx";
         };
-        ##== retrais d'un patch
-        patches = builtins.filter (p:
-        !(builtins.match ".*musl.patch" (toString p) != null)
-        ) (oldAttrs.patches or []);
-        ##== retrais d'un patch
+        ##== retrait d'un patch
+        patches = builtins.filter (p: !(builtins.match ".*musl.patch" (toString p) != null)) (
+          oldAttrs.patches or [ ]
+        );
+        ##== retrait d'un patch
       });
     })
   ];
-
-#==========================================================================
-
+  #======================MESA26_RC1========================================
   boot = {
     initrd.kernelModules = [ "amdgpu" ];
     initrd.systemd.enable = true;
@@ -45,13 +45,8 @@
       "rd.systemd.show_status=false"
       "rd.udev.log_level=3"
       "udev.log_priority=3"
-
     ];
-
-    kernelModules = [
-      "ntsync"
-    ];
-
+    kernelModules = [ "ntsync" ];
     supportedFilesystems = [
       "ntfs"
       "exfat"
@@ -59,32 +54,25 @@
       "ext4"
       "btrfs"
     ];
-
     loader = {
       timeout = 0;
       systemd-boot = {
         enable = true;
         consoleMode = "max";
       };
-
       efi.canTouchEfiVariables = true;
     };
-
     kernelPackages = pkgs.linuxPackages_latest;
   };
-
   networking = {
     hostName = "maousse";
     networkmanager.enable = true;
     firewall.enable = false;
-
   };
-
   systemd.services.NetworkManager-wait-online.enable = false;
-  systemd.services.samba-smbd.wantedBy = lib.mkForce [];
-  systemd.services.samba-nmbd.wantedBy = lib.mkForce [];
-  systemd.services.samba-winbindd.wantedBy = lib.mkForce [];
-
+  systemd.services.samba-smbd.wantedBy = lib.mkForce [ ];
+  systemd.services.samba-nmbd.wantedBy = lib.mkForce [ ];
+  systemd.services.samba-winbindd.wantedBy = lib.mkForce [ ];
   time.timeZone = "Europe/Paris";
   i18n = {
     defaultLocale = "fr_FR.UTF-8";
@@ -93,6 +81,7 @@
       LC_IDENTIFICATION = "fr_FR.UTF-8";
       LC_MEASUREMENT = "fr_FR.UTF-8";
       LC_MONETARY = "fr_FR.UTF-8";
+
       LC_NAME = "fr_FR.UTF-8";
       LC_NUMERIC = "fr_FR.UTF-8";
       LC_PAPER = "fr_FR.UTF-8";
@@ -100,21 +89,15 @@
       LC_TIME = "fr_FR.UTF-8";
     };
   };
-
   nixpkgs.config.allowUnfree = true;
-
   services.lact.enable = true;
   hardware.amdgpu.overdrive.enable = true;
-
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall = true;  # Ouvre les ports pour Remote Play
-    dedicatedServer.openFirewall = true;  # Pour les serveurs dédiés
-    localNetworkGameTransfers.openFirewall = true;  # Transferts LAN
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+    localNetworkGameTransfers.openFirewall = true;
+    extraCompatPackages = with pkgs; [ proton-ge-bin ];
     package = pkgs.steam.override {
       extraEnv = {
         STEAM_FORCE_DESKTOPUI_SCALING = "1";
@@ -122,54 +105,36 @@
       extraArgs = "-language french";
     };
   };
-
   services.xserver = {
     enable = true;
     xkb.layout = "us";
     videoDrivers = [ "amdgpu" ];
   };
-  
   console.keyMap = "us";
-
-  services.xserver.excludePackages = with pkgs; [
-    xterm
-  ];
-
- services.displayManager.sddm = {
+  services.xserver.excludePackages = with pkgs; [ xterm ];
+  services.displayManager.sddm = {
     enable = true;
-     wayland.enable = true;
-     theme = "breeze";
-
-     extraPackages = with pkgs; [
-     papirus-icon-theme
-     ];
-
- };
-
-  # Bluetooth
+    wayland.enable = true;
+    theme = "breeze";
+    extraPackages = with pkgs; [ papirus-icon-theme ];
+  };
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;  # Active automatiquement au démarrage
+    powerOnBoot = true;
   };
-
-  # Accélération matérielle et support ROCm pour OpenCL.
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # Nécessaire pour les jeux 32 bits (Steam).
+    enable32Bit = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
       vulkan-loader
       vulkan-validation-layers
     ];
   };
-
-  # Activer Samba et Avahi pour la découverte réseau
   services.samba = {
     enable = true;
     openFirewall = true;
   };
-
-  # Avahi pour la découverte mDNS/Zeroconf
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -180,23 +145,17 @@
       workstation = true;
     };
   };
-
-  # Support NFS
   services.rpcbind.enable = true;
-
-  # Gvfs pour l'intégration SMB/NFS dans Dolphin/KDE
   services.gvfs.enable = true;
 
-  # --- UTILISATEUR ET PACKAGES ---
-  users.users.sinsry = {
-    isNormalUser = true;
-    description = "Sinsry";
-    extraGroups = [ "networkmanager" "wheel" ]; # Wheel permet d'utiliser sudo.
-  };
-
-  services.desktopManager.plasma6.enable = true;
-
-  environment.systemPackages = with pkgs; [
+  users.users.sinsry.isNormalUser = true;
+  users.users.sinsry.description = "Sinsry";
+  users.users.sinsry.extraGroups = [
+    "networkmanager"
+    "wheel"
+  ];
+  users.users.sinsry.services.desktopManager.plasma6.enable = true;
+  users.users.sinsry.environment.systemPackages = with pkgs; [
     nvd
     rar
     libnotify
@@ -227,18 +186,16 @@
     kdePackages.partitionmanager
     kdePackages.filelight
     kdePackages.plasma-browser-integration
-
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
       background=/etc/nixos/asset/maousse/wallpaper-sddm.png
-     '')
+    '')
     (pkgs.writeTextDir "etc/xdg/kdeglobals" ''
       [Icons]
       Theme=Papirus-Dark
     '')
   ];
-
-  programs.firefox = {
+  users.users.sinsry.programs.firefox = {
     enable = true;
     languagePacks = [ "fr" ];
     preferences = {
@@ -246,17 +203,16 @@
     };
     nativeMessagingHosts.packages = [ pkgs.kdePackages.plasma-browser-integration ];
   };
-
-  programs.chromium = {
-  enable = true;
-  extraOpts = {
-    "NativeMessagingHosts" = {
-      "org.kde.plasma.browser_integration" = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+  users.users.sinsry.programs.chromium = {
+    enable = true;
+    extraOpts = {
+      "NativeMessagingHosts" = {
+        "org.kde.plasma.browser_integration" =
+          "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+      };
     };
   };
-};
-
-  programs.git = {
+  users.users.sinsry.programs.git = {
     enable = true;
     config = {
       init.defaultBranch = "main";
@@ -267,18 +223,15 @@
       credential.helper = "cache --timeout=604800";
     };
   };
-
-  system.autoUpgrade = {
+  users.users.sinsry.system.autoUpgrade = {
     enable = true;
     allowReboot = false;
     dates = "22:00";
   };
-
-  systemd.services.nixos-upgrade-notification = {
+  users.users.sinsry.systemd.services.nixos-upgrade-notification = {
     description = "Notification de mise à jour NixOS intelligente";
     after = [ "nixos-upgrade.service" ];
     wantedBy = [ "nixos-upgrade.service" ];
-
     script = ''
       CURRENT_GEN=$(readlink /run/current-system)
       LATEST_GEN=$(readlink /nix/var/nix/profiles/system)
@@ -290,7 +243,6 @@
           --urgency=normal
       fi
     '';
-
     serviceConfig = {
       Type = "oneshot";
       User = "sinsry";
@@ -300,59 +252,51 @@
       ];
     };
   };
-
-  zramSwap = {
+  users.users.sinsry.zramSwap = {
     enable = true;
     memoryPercent = 12;
   };
-
-  nix = {
+  users.users.sinsry.nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
       download-buffer-size = 1073741824;
       max-jobs = "auto";
       cores = 0;
     };
-
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 15d";
     };
   };
-
-  qt = {
+  users.users.sinsry.qt = {
     enable = true;
     platformTheme = "kde";
     style = "breeze";
   };
-
-  programs.dconf.enable = true;
-
-  environment.sessionVariables = {
+  users.users.sinsry.programs.dconf.enable = true;
+  users.users.sinsry.environment.sessionVariables = {
     GTK_THEME = "Breeze-Dark";
   };
-
-  environment.shellAliases = {
-    nixrebuild = ''cd /etc/nixos && sudo git add . && (sudo git commit -m 'Update' || true) && sudo git push && cd ~/ && sudo nixos-rebuild switch --flake path:/etc/nixos#maousse'';
+  users.users.sinsry.environment.shellAliases = {
+    nixrebuild = "cd /etc/nixos && sudo git add . && (sudo git commit -m 'Update' || true) && sudo git push && cd ~/ && sudo nixos-rebuild switch --flake path:/etc/nixos#maousse";
     nixpush = "cd /etc/nixos && sudo git add . && (sudo git commit -m 'Update' || true ) && sudo git push && cd ~/";
     nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
     nixgarbage = "sudo nix-collect-garbage -d";
-
   };
-
-  environment.etc."libinput/local-overrides.quirks".source = ./asset/maousse/local-overrides.quirks;
-
-  environment.etc."inputrc".text = ''
+  users.users.sinsry.environment.etc."libinput/local-overrides.quirks".source =
+    ./asset/maousse/local-overrides.quirks;
+  users.users.sinsry.environment.etc."inputrc".text = ''
     set completion-ignore-case on
     set show-all-if-ambiguous on
     set completion-map-case on
   '';
-
-  programs.bash.interactiveShellInit = ''
+  users.users.sinsry.programs.bash.interactiveShellInit = ''
     fastfetch
   '';
-
-  system.stateVersion = "25.11";
+  users.users.sinsry.system.stateVersion = "25.11";
 }
