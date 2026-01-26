@@ -14,13 +14,13 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/c08d2bd0-839f-494a-a728-8991568b2ef3";
+    { device = "/dev/disk/by-uuid/c9d53a6a-4317-42c1-88ee-35bde372affc";
       fsType = "btrfs";
       options = [ "subvol=@" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/c08d2bd0-839f-494a-a728-8991568b2ef3";
+    { device = "/dev/disk/by-uuid/c9d53a6a-4317-42c1-88ee-35bde372affc";
       fsType = "btrfs";
       options = [ "subvol=@home" ];
     };

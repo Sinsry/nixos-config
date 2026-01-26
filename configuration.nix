@@ -159,6 +159,7 @@
     discord
     fastfetch
     ffmpeg
+    gamemode
     git
     google-chrome
     goverlay
@@ -181,6 +182,7 @@
     psmisc
     rar
     rsync
+    vkbasalt
     vlc
     vorta
     vulkan-tools
