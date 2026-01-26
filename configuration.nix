@@ -91,7 +91,15 @@
   nixpkgs.config.allowUnfree = true;
   services.lact.enable = true;
   hardware.amdgpu.overdrive.enable = true;
-  programs.gamemode.enable = true;
+  programs.gamemode = {
+    enable = true;
+    enableRenice = true;
+       settings = {
+          general = {
+             renice = 10;
+          };
+      };
+ };
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -153,6 +161,7 @@
   users.users.sinsry.extraGroups = [
     "networkmanager"
     "wheel"
+     "gamemode"
   ];
   services.desktopManager.plasma6.enable = true;
   environment.systemPackages = with pkgs; [
