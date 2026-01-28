@@ -20,7 +20,8 @@
             "https://archive.mesa3d.org/mesa-${version}.tar.xz"
             "https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
           ];
-          sha256 = "0i4ynz01vdv4lmiv8r58i0vjaj2d71lk5lw6r0wjzsldjl06zrrx";
+          ## calcul du hash : nix-prefetch-url https://archive.mesa3d.org/mesa-${version}.tar.xz
+          sha256 = "10v0bjqpk2l9d087kq4f8jxnxslc8yhxis58sl1vxc47vgh1ppdm";
         };
         ##== retrait d'un patch
         patches = builtins.filter (p: !(builtins.match ".*musl.patch" (toString p) != null)) (
