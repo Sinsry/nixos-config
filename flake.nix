@@ -33,7 +33,10 @@
 
         jarvis = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/jarvis/configuration-jarvis.nix ];
+          modules = [
+            ./hosts/jarvis/configuration-jarvis.nix
+            agenix.nixosModules.default
+          ];
         };
 
         valheim = nixpkgs.lib.nixosSystem {

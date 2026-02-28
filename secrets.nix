@@ -3,4 +3,5 @@ let
 in
 {
   "hosts/valheim/asset/valheim-env.age".publicKeys = [ key ];
+  "hosts/jarvis/asset/transmission-env.age".publicKeys = [ key ];
 }

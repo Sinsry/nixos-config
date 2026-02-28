@@ -61,6 +61,11 @@ in
     qemuGuest.enable = true;
   };
 
+  age.secrets.transmission-credentials = {
+    file = ./asset/transmission-env.age;
+    owner = "transmission";
+  };
+
   hardware = {
     nvidia = {
       open = true;
@@ -163,6 +168,26 @@ in
           ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
             -d '{"model": "qwen2.5-coder:14b-instruct-q5_K_M", "prompt": ""}'
         '';
+      };
+    };
+
+    transmission = {
+      enable = true;
+      credentialsFile = config.age.secrets.transmission-env.path;
+      settings = {
+        download-dir = "/mnt/Torrents";
+        rpc-bind-address = "0.0.0.0";
+        rpc-whitelist-enabled = false;
+        rpc-authentication-required = true;
+        peer-limit-global = 200;
+        peer-limit-per-torrent = 50;
+        ratio-limit = 2.0;
+        ratio-limit-enabled = true;
+        speed-limit-up = 1000;
+        speed-limit-up-enabled = true;
+        dht-enabled = false;
+        pex-enabled = false;
+        lpd-enabled = false;
       };
     };
   };
