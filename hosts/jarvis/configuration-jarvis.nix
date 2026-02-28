@@ -67,6 +67,8 @@ in
       credentialsFile = config.age.secrets.transmission-env.path;
       settings = {
         download-dir = "/mnt/Torrents";
+        incomplete-dir = "/mnt/Torrents";
+        incomplete-dir-enabled = true;
         rpc-bind-address = "0.0.0.0";
         rpc-whitelist-enabled = false;
         rpc-authentication-required = true;
@@ -74,7 +76,7 @@ in
         peer-limit-per-torrent = 50;
         ratio-limit = 2.0;
         ratio-limit-enabled = true;
-        speed-limit-up = 1000;
+        speed-limit-up = 6144;
         speed-limit-up-enabled = true;
         dht-enabled = false;
         pex-enabled = false;
