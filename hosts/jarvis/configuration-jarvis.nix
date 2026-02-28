@@ -81,6 +81,7 @@ in
         dht-enabled = false;
         pex-enabled = false;
         lpd-enabled = false;
+        utp-enabled = false;
       };
     };
   };
