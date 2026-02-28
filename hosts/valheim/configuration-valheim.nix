@@ -19,12 +19,31 @@ in
   ];
 
   #==== Identité ====
-  networking.hostName = "${host}";
+  networking = {
+    hostName = "${host}";
+    interfaces.eth0 = {
+      ipv4.addresses = [
+        {
+          address = "192.168.1.5";
+          prefixLength = 24;
+        }
+      ];
+    };
+    defaultGateway = "192.168.1.254";
+    nameservers = [ "192.168.1.254" ];
+  };
+
+  users.users.${user} = {
+    extraGroups = [
+      "docker"
+    ];
+  };
 
   #==== Paquets spécifiques ====
   environment = {
     systemPackages = with pkgs; [
       btop
+
     ];
   };
 
@@ -33,6 +52,7 @@ in
 
   services = {
     openssh.enable = true;
+    qemuGuest.enable = true;
   };
 
   age.secrets.valheim-env = {
@@ -40,7 +60,9 @@ in
   };
 
   virtualisation = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+    };
     oci-containers = {
       backend = "docker";
       containers.valheim-server = {
