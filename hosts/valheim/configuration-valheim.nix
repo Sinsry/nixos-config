@@ -59,6 +59,8 @@ in
     file = ./asset/valheim-env.age;
   };
 
+  age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+
   virtualisation = {
     docker = {
       enable = true;
