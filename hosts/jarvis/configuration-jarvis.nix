@@ -61,7 +61,7 @@ in
     qemuGuest.enable = true;
   };
 
-  age.secrets.transmission-credentials = {
+  age.secrets.transmission-env = {
     file = ./asset/transmission-env.age;
     owner = "transmission";
   };
