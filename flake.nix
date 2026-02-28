@@ -4,11 +4,17 @@
   #==== Sources ====
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    agenix.url = "github:ryantm/agenix";
   };
 
   #==== Configuration ====
   outputs =
-    inputs@{ self, nixpkgs, ... }:
+    inputs@{
+      self,
+      nixpkgs,
+      agenix,
+      ...
+    }:
     {
       nixosConfigurations = {
 
@@ -29,7 +35,10 @@
 
         valheim = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/valheim/configuration-valheim.nix ];
+          modules = [
+            ./hosts/valheim/configuration-valheim.nix
+            agenix.nixosModules.default
+          ];
         };
       };
     };

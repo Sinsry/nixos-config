@@ -5,7 +5,7 @@
 {
   pkgs,
   # lib,
-  # config,
+  config,
   ...
 }:
 let
@@ -35,6 +35,10 @@ in
     openssh.enable = true;
   };
 
+  age.secrets.valheim-env = {
+    file = ./asset/valheim-env.age;
+  };
+
   virtualisation = {
     docker.enable = true;
     oci-containers = {
@@ -51,8 +55,11 @@ in
         environment = {
           SERVER_NAME = "AperoBros";
           WORLD_NAME = "AperosBros";
-          SERVER_PASS = "testpassword";
         };
+        environmentFiles = [
+          config.age.secrets.valheim-env.path
+        ];
+
         extraOptions = [
           "--cap-add=sys_nice"
           "--stop-timeout=120"
