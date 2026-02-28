@@ -55,6 +55,8 @@ in
   #==== Clavier ====
   console.keyMap = "us";
 
+  age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+
   services = {
     openssh.enable = true;
     xserver.videoDrivers = [ "nvidia" ];
