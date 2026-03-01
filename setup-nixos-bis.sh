@@ -124,6 +124,7 @@ run sudo -u $USER git config --global --add safe.directory /etc/nixos
 run git remote set-url origin git@github.com:Sinsry/nixos-config.git
 run git config --global user.name "Sinsry"
 run git config --global user.email "113318091+Sinsry@users.noreply.github.com"
+run git config --global pull.rebase true
 success "Git configuré"
 
 step "9/9 — Mise à jour du flake et rebuild"
