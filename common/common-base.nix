@@ -58,8 +58,7 @@ in
 
   #==== Users ====
   users.users.${user} = {
-    hashedPassword = "$6$0dVqmZkohmN71nL.$E9cdlaxTsKG9nHYjORbpSB6ExtgPXTj5th1HYwgwt1l6kkeYbE7oGRx1y6bt.JVYuKlHNr4v1W/dUBEv4T1tT1
-";
+    hashedPassword = "$6$0dVqmZkohmN71nL.$E9cdlaxTsKG9nHYjORbpSB6ExtgPXTj5th1HYwgwt1l6kkeYbE7oGRx1y6bt.JVYuKlHNr4v1W/dUBEv4T1tT1";
     isNormalUser = true;
     description = gitName;
     extraGroups = [
