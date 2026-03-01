@@ -224,6 +224,7 @@ in
           environment = {
             OLLAMA_BASE_URL = "http://ollama:11434";
             ENABLE_API_KEYS = "true";
+            USER_PERMISSIONS_FEATURES_API_KEYS = "true";
           };
           extraOptions = [ "--network=ollama-net" ];
           autoStart = true;
