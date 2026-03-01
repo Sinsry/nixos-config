@@ -4,6 +4,7 @@
   ...
 }:
 let
+  user = "sinsry";
   gitEmail = "Sinsry@users.noreply.github.com";
   gitName = "Sinsry";
   nixosConfigPath = "/etc/nixos";
@@ -56,7 +57,8 @@ in
     };
 
   #==== Users ====
-  users.users.sinsry = {
+  users.users.${user} = {
+    initialPassword = "l";
     isNormalUser = true;
     description = gitName;
     extraGroups = [

@@ -291,8 +291,6 @@ if [[ "$MODE" == "existing" ]]; then
     echo -e "  Tu dois redémarrer pour profiter de ton système complet 🎉"
 elif [[ "$MODE" == "liveiso" ]]; then
     echo -e "  Tu peux redémarrer et retirer le live ISO 🎉"
-    echo -e "  ${YELLOW}Note :${RESET} Les clés SSH utilisateur seront configurées au premier boot"
-    echo -e "  via le script post-installation si nécessaire."
 fi
 echo ""
 
