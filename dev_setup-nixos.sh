@@ -54,7 +54,7 @@ fi
 # ============================================================
 if [[ $EUID -ne 0 ]]; then
     warn "Droits root requis, relancement en sudo..."
-    exec sudo nix-shell "$0" -- "$@"
+    exec sudo bash "$0" -- "$@"
 fi
 
 # ============================================================
