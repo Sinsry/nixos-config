@@ -46,6 +46,14 @@
             agenix.nixosModules.default
           ];
         };
+
+        test_script = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/test_script/configuration-test_script.nix
+            agenix.nixosModules.default
+          ];
+        };
       };
     };
 }
