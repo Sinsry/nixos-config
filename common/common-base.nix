@@ -140,7 +140,7 @@ in
       {
         nixrebuild = rebuild;
         nixupdate = "nix flake update --flake ${nixosConfigPath} && ${rebuild}";
-        nixpush = "${git-nixos} add . && (${git-nixos} commit -m 'Update' || true) && ${git-nixos} push";
+        nixpush = "${git-nixos} add . && (${git-nixos} commit -m 'Update' || true) && ${git-nixos} pull --rebase && ${git-nixos} push";
         nixpull = "${git-nixos} pull";
         nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
         nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
