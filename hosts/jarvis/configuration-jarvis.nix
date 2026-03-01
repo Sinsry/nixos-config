@@ -223,6 +223,7 @@ in
           volumes = [ "open-webui:/app/backend/data" ];
           environment = {
             OLLAMA_BASE_URL = "http://ollama:11434";
+            ENABLE_API_KEY_AUTH = "true";
           };
           extraOptions = [ "--network=ollama-net" ];
           autoStart = true;

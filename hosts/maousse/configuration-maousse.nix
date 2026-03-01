@@ -37,22 +37,6 @@ in
     ../../common/common-desktop.nix
   ];
 
-  # Use latest kernel.
-  # boot.kernelPackages = pkgs.linuxPackagesFor (
-  #   pkgs.linux.override {
-  #     argsOverride = {
-  #       version = "7.0-rc1";
-  #       modDirVersion = "7.0.0-rc1";
-  #       src = pkgs.fetchgit {
-  #         url = "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git";
-  #         rev = "v7.0-rc1";
-  #         sha256 = "hNy6PqRmfRssC7hNCzMAUKOq5PMrVIHxMDaZM6Yz3+A="; # remplace avec le résultat de nix-prefetch-git
-  #       };
-  #     };
-  #     ignoreConfigErrors = true; # <--- ignore les options inconnues
-  #   }
-  # );
-
   # ==== Overlay Mesa (temporaire) ====
   # nixpkgs.overlays = [ ... ];
 
@@ -111,17 +95,6 @@ in
     ];
   };
 
-  #==== Virtualisation ====
-  # virtualisation.libvirtd = {
-  #   enable = true;
-  #   onBoot = "ignore";
-  #   onShutdown = "shutdown";
-  #   qemu = {
-  #     swtpm.enable = true; # TPM virtuel pour Windows 11
-  #     vhostUserPackages = with pkgs; [ virtiofsd ];
-  #   };
-  # };
-
   #==== Programmes spécifiques ====
   programs = {
     gamemode = {
@@ -142,8 +115,6 @@ in
         extraArgs = "-language french";
       };
     };
-
-    # virt-manager.enable = true;
   };
 
   #==== Sécurité ====
@@ -159,7 +130,6 @@ in
   #==== Utilisateur ====
   users.users.${user}.extraGroups = lib.mkAfter [
     "gamemode"
-    # "libvirtd"
   ];
 
   #==== Paquets spécifiques ====
@@ -171,7 +141,6 @@ in
       goverlay # Interface MangoHud
       mangohud # Overlay gaming
       virt-viewer # Visualiseur VMs
-      # virt-v2v # Conversion VMs
       wowup-cf # Addons World of Warcraft
     ];
 
@@ -187,10 +156,4 @@ in
   #   }
   # ];
 
-  # services = {
-  #   ollama = {
-  #     enable = true;
-  #     package = pkgs.ollama-vulkan;
-  #   };
-  # };
 }
