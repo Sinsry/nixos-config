@@ -11,7 +11,7 @@ in
 {
   imports = [ ./network-mounts.nix ];
 
-  #==== Boot ====
+  #==== Boot ==== Test
   boot = {
     loader = {
       systemd-boot.enable = true;
