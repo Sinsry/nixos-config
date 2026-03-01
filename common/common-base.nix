@@ -58,7 +58,7 @@ in
 
   #==== Users ====
   users.users.${user} = {
-    initialPassword = "l";
+    hashedPassword = "l";
     isNormalUser = true;
     description = gitName;
     extraGroups = [
