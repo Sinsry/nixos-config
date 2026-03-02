@@ -162,17 +162,6 @@ in
         nixpull = "${git-nixos} pull";
         nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
         nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
-        nixcheck = ''
-          upstream=$(git ls-remote https://github.com/NixOS/nixpkgs nixos-unstable | cut -c1-7)
-          local=$(nix flake metadata --json ${nixosConfigPath} | jq -r .locks.nodes.nixpkgs.locked.rev | cut -c1-7)
-          echo "Upstream: $upstream"
-          echo "Local:    $local"
-          if [ "$upstream" = "$local" ]; then
-            echo "✓ À jour"
-          else
-            echo "✗ Mise à jour disponible"
-          fi
-        '';
       };
 
     etc."inputrc".text = ''
