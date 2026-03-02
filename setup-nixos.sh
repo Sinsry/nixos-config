@@ -4,7 +4,7 @@
 # ============================================================
 #  Mode dry-run (true = simulation, false = réel)
 # ============================================================
-DRY_RUN=true
+DRY_RUN=false
 
 # ============================================================
 #  Couleurs & helpers
@@ -227,7 +227,7 @@ EOF
     run sudo NIXOS_HOST="$HOST" nixos-rebuild boot --flake /etc/nixos#$HOST
     info "Push vers GitHub..."
     rrun sudo -u $TARGET_USER git -C /etc/nixos push
-    
+
 elif [[ "$MODE" == "liveiso" ]]; then
 
     # ==========================================================
