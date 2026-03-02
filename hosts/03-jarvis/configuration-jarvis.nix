@@ -104,8 +104,6 @@ in
     graphics.enable = true;
   };
 
-  nixpkgs.config.cudaSupport = true;
-
   systemd.services = {
     nvidia-cdi-generate = {
       description = "Generate NVIDIA CDI config";

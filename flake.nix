@@ -63,7 +63,13 @@
         jarvis = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            {
+              nixpkgs = {
+                config = {
+                  cudaSupport = true;
+                };
+              };
+            }
             ./hosts/03-jarvis/configuration-jarvis.nix
             agenix.nixosModules.default
           ];
