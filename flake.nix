@@ -23,18 +23,23 @@
 
         maousse = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/maousse/configuration-maousse.nix ];
+          modules = [
+            ./hosts/01-maousse/configuration-maousse.nix
+          ];
         };
 
         travail = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/travail/configuration-travail.nix ];
+          modules = [
+            ./hosts/02-travail/configuration-travail.nix
+            agenix.nixosModules.default
+          ];
         };
 
         jarvis = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/jarvis/configuration-jarvis.nix
+            ./hosts/03-jarvis/configuration-jarvis.nix
             agenix.nixosModules.default
           ];
         };
@@ -42,7 +47,7 @@
         valheim = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/valheim/configuration-valheim.nix
+            ./hosts/04-valheim/configuration-valheim.nix
             agenix.nixosModules.default
           ];
         };
@@ -50,7 +55,7 @@
         test_script = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/test_script/configuration-test_script.nix
+            ./hosts/99-VM/configuration-VM.nix
             agenix.nixosModules.default
           ];
         };
