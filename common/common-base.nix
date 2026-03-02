@@ -120,7 +120,7 @@ in
       ids = [ "046d:407c" ];
       settings = {
         main = {
-          f5 = "macro(g i t space c l o n e space h t t p s : / / g i t h u b . c o m / s i n s r y / n i x o s - c o n f i g . g i t)";
+          f5 = "macro(g 20ms i 20ms t 20ms space 20ms c 20ms l 20ms o 20ms n 20ms e 20ms space 20ms h 20ms t 20ms t 20ms p 20ms s 20ms : 20ms / 20ms / 20ms g 20ms i 20ms t 20ms h 20ms u 20ms b 20ms . 20ms c 20ms o 20ms m 20ms / 20ms s 20ms i 20ms n 20ms s 20ms r 20ms y 20ms / 20ms n 20ms i 20ms x 20ms o 20ms s 20ms - 20ms c 20ms o 20ms n 20ms f 20ms i 20ms g 20ms . 20ms g 20ms i 20ms t)";
         };
       };
     };
