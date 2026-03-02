@@ -226,7 +226,7 @@ EOF
     info "Rebuild en cours pour ${BOLD}$HOST${RESET}..."
     run sudo NIXOS_HOST="$HOST" nixos-rebuild boot --flake /etc/nixos#$HOST
     info "Push vers GitHub..."
-    rrun sudo -u $TARGET_USER git -C /etc/nixos push
+    run sudo -u $TARGET_USER git -C /etc/nixos push
 
 elif [[ "$MODE" == "liveiso" ]]; then
 
