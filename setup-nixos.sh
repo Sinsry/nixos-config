@@ -194,7 +194,7 @@ if [[ "$MODE" == "existing" ]]; then
 [safe]
     directory = /etc/nixos
 EOF
-    cat > /root/.gitconfig << EOF
+    sudo cat > /root/.gitconfig << EOF
 [user]
     name = Sinsry
     email = 113318091+Sinsry@users.noreply.github.com
