@@ -18,6 +18,28 @@
       agenix,
       ...
     }:
+    let
+      system = "x86_64-linux"; # ou ton architecture
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          (final: prev: {
+            faugus-launcher = prev.faugus-launcher.overrideAttrs (oldAttrs: rec {
+              version = "1.15.10";
+              src = prev.fetchFromGitHub {
+                owner = "Faugus";
+                repo = "faugus-launcher";
+                rev = "v${version}";
+                # Le hash spécifique pour la version 1.15.10
+                # hash = "sha256-K8HnLpGfQyI0J0MvW9A9C2D3E4F5G6H7I8J9K0L1M2N=";
+                hash = "000000000000000000000000000000000000000000000000000";
+              };
+            });
+          })
+        ];
+      };
+    in
     {
       nixosConfigurations = {
 
