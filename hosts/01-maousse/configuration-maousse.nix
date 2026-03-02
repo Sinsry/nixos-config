@@ -38,7 +38,7 @@ in
     ../../common/common-desktop.nix
   ];
 
-  # ==== Overlay Mesa (temporaire) ====
+  # ==== Overlay (temporaire) ====
   # nixpkgs.overlays = [ ... ];
 
   #==== SDDM input ====
