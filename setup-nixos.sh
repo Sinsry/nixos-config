@@ -285,6 +285,9 @@ elif [[ "$MODE" == "liveiso" ]]; then
     run cp /tmp/ssh-extracted/.ssh/id_ed25519* $TARGET/root/.ssh/
     run chmod 600 $TARGET/root/.ssh/id_ed25519
     run chmod 644 $TARGET/root/.ssh/id_ed25519.pub
+    run cp /tmp/ssh-extracted/.ssh/id_ed25519* /root/.ssh/
+    run chmod 600 /root/.ssh/id_ed25519
+    run chmod 644 /root/.ssh/id_ed25519.pub
     success "Clés SSH placées pour root"
 
     # Clés pour l'utilisateur
@@ -316,7 +319,7 @@ EOF
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
     info "Push vers GitHub..."
     run chown -R 1000:100 $NIXOS_TARGET
-    run GIT_SSH_COMMAND="ssh -i /mnt/home/$TARGET_USER/.ssh/id_ed25519" git -C $NIXOS_TARGET push
+    run GIT_SSH_COMMAND="ssh -i /root/.ssh/id_ed25519" git -C $NIXOS_TARGET push
     success "Installation terminée !"
 
 fi
