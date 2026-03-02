@@ -56,8 +56,8 @@ in
     qemuGuest.enable = true;
   };
 
-  # age.secrets.test_script-env = {
-  #   file = ./asset/test_script-env.age;
+  # age.secrets.VM-env = {
+  #   file = ./asset/VM-env.age;
   # };
 
   age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
