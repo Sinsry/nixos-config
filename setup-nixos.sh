@@ -66,7 +66,7 @@ if [[ "$MODE_CHOICE" == "1" ]]; then
     success "Mode sélectionné : ${BOLD}Live ISO${RESET}"
     if [[ $EUID -ne 0 ]]; then
         error "Le mode Live ISO doit être lancé en root !"
-        error "Relance avec : sudo ./nixos-install.sh"
+        error "Relance avec : sudo ./setup-install.sh"
         exit 1
     fi
 elif [[ "$MODE_CHOICE" == "2" ]]; then
