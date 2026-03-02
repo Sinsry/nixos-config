@@ -315,7 +315,8 @@ EOF
     info "nixos-install en cours pour ${BOLD}$HOST${RESET}..."
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
     info "Push vers GitHub..."
-    run sudo -u $TARGET_USER git -C /etc/nixos push
+    run chown -R 1000:100 $NIXOS_TARGET
+    run git -C $NIXOS_TARGET remote set-url origin git@github.com:Sinsry/nixos-config.git
     success "Installation terminée !"
 
 fi
