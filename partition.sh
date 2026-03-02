@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 # ============================================================
+#  Mode dry-run (true = simulation, false = réel)
+# ============================================================
+DRY_RUN=true
+
+# ============================================================
 #  Couleurs & helpers
 # ============================================================
 RED='\033[0;31m'
@@ -17,6 +22,13 @@ warn()    { echo -e "${YELLOW}[!]${RESET} $*"; }
 error()   { echo -e "${RED}[✘]${RESET} $*"; }
 step()    { echo -e "\n${BOLD}${CYAN}── $* ${RESET}"; }
 hr()      { echo -e "${CYAN}$(printf '─%.0s' {1..45})${RESET}"; }
+run()     {
+    if [[ "$DRY_RUN" == true ]]; then
+        echo -e "${YELLOW}[DRY-RUN]${RESET} $*"
+    else
+        "$@"
+    fi
+}
 
 # ============================================================
 #  Vérification des droits root
@@ -33,6 +45,9 @@ clear
 hr
 echo -e "${BOLD}${CYAN}   NixOS — Partitionnement${RESET}"
 hr
+if [[ "$DRY_RUN" == true ]]; then
+    echo -e "\n  ${YELLOW}${BOLD}⚠️  MODE DRY-RUN — aucune commande ne sera exécutée${RESET}\n"
+fi
 echo ""
 
 # ============================================================
@@ -77,9 +92,8 @@ esac
 #  Choix du disque
 # ============================================================
 echo -e "${BOLD}Disques disponibles :${RESET}"
-lsblk -d -o NAME,SIZE,TYPE | grep disk | while read line; do
-    echo -e "  ${CYAN}•${RESET} /dev/$line"
-done
+echo ""
+lsblk -o NAME,SIZE,TYPE,FSTYPE,MOUNTPOINT
 echo ""
 read -p "$(echo -e ${BOLD}"Disque cible (ex: sda, vda) : /dev/${RESET}")" DISK
 DISK="/dev/$DISK"
@@ -110,25 +124,25 @@ fi
 # ============================================================
 
 step "1/4 — Création de la table de partition GPT"
-parted "$DISK" -- mklabel gpt
+run parted "$DISK" -- mklabel gpt
 success "Table GPT créée"
 
 step "2/4 — Partition EFI (1MB → 1024MB)"
-parted "$DISK" -- mkpart ESP fat32 1MB 1024MB
-parted "$DISK" -- set 1 esp on
+run parted "$DISK" -- mkpart ESP fat32 1MB 1024MB
+run parted "$DISK" -- set 1 esp on
 success "Partition EFI créée et flag esp activé"
 
 if [[ "$SWAP_TYPE" == "1" ]]; then
     step "3/4 — Partition root (1024MB → -$SWAP_SIZE)"
-    parted "$DISK" -- mkpart root ext4 1024MB -$SWAP_SIZE
+    run parted "$DISK" -- mkpart root ext4 1024MB -$SWAP_SIZE
     success "Partition root créée"
 
     step "3b/4 — Partition swap (-$SWAP_SIZE → 100%)"
-    parted "$DISK" -- mkpart swap linux-swap -$SWAP_SIZE 100%
+    run parted "$DISK" -- mkpart swap linux-swap -$SWAP_SIZE 100%
     success "Partition swap créée"
 else
     step "3/4 — Partition root (1024MB → 100%)"
-    parted "$DISK" -- mkpart root ext4 1024MB 100%
+    run parted "$DISK" -- mkpart root ext4 1024MB 100%
     success "Partition root créée"
 fi
 
@@ -144,14 +158,14 @@ else
     SWAP="${DISK}3"
 fi
 
-mkfs.fat -F32 "$EFI"
+run mkfs.fat -F32 "$EFI"
 success "EFI formatée en fat32 → $EFI"
 
-mkfs.ext4 -L root "$ROOT"
+run mkfs.ext4 -L root "$ROOT"
 success "Root formatée en ext4 → $ROOT"
 
 if [[ "$SWAP_TYPE" == "1" ]]; then
-    mkswap "$SWAP"
+    run mkswap "$SWAP"
     success "Swap formatée → $SWAP"
 fi
 
@@ -160,12 +174,12 @@ fi
 # ============================================================
 
 step "Montage des partitions"
-mount "$ROOT" /mnt
-mkdir -p /mnt/boot
-mount "$EFI" /mnt/boot
+run mount "$ROOT" /mnt
+run mkdir -p /mnt/boot
+run mount "$EFI" /mnt/boot
 
 if [[ "$SWAP_TYPE" == "1" ]]; then
-    swapon "$SWAP"
+    run swapon "$SWAP"
     success "Swap activée → $SWAP"
 fi
 
@@ -181,10 +195,10 @@ fi
 if [[ "$SWAP_TYPE" == "2" ]]; then
     step "Création du swapfile ($SWAP_SIZE)"
     SWAP_BYTES=$(echo $SWAP_SIZE | sed 's/GB//')
-    dd if=/dev/zero of=/mnt/swapfile bs=1G count=$SWAP_BYTES status=progress
-    chmod 600 /mnt/swapfile
-    mkswap /mnt/swapfile
-    swapon /mnt/swapfile
+    run dd if=/dev/zero of=/mnt/swapfile bs=1G count=$SWAP_BYTES status=progress
+    run chmod 600 /mnt/swapfile
+    run mkswap /mnt/swapfile
+    run swapon /mnt/swapfile
     success "Swapfile créé et activé → /mnt/swapfile"
     echo -e "  ${CYAN}/mnt/swapfile${RESET} → swap ($SWAP_SIZE)"
 fi
@@ -197,5 +211,5 @@ hr
 echo -e "${GREEN}${BOLD}  ✅  Partitionnement terminé !${RESET}"
 hr
 echo ""
-echo -e "  Tu peux maintenant lancer ${BOLD}./nixos-install.sh${RESET}"
+echo -e "  Tu peux maintenant lancer ${BOLD}./setup-nixos.sh${RESET}"
 echo ""
