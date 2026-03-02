@@ -4,7 +4,7 @@
 # ============================================================
 #  Mode dry-run (true = simulation, false = réel)
 # ============================================================
-DRY_RUN=false
+DRY_RUN=true
 
 # ============================================================
 #  Couleurs & helpers
@@ -99,20 +99,40 @@ VALID_HOSTS=("maousse" "travail" "jarvis" "valheim" "VM")
 
 echo -e "${BOLD}Hosts disponibles :${RESET}"
 for i in "${!VALID_HOSTS[@]}"; do
-    echo -e "  ${CYAN}$((i+1)))${RESET} ${VALID_HOSTS[$i]}"
+    if [[ $i -eq $((${#VALID_HOSTS[@]}-1)) ]]; then
+        echo -e "  ${CYAN}99)${RESET} ${VALID_HOSTS[$i]}"
+    else
+        echo -e "   ${CYAN}$((i+1)))${RESET} ${VALID_HOSTS[$i]}"
+    fi
 done
 echo ""
 
-read -p "$(echo -e ${BOLD}"Ton choix [1-${#VALID_HOSTS[@]}] : "${RESET})" -n 1 -r HOST_CHOICE
+read -p "$(echo -e ${BOLD}"Ton choix : "${RESET})" HOST_CHOICE
 echo ""
 
-if [[ "$HOST_CHOICE" -lt 1 || "$HOST_CHOICE" -gt "${#VALID_HOSTS[@]}" ]]; then
+if [[ "$HOST_CHOICE" == "99" ]]; then
+    HOST="${VALID_HOSTS[-1]}"
+elif [[ "$HOST_CHOICE" -lt 1 || "$HOST_CHOICE" -gt "$((${#VALID_HOSTS[@]}-1))" ]]; then
     error "Choix invalide."
     exit 1
+else
+    HOST="${VALID_HOSTS[$((HOST_CHOICE-1))]}"
 fi
-
-HOST="${VALID_HOSTS[$((HOST_CHOICE-1))]}"
-success "Host sélectionné : ${BOLD}$HOST${RESET}"
+if [[ "$HOST_CHOICE" == "99" ]]; then
+    NBHOST="99"
+else
+    NBHOST=$(printf "%02d" "$HOST_CHOICE")
+fi
+# echo ""
+read -p "$(echo -e ${YELLOW}"Confirmer ? [y/N] "${RESET})" -n 1 -r
+echo ""
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    error "Annulé."
+    exit 1
+fi
+success "             Host : ${BOLD}$HOST${RESET}"
+success "Répertoire config : ${BOLD}$NBHOST-$HOST${RESET}"
 
 # ============================================================
 #  Nom d'utilisateur
@@ -159,7 +179,7 @@ if [[ "$MODE" == "existing" ]]; then
     success "Configuration copiée"
 
     step "5/9 — Restauration du hardware-configuration.nix"
-    run sudo cp /tmp/hardware-configuration.nix.backup /etc/nixos/hosts/$HOST/hardware-configuration.nix
+    run sudo cp /tmp/hardware-configuration.nix.backup /etc/nixos/hosts/$NBHOST-$HOST/hardware-configuration.nix
     success "Restauré dans hosts/$HOST/"
 
     step "6/9 — Configuration SSH (déchiffrement des clés)"
@@ -248,7 +268,7 @@ elif [[ "$MODE" == "liveiso" ]]; then
     success "Configuration copiée dans $NIXOS_TARGET"
 
     step "5/8 — Restauration du hardware-configuration.nix"
-    run cp /tmp/hardware-configuration.nix.backup $NIXOS_TARGET/hosts/$HOST/hardware-configuration.nix
+    run cp /tmp/hardware-configuration.nix.backup $NIXOS_TARGET/hosts/$NBHOST-$HOST/hardware-configuration.nix
     success "Restauré dans hosts/$HOST/"
 
     step "6/8 — Déchiffrement des clés SSH"
