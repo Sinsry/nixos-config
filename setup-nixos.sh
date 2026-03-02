@@ -271,7 +271,7 @@ elif [[ "$MODE" == "liveiso" ]]; then
 
     step "5/8 — Restauration du hardware-configuration.nix"
     run cp /tmp/hardware-configuration.nix.backup $NIXOS_TARGET/hosts/$NBHOST-$HOST/hardware-configuration.nix
-    success "Restauré dans hosts/$HOST/"
+    success "Restauré dans /mnt/hosts/$NBHOST-$HOST/"
 
     step "6/8 — Déchiffrement des clés SSH"
     run openssl enc -aes-256-cbc -pbkdf2 -d \
@@ -314,6 +314,8 @@ EOF
     step "8/8 — Installation de NixOS"
     info "nixos-install en cours pour ${BOLD}$HOST${RESET}..."
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
+    info "Push vers GitHub..."
+    run sudo -u $TARGET_USER git -C /etc/nixos push
     success "Installation terminée !"
 
 fi
