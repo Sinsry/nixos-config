@@ -114,6 +114,18 @@ in
     };
   };
 
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "046d:407c" ];
+      settings = {
+        main = {
+          f5 = "macro(g i t space c l o n e space h t t p s : / / g i t h u b . c o m / s i n s r y / n i x o s - c o n f i g . g i t)";
+        };
+      };
+    };
+  };
+
   #==== Paquets ====
   environment = {
     systemPackages = with pkgs; [
