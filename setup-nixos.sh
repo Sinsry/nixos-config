@@ -1,10 +1,3 @@
-# parted /dev/vda -- mklabel gpt
-# parted /dev/vda -- mkpart ESP fat32 1MB 1024MB
-# parted /dev/vda -- set 1 esp on
-# parted /dev/vda -- mkpart root ext4 512MB -8GB
-# parted /dev/vda -- mkpart swap linux-swap -8GB 100%
-# parted /dev/vda -- mkpart ESP fat32 1MB 512MB
-
 #!/usr/bin/env nix-shell
 #! nix-shell -i bash -p git openssl
 
@@ -60,12 +53,20 @@ fi
 # ============================================================
 #  Détection du mode
 # ============================================================
+echo ""
+echo -e "${BOLD}Mode d'installation :${RESET}"
+echo -e "  ${CYAN}1)${RESET} Live ISO         — installation depuis zéro"
+echo -e "  ${CYAN}2)${RESET} Système existant — post-installation"
+echo ""
+read -p "$(echo -e ${BOLD}"Ton choix [1/2] : "${RESET})" -n 1 -r MODE_CHOICE
+echo ""
+
 if [[ "$MODE_CHOICE" == "1" ]]; then
     MODE="liveiso"
     success "Mode sélectionné : ${BOLD}Live ISO${RESET}"
     if [[ $EUID -ne 0 ]]; then
         error "Le mode Live ISO doit être lancé en root !"
-        error "Relance avec : sudo ./setup-install.sh"
+        error "Relance avec : sudo ./nixos-install.sh"
         exit 1
     fi
 elif [[ "$MODE_CHOICE" == "2" ]]; then
@@ -73,12 +74,22 @@ elif [[ "$MODE_CHOICE" == "2" ]]; then
     success "Mode sélectionné : ${BOLD}Système existant${RESET}"
     if [[ $EUID -eq 0 ]]; then
         error "Le mode Système existant doit être lancé sans root !"
-        error "Relance sans sudo : ./setup-install.sh"
+        error "Relance sans sudo : ./nixos-install.sh"
         exit 1
     fi
     echo ""
     warn "À lancer APRÈS l'installation graphique ET APRÈS le redémarrage !"
-    ...
+    echo ""
+    read -p "$(echo -e ${YELLOW}"L'installation graphique est terminée ? [y/N] "${RESET})" -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        error "Lance d'abord l'installeur graphique !"
+        exit 1
+    fi
+else
+    error "Choix invalide."
+    exit 1
+fi
 
 # ============================================================
 #  Détection du host
@@ -102,6 +113,7 @@ fi
 
 HOST="${VALID_HOSTS[$((HOST_CHOICE-1))]}"
 success "Host sélectionné : ${BOLD}$HOST${RESET}"
+
 # ============================================================
 #  Nom d'utilisateur
 # ============================================================
@@ -126,7 +138,7 @@ success "Utilisateur : ${BOLD}$TARGET_USER${RESET}"
 if [[ "$MODE" == "existing" ]]; then
 
     # ==========================================================
-    #  MODE SYSTÈME EXISTANT 
+    #  MODE SYSTÈME EXISTANT
     # ==========================================================
 
     step "1/9 — Sauvegarde hardware-configuration.nix"
@@ -171,7 +183,7 @@ if [[ "$MODE" == "existing" ]]; then
     success "Clés SSH configurées pour root"
 
     step "8/9 — Droits et configuration Git"
-    run chown -R $TARGET_USER:users /etc/nixos
+    run sudo chown -R $TARGET_USER:users /etc/nixos
     run git -C /etc/nixos remote set-url origin git@github.com:Sinsry/nixos-config.git
     cat > /home/$TARGET_USER/.gitconfig << EOF
 [user]
@@ -182,7 +194,15 @@ if [[ "$MODE" == "existing" ]]; then
 [safe]
     directory = /etc/nixos
 EOF
-    run chown $TARGET_USER:users /home/$TARGET_USER/.gitconfig 2>/dev/null || true
+    cat > /root/.gitconfig << EOF
+[user]
+    name = Sinsry
+    email = 113318091+Sinsry@users.noreply.github.com
+[pull]
+    rebase = true
+[safe]
+    directory = /etc/nixos
+EOF
     success "Git configuré"
 
     step "9/9 — Mise à jour du flake et rebuild"
@@ -281,7 +301,8 @@ EOF
     info "nixos-install en cours pour ${BOLD}$HOST${RESET}..."
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
     success "Installation terminée !"
-    fi
+
+fi
 
 # ============================================================
 #  Fin
@@ -297,4 +318,3 @@ elif [[ "$MODE" == "liveiso" ]]; then
     echo -e "  Tu peux redémarrer et retirer le live ISO 🎉"
 fi
 echo ""
-
