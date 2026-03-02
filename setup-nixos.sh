@@ -176,6 +176,7 @@ if [[ "$MODE" == "existing" ]]; then
 
     step "4/9 — Copie de la configuration"
     run sudo cp -Rf . /etc/nixos
+    run sudo chown -R 1000:100 /etc/nixos
     success "Configuration copiée"
 
     step "5/9 — Restauration du hardware-configuration.nix"
@@ -203,8 +204,8 @@ if [[ "$MODE" == "existing" ]]; then
     success "Clés SSH configurées pour root"
 
     step "8/9 — Droits et configuration Git"
-    run sudo chown -R $TARGET_USER:users /etc/nixos
-    run git -C /etc/nixos remote set-url origin git@github.com:Sinsry/nixos-config.git
+    run sudo chown -R 1000:100 /etc/nixos
+    run sudo -u $TARGET_USER git -C /etc/nixos remote set-url origin git@github.com:Sinsry/nixos-config.git
     cat > /home/$TARGET_USER/.gitconfig << EOF
 [user]
     name = Sinsry
@@ -219,14 +220,14 @@ EOF
 
     step "9/9 — Mise à jour du flake et rebuild"
     info "Mise à jour des inputs du flake..."
-    run nix --extra-experimental-features 'nix-command flakes' flake update /etc/nixos
-    run git -C /etc/nixos add .
-    run git -C /etc/nixos commit -m "auto: update flake.lock" || true
+    run sudo -u $TARGET_USER nix --extra-experimental-features 'nix-command flakes' flake update /etc/nixos
+    run sudo -u $TARGET_USER git -C /etc/nixos add .
+    run sudo -u $TARGET_USER git -C /etc/nixos commit -m "auto: update flake.lock" || true
     info "Rebuild en cours pour ${BOLD}$HOST${RESET}..."
     run sudo NIXOS_HOST="$HOST" nixos-rebuild boot --flake /etc/nixos#$HOST
     info "Push vers GitHub..."
-    run git -C /etc/nixos push
-
+    rrun sudo -u $TARGET_USER git -C /etc/nixos push
+    
 elif [[ "$MODE" == "liveiso" ]]; then
 
     # ==========================================================
@@ -265,6 +266,7 @@ elif [[ "$MODE" == "liveiso" ]]; then
     run rm -rf $NIXOS_TARGET
     run mkdir -p $NIXOS_TARGET
     run cp -Rf /tmp/nixos-config/. $NIXOS_TARGET
+
     success "Configuration copiée dans $NIXOS_TARGET"
 
     step "5/8 — Restauration du hardware-configuration.nix"
