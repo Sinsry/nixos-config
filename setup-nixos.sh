@@ -50,14 +50,6 @@ if [[ "$DRY_RUN" == true ]]; then
 fi
 
 # ============================================================
-#  Vérification des droits root
-# ============================================================
-if [[ $EUID -ne 0 ]]; then
-    warn "Droits root requis, relancement en sudo..."
-    exec sudo bash "$0" -- "$@"
-fi
-
-# ============================================================
 #  Dépendances
 # ============================================================
 if ! command -v openssl &> /dev/null; then
@@ -68,33 +60,25 @@ fi
 # ============================================================
 #  Détection du mode
 # ============================================================
-echo ""
-echo -e "${BOLD}Mode d'installation :${RESET}"
-echo -e "  ${CYAN}1)${RESET} Live ISO         — installation depuis zéro"
-echo -e "  ${CYAN}2)${RESET} Système existant — post-installation"
-echo ""
-read -p "$(echo -e ${BOLD}"Ton choix [1/2] : "${RESET})" -n 1 -r MODE_CHOICE
-echo ""
-
 if [[ "$MODE_CHOICE" == "1" ]]; then
     MODE="liveiso"
     success "Mode sélectionné : ${BOLD}Live ISO${RESET}"
+    if [[ $EUID -ne 0 ]]; then
+        error "Le mode Live ISO doit être lancé en root !"
+        error "Relance avec : sudo ./setup-install.sh"
+        exit 1
+    fi
 elif [[ "$MODE_CHOICE" == "2" ]]; then
     MODE="existing"
     success "Mode sélectionné : ${BOLD}Système existant${RESET}"
-    echo ""
-    warn "À lancer APRÈS l'installation graphique ET APRÈS le redémarrage !"
-    echo ""
-    read -p "$(echo -e ${YELLOW}"L'installation graphique est terminée ? [y/N] "${RESET})" -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        error "Lance d'abord l'installeur graphique !"
+    if [[ $EUID -eq 0 ]]; then
+        error "Le mode Système existant doit être lancé sans root !"
+        error "Relance sans sudo : ./setup-install.sh"
         exit 1
     fi
-else
-    error "Choix invalide."
-    exit 1
-fi
+    echo ""
+    warn "À lancer APRÈS l'installation graphique ET APRÈS le redémarrage !"
+    ...
 
 # ============================================================
 #  Détection du host
