@@ -186,10 +186,10 @@ if [[ "$MODE" == "existing" ]]; then
     run openssl enc -aes-256-cbc -pbkdf2 -d \
         -in /etc/nixos/asset/ssh-keys.enc \
         -out /home/$TARGET_USER/ssh-backup.tar.gz
-    run sudo chown $TARGET_USER:users /home/$TARGET_USER/ssh-backup.tar.gz
+    run sudo chown 1000:100 /home/$TARGET_USER/ssh-backup.tar.gz
     run mkdir -p /home/$TARGET_USER/.ssh
     run tar xzf /home/$TARGET_USER/ssh-backup.tar.gz -C /home/$TARGET_USER/
-    run sudo chown -R $TARGET_USER:users /home/$TARGET_USER/.ssh
+    run sudo chown -R 1000:100 /home/$TARGET_USER/.ssh
     run sudo chmod 600 /home/$TARGET_USER/.ssh/id_ed25519
     run sudo chmod 644 /home/$TARGET_USER/.ssh/id_ed25519.pub
     success "Clés SSH configurées pour $TARGET_USER"
