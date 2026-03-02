@@ -39,7 +39,6 @@
       # 2. On crée une instance de pkgs qui inclut l'overlay
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
         overlays = [ faugusOverlay ];
       };
     in
