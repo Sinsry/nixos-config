@@ -55,7 +55,7 @@
         test_script = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./hosts/99-VM/configuration-VM.nix
+            ./hosts/VM/configuration-VM.nix
             agenix.nixosModules.default
           ];
         };
