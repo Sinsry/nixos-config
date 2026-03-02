@@ -187,13 +187,18 @@ if [[ "$MODE" == "existing" ]]; then
     success "Clés SSH configurées pour root"
 
     step "8/9 — Droits et configuration Git"
-    run cd /etc/nixos
-    run sudo chown -R $TARGET_USER:users /etc/nixos
-    run sudo -u $TARGET_USER git config --global --add safe.directory /etc/nixos
-    run git remote set-url origin git@github.com:Sinsry/nixos-config.git
-    run git config --global user.name "Sinsry"
-    run git config --global user.email "113318091+Sinsry@users.noreply.github.com"
-    run git config --global pull.rebase true
+    run chown -R $TARGET_USER:users /etc/nixos
+    run git -C /etc/nixos remote set-url origin git@github.com:Sinsry/nixos-config.git
+    cat > /home/$TARGET_USER/.gitconfig << EOF
+[user]
+    name = Sinsry
+    email = 113318091+Sinsry@users.noreply.github.com
+[pull]
+    rebase = true
+[safe]
+    directory = /etc/nixos
+EOF
+    run chown $TARGET_USER:users /home/$TARGET_USER/.gitconfig 2>/dev/null || true
     success "Git configuré"
 
     step "9/9 — Mise à jour du flake et rebuild"
@@ -272,22 +277,27 @@ elif [[ "$MODE" == "liveiso" ]]; then
     run chmod 644 $TARGET/home/$TARGET_USER/.ssh/id_ed25519.pub
     success "Clés SSH placées pour $TARGET_USER"
 
-    step "8/9 — Droits et configuration Git"
-    run cd /etc/nixos
-    run sudo chown -R $USER:users /etc/nixos
-    run sudo -u $USER git config --global --add safe.directory /etc/nixos
-    run git remote set-url origin git@github.com:Sinsry/nixos-config.git
-    run git config --global user.name "Sinsry"
-    run git config --global user.email "113318091+Sinsry@users.noreply.github.com"
-    run git config --global pull.rebase true
+    step "7/8 — Droits et configuration Git"
+    run chown -R $TARGET_USER:users $NIXOS_TARGET
+    run git -C $NIXOS_TARGET remote set-url origin git@github.com:Sinsry/nixos-config.git
+    run mkdir -p $TARGET/home/$TARGET_USER
+    cat > $TARGET/home/$TARGET_USER/.gitconfig << EOF
+[user]
+    name = Sinsry
+    email = 113318091+Sinsry@users.noreply.github.com
+[pull]
+    rebase = true
+[safe]
+    directory = /etc/nixos
+EOF
+    run chown $TARGET_USER:users $TARGET/home/$TARGET_USER/.gitconfig 2>/dev/null || true
     success "Git configuré pour $TARGET_USER"
 
-    step "7/8 — Installation de NixOS"
+    step "8/8 — Installation de NixOS"
     info "nixos-install en cours pour ${BOLD}$HOST${RESET}..."
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
     success "Installation terminée !"
-
-fi
+    fi
 
 # ============================================================
 #  Fin
