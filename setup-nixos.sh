@@ -100,7 +100,7 @@ fi
 #  Détection du host
 # ============================================================
 echo ""
-VALID_HOSTS=("maousse" "travail" "jarvis" "valheim" "test_script")
+VALID_HOSTS=("maousse" "travail" "jarvis" "valheim" "VM")
 
 echo -e "${BOLD}Hosts disponibles :${RESET}"
 for i in "${!VALID_HOSTS[@]}"; do
