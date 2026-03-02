@@ -228,29 +228,29 @@ elif [[ "$MODE" == "liveiso" ]]; then
         exit 1
     fi
 
-    step "1/7 — Génération du hardware-configuration.nix"
+    step "1/8 — Génération du hardware-configuration.nix"
     run nixos-generate-config --root $TARGET
     success "hardware-configuration.nix généré dans $TARGET/etc/nixos/"
 
-    step "2/7 — Sauvegarde du hardware-configuration.nix"
+    step "2/8 — Sauvegarde du hardware-configuration.nix"
     run cp $TARGET/etc/nixos/hardware-configuration.nix /tmp/hardware-configuration.nix.backup
     success "Sauvegardé dans /tmp/hardware-configuration.nix.backup"
 
-    step "3/7 — Clone de la configuration NixOS"
+    step "3/8 — Clone de la configuration NixOS"
     run git clone $NIXOS_REPO /tmp/nixos-config
     success "Repo cloné dans /tmp/nixos-config"
 
-    step "4/7 — Copie de la configuration dans /mnt/etc/nixos"
+    step "4/8 — Copie de la configuration dans /mnt/etc/nixos"
     run rm -rf $NIXOS_TARGET
     run mkdir -p $NIXOS_TARGET
     run cp -Rf /tmp/nixos-config/. $NIXOS_TARGET
     success "Configuration copiée dans $NIXOS_TARGET"
 
-    step "5/7 — Restauration du hardware-configuration.nix"
+    step "5/8 — Restauration du hardware-configuration.nix"
     run cp /tmp/hardware-configuration.nix.backup $NIXOS_TARGET/hosts/$HOST/hardware-configuration.nix
     success "Restauré dans hosts/$HOST/"
 
-    step "6/7 — Déchiffrement des clés SSH"
+    step "6/8 — Déchiffrement des clés SSH"
     run openssl enc -aes-256-cbc -pbkdf2 -d \
         -in $NIXOS_TARGET/asset/ssh-keys.enc \
         -out /tmp/ssh-backup.tar.gz
@@ -272,7 +272,17 @@ elif [[ "$MODE" == "liveiso" ]]; then
     run chmod 644 $TARGET/home/$TARGET_USER/.ssh/id_ed25519.pub
     success "Clés SSH placées pour $TARGET_USER"
 
-    step "7/7 — Installation de NixOS"
+    step "8/9 — Droits et configuration Git"
+    run cd /etc/nixos
+    run sudo chown -R $USER:users /etc/nixos
+    run sudo -u $USER git config --global --add safe.directory /etc/nixos
+    run git remote set-url origin git@github.com:Sinsry/nixos-config.git
+    run git config --global user.name "Sinsry"
+    run git config --global user.email "113318091+Sinsry@users.noreply.github.com"
+    run git config --global pull.rebase true
+    success "Git configuré pour $TARGET_USER"
+
+    step "7/8 — Installation de NixOS"
     info "nixos-install en cours pour ${BOLD}$HOST${RESET}..."
     run nixos-install --flake $NIXOS_TARGET#$HOST --no-root-passwd
     success "Installation terminée !"
