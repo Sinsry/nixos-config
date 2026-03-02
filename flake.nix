@@ -63,6 +63,7 @@
         jarvis = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
+            { nixpkgs.pkgs = pkgs; }
             {
               nixpkgs = {
                 config = {
