@@ -194,15 +194,7 @@ if [[ "$MODE" == "existing" ]]; then
 [safe]
     directory = /etc/nixos
 EOF
-    sudo cat > /root/.gitconfig << EOF
-[user]
-    name = Sinsry
-    email = 113318091+Sinsry@users.noreply.github.com
-[pull]
-    rebase = true
-[safe]
-    directory = /etc/nixos
-EOF
+    sudo cp /home/$TARGET_USER/.gitconfig /root
     success "Git configuré"
 
     step "9/9 — Mise à jour du flake et rebuild"
