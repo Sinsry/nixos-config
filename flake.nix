@@ -52,7 +52,7 @@
           ];
         };
 
-        test_script = nixpkgs.lib.nixosSystem {
+        VM = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/VM/configuration-VM.nix
