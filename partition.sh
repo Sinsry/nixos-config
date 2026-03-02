@@ -211,5 +211,9 @@ hr
 echo -e "${GREEN}${BOLD}  ✅  Partitionnement terminé !${RESET}"
 hr
 echo ""
-echo -e "  Tu peux maintenant lancer ${BOLD}./setup-nixos.sh${RESET}"
+echo -e "  ${BOLD}sudo ./setup-nixos.sh${RESET} pour une installation \"Live-ISO\""
+echo ""
+echo -e "  ou"
+echo "" 
+echo -e "  ${BOLD}./setup-nixos.sh${RESET} pour une installation \"Système existant\"" 
 echo ""
