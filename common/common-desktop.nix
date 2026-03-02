@@ -193,6 +193,7 @@ in
       mpv
       papirus-icon-theme
       protonvpn-gui
+      remmina
       transmission-remote-gtk
       vlc
       vorta
