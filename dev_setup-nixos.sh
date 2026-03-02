@@ -278,7 +278,7 @@ elif [[ "$MODE" == "liveiso" ]]; then
     success "Clés SSH placées pour $TARGET_USER"
 
     step "7/8 — Droits et configuration Git"
-    run chown -R $TARGET_USER:users $NIXOS_TARGET
+    run chown -R 1000:100 $NIXOS_TARGET
     run git -C $NIXOS_TARGET remote set-url origin git@github.com:Sinsry/nixos-config.git
     run mkdir -p $TARGET/home/$TARGET_USER
     cat > $TARGET/home/$TARGET_USER/.gitconfig << EOF
@@ -290,7 +290,7 @@ elif [[ "$MODE" == "liveiso" ]]; then
 [safe]
     directory = /etc/nixos
 EOF
-    run chown $TARGET_USER:users $TARGET/home/$TARGET_USER/.gitconfig 2>/dev/null || true
+    run chown -R 1000:100 $TARGET/home/$TARGET_USER || true
     success "Git configuré pour $TARGET_USER"
 
     step "8/8 — Installation de NixOS"
