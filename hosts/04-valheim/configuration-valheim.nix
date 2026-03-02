@@ -9,7 +9,7 @@
   ...
 }:
 let
-  nbhost = "04-";
+  nbhost = "04";
   host = "valheim";
   user = "sinsry";
 in
@@ -97,8 +97,8 @@ in
   system.activationScripts.fastfetch = ''
     mkdir -p /home/${user}/.config/fastfetch
     chown -R ${user}:users /home/${user}/.config
-    ln -sfn /etc/nixos/hosts/${nbhost}${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
-    ln -sfn /etc/nixos/hosts/${nbhost}${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
+    ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+    ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
   '';
   swapDevices = [
     {
