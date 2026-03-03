@@ -10,8 +10,6 @@
     }
   },
   "modules": [
-    //"title",
-    //"separator",
     "break",
     {
       "type": "os",
