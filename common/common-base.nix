@@ -161,6 +161,23 @@ in
       ln -sf ${pkgs.bash}/bin/bash /bin/bash
     '';
 
+    autoUpgrade = {
+      enable = true;
+      allowReboot = true;
+      rebootWindow = {
+        lower = "06:00";
+        upper = "07:00";
+        flake = nixosConfigPath;
+        dates = "hourly";
+        upgrade = false;
+        flags = [
+          "--update-input"
+          "nixpkgs"
+          "--commit-lock-file"
+        ];
+      };
+    };
+
     nix = {
       settings = {
         experimental-features = [
@@ -177,23 +194,6 @@ in
         automatic = true;
         dates = "weekly";
         options = "--delete-older-than 15d";
-      };
-    };
-
-    autoUpgrade = {
-      enable = true;
-      allowReboot = true;
-      rebootWindow = {
-        lower = "06:00";
-        upper = "07:00";
-        flake = nixosConfigPath;
-        dates = "hourly";
-        upgrade = false;
-        flags = [
-          "--update-input"
-          "nixpkgs"
-          "--commit-lock-file"
-        ];
       };
     };
 
