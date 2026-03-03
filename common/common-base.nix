@@ -179,6 +179,25 @@ in
       ln -sf ${pkgs.bash}/bin/bash /bin/bash
     '';
 
+    nix = {
+      settings = {
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+        auto-optimise-store = true;
+        download-buffer-size = 1073741824; # 1 GiB
+        max-jobs = "auto";
+        cores = 0;
+      };
+
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 15d";
+      };
+    };
+
     autoUpgrade = {
       enable = true;
       allowReboot = false;
