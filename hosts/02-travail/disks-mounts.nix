@@ -1,6 +1,3 @@
-# Montages disques — travail
-# Partition Windows uniquement
-
 {
   fileSystems = {
     "/mnt/Windows" = {
