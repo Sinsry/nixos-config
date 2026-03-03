@@ -46,24 +46,25 @@
           });
         }
       );
-      # final: prev: {
-      #     ollama = prev.ollama-cuda.overrideAttrs (oldAttrs: rec {
-      #       version = "unstable-${builtins.substring 0 7 src.rev}";
-      #       src = prev.fetchFromGitHub {
-      #         owner = "ollama";
-      #         repo = "ollama";
-      #         rev = "86513cb";
-      #         hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      #       };
-      #     });
-      #   }
-      # );
-
+      open-webuiOverlay = (
+        final: prev: {
+          ollama-cuda = prev.ollama-cuda.overrideAttrs (oldAttrs: rec {
+            version = "0.8.8";
+            src = prev.fetchFromGitHub {
+              owner = "open-webui";
+              repo = "open-webui";
+              rev = "v${version}";
+              hash = "sha256-3n/Zp+uEmaFuBTgRtXYM6BGpmum9/SLJ0j90DH9inbo=";
+            };
+          });
+        }
+      );
       commonModule = {
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
           faugusOverlay
           ollamaOverlay
+          open-webuiOverlay
         ];
       };
     in
