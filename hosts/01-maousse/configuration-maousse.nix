@@ -1,6 +1,3 @@
-# Configuration spécifique à maousse
-# Hardware : AMD GPU, Intel CPU (IOMMU), gaming, virtualisation KVM
-
 {
   pkgs,
   lib,
@@ -24,7 +21,6 @@ let
     lib.concatMapStrings (d: ''
       [Libinput][${d.id}][${d.name}]
       PointerAccelerationProfile=1
-
     '') g903Devices
     + ''
       [Mouse]
@@ -42,40 +38,39 @@ in
   # nixpkgs.overlays = [ ... ];
 
   #==== SDDM input ====
-  system = {
-    activationScripts = {
-      sddmKcminputrc = ''
-        mkdir -p /var/lib/sddm/.config
-        cat > /var/lib/sddm/.config/kcminputrc << 'EOF'
-        ${kcminputrc}
-        EOF
-      '';
+  system.activationScripts = {
+    sddmKcminputrc = ''
+      mkdir -p /var/lib/sddm/.config
+      cat > /var/lib/sddm/.config/kcminputrc << 'EOF'
+      ${kcminputrc}
+      EOF
+    '';
 
-      fastfetch = ''
-        mkdir -p /home/${user}/.config/fastfetch
-        chown -R ${user}:users /home/${user}/.config
-        ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
-        ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
-      '';
-    };
+    fastfetch = ''
+      mkdir -p /home/${user}/.config/fastfetch
+      chown ${user}:users /home/${user}/.config/fastfetch
+      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
+    '';
   };
+
   #==== Identité ====
-  networking.hostName = "${host}";
+  networking.hostName = host;
 
   #==== Boot spécifique ====
   boot = {
     kernelParams = [
       "video=2160x1440@165"
-      "intel_iommu=on" # GPU passthrough
-
+      "intel_iommu=on"
     ];
+
     kernel.sysctl = {
-      "kernel.split_lock_mitigate" = 0; # Perfs gaming/Wine
+      "kernel.split_lock_mitigate" = 0;
     };
 
     kernelModules = [
-      "ntsync" # Améliore les perfs Wine/Proton
-      "vfio_pci" # GPU passthrough
+      "ntsync"
+      "vfio_pci"
       "vfio"
       "vfio_iommu_type1"
     ];
@@ -87,12 +82,9 @@ in
 
   #==== Matériel spécifique ====
   hardware = {
-    xpadneo.enable = true; # Manettes Xbox
-
+    xpadneo.enable = true;
     graphics.extraPackages = with pkgs; [
-      rocmPackages.clr.icd # OpenCL AMD (calcul GPU)
-      vulkan-loader
-      vulkan-validation-layers
+      rocmPackages.clr.icd
     ];
   };
 
@@ -103,9 +95,7 @@ in
       enableRenice = true;
       settings.general.renice = 10;
     };
-
     partition-manager.enable = true;
-
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -118,33 +108,20 @@ in
     };
   };
 
-  #==== Sécurité ====
-  security.pam.loginLimits = [
-    {
-      domain = "@gamemode";
-      type = "-";
-      item = "nice";
-      value = "-20";
-    }
-  ];
-
   #==== Utilisateur ====
-  users.users.${user}.extraGroups = lib.mkAfter [
-    "gamemode"
-  ];
+  users.users.${user}.extraGroups = lib.mkAfter [ "gamemode" ];
 
   #==== Paquets spécifiques ====
   environment = {
     systemPackages = with pkgs; [
       btop-rocm
-      dualsensectl # Manettes PS5
-      faugus-launcher # Lanceur jeux Windows
-      goverlay # Interface MangoHud
-      mangohud # Overlay gaming
-      virt-viewer # Visualiseur VMs
-      wowup-cf # Addons World of Warcraft
+      dualsensectl
+      faugus-launcher
+      goverlay
+      mangohud
+      virt-viewer
+      wowup-cf
     ];
-
     etc = {
       "libinput/local-overrides.quirks".source = ../../asset/local-overrides-g903.quirks;
     };
@@ -156,5 +133,4 @@ in
   #     size = 32 * 1024;
   #   }
   # ];
-
 }

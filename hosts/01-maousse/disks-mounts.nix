@@ -1,6 +1,3 @@
-# Montages disques — maousse
-# Ventoy, Windows (2 partitions), partition Jeux
-
 {
   fileSystems = {
     "/mnt/Ventoy" = {
@@ -38,9 +35,13 @@
       fsType = "ext4";
       options = [
         "nofail"
-        "discard"
       ];
     };
+  };
+
+  services.fstrim = {
+    enable = true;
+    interval = "weekly";
   };
 
   systemd.tmpfiles.rules = [
