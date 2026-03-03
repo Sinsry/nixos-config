@@ -50,9 +50,10 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
-      # vulkan-loader est inclus automatiquement par enable32Bit
-      # vulkan-validation-layers : uniquement utile en développement GPU
-      extraPackages = [ ];
+      extraPackages = with pkgs; [
+        vulkan-loader
+        vulkan-validation-layers
+      ];
     };
   };
 
@@ -77,20 +78,13 @@ in
 
     desktopManager.plasma6.enable = true;
 
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      extraConfig.pipewire."99-no-suspend" = {
-        "context.properties"."suspend-timeout-seconds" = 0;
-      };
+    pipewire.extraConfig.pipewire."99-no-suspend" = {
+      "context.properties"."suspend-timeout-seconds" = 0;
     };
 
     samba = {
       enable = true;
-      # openFirewall retiré : smbd/nmbd/winbindd sont désactivés au démarrage,
-      # ouvrir les ports firewall n'a pas de sens dans ce cas
+      openFirewall = true;
     };
 
     avahi = {
@@ -114,6 +108,45 @@ in
       samba-nmbd.wantedBy = lib.mkForce [ ];
       samba-winbindd.wantedBy = lib.mkForce [ ];
 
+      nixos-upgrade.serviceConfig = {
+        ExecStartPre = "${pkgs.bash}/bin/bash -c 'readlink -f /run/current-system > /run/nixos-pre-upgrade-gen'";
+      };
+
+      nixos-upgrade-notification = {
+        description = "Notification de mise à jour NixOS";
+        after = [ "nixos-upgrade.service" ];
+        wantedBy = [ "nixos-upgrade.service" ];
+
+        path = with pkgs; [
+          coreutils
+          libnotify
+          systemd
+          sudo
+          gawk
+        ];
+
+        script = ''
+          PRE_GEN=$(cat /run/nixos-pre-upgrade-gen 2>/dev/null || echo "")
+          CURRENT_GEN=$(readlink -f /run/current-system)
+          if [ "$PRE_GEN" != "$CURRENT_GEN" ]; then
+            for user_id in $(loginctl list-users --no-legend | awk '{print $1}'); do
+              user_name=$(loginctl show-user "$user_id" -p Name --value)
+              runtime_dir="/run/user/$user_id"
+              if [ -d "$runtime_dir" ]; then
+                sudo -u "$user_name" \
+                  DBUS_SESSION_BUS_ADDRESS="unix:path=$runtime_dir/bus" \
+                  notify-send "NixOS : Mise à jour prête" \
+                    "Redémarrage recommandé pour appliquer les changements." \
+                    --icon=distributor-logo-nixos \
+                    --urgency=normal \
+                    --hint=string:desktop-entry:systemsettings
+              fi
+            done
+          fi
+        '';
+
+        serviceConfig.Type = "oneshot";
+      };
     };
   };
 
@@ -167,23 +200,21 @@ in
       vscode-fhs
       vulkan-tools
 
+      # Thème SDDM
       (writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
         [General]
         background=${nixosConfigPath}/asset/wallpaper.png
       '')
-    ];
 
-    etc = {
-      "google-chrome/native-messaging-hosts/org.kde.plasma.browser_integration.json".source =
-        "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
-
-      "xdg/kdeglobals".text = ''
+      # Icônes KDE globales
+      (writeTextDir "etc/xdg/kdeglobals" ''
         [Icons]
         Theme=Papirus-Dark
-      '';
-    };
+      '')
+    ];
 
     sessionVariables = {
+      GDK_BACKEND = "x11";
       GTK_THEME = "Breeze-Dark";
       SSH_ASKPASS_REQUIRE = "prefer";
     };

@@ -15,11 +15,7 @@ in
   #==== Boot ====
   boot = {
     loader = {
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 10; # Évite l'accumulation d'entrées de boot
-        editor = false; # Désactive l'édition des paramètres kernel au boot (sécurité)
-      };
+      systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -35,7 +31,7 @@ in
         };
       };
     };
-    firewall.enable = false; # À activer si la machine est exposée
+    firewall.enable = false;
   };
 
   #==== Localisation ====
@@ -75,7 +71,6 @@ in
     ];
   };
 
-  #==== Nix ====
   nix = {
     settings = {
       experimental-features = [
@@ -104,7 +99,7 @@ in
           name = gitName;
           email = gitEmail;
         };
-        credential.helper = "cache --timeout=86400"; # 24h — plus raisonnable qu'une semaine
+        credential.helper = "cache --timeout=604800";
         commit.template = pkgs.writeText "commit-template" "Update\n";
         safe.directory = nixosConfigPath;
       };
@@ -121,7 +116,8 @@ in
     keyboards.default = {
       ids = [ "046d:407c" ];
       settings = {
-        main = { };
+        main = {
+        };
         "meta" = {
           f8 = "macro(g 20ms i 20ms t 20ms space 20ms c 20ms l 20ms o 20ms n 20ms e 20ms space 20ms h 20ms t 20ms t 20ms p 20ms s 20ms : 20ms / 20ms / 20ms g 20ms i 20ms t 20ms h 20ms u 20ms b 20ms . 20ms c 20ms o 20ms m 20ms / 20ms s 20ms i 20ms n 20ms s 20ms r 20ms y 20ms / 20ms n 20ms i 20ms x 20ms o 20ms s 20ms - 20ms c 20ms o 20ms n 20ms f 20ms i 20ms g 20ms . 20ms g 20ms i 20ms t)";
         };
@@ -165,7 +161,6 @@ in
         nixpull = "${git-nixos} pull";
         nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
         nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
-        nixdiff = "nvd diff $(ls -d /nix/var/nix/profiles/system-*-link | tail -2)"; # Diff des 2 dernières générations
       };
 
     etc."inputrc".text = ''
@@ -184,13 +179,23 @@ in
       ln -sf ${pkgs.bash}/bin/bash /bin/bash
     '';
 
-    # autoUpgrade désactivé : --update-input avec upgrade = false est contradictoire.
-    # Utilise plutôt l'alias nixupdate pour contrôler les mises à jour manuellement.
+    autoUpgrade = {
+      enable = true;
+      allowReboot = false;
+      flake = nixosConfigPath;
+      dates = "hourly";
+      upgrade = false;
+      flags = [
+        "--update-input"
+        "nixpkgs"
+        "--commit-lock-file"
+      ];
+    };
   };
 
   #==== Swap ====
   zramSwap = {
     enable = true;
-    memoryPercent = 25; # 12% est insuffisant pour absorber des pics mémoire
+    memoryPercent = 12;
   };
 }
