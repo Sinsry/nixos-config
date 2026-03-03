@@ -181,11 +181,7 @@ in
 
     autoUpgrade = {
       enable = true;
-      allowReboot = true;
-      rebootWindow = {
-        lower = "06:00";
-        upper = "07:00";
-      };
+      allowReboot = false;
       flake = nixosConfigPath;
       dates = "hourly";
       upgrade = false;
