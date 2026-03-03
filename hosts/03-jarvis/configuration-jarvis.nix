@@ -212,8 +212,8 @@ in
 
     ollama-preload = {
       description = "Preload Ollama model into VRAM";
-      after = [ "ollama-pull.service" ];
-      requires = [ "ollama-pull.service" ];
+      after = [ "ollama.service" ];
+      requires = [ "ollama.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";
