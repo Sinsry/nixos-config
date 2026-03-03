@@ -200,7 +200,10 @@ in
 
     autoUpgrade = {
       enable = true;
-      allowReboot = false;
+      allowReboot = true;
+      rebootWindow = {
+    lower = "06:00";
+    upper = "07:00";
       flake = nixosConfigPath;
       dates = "hourly";
       upgrade = false;
