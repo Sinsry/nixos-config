@@ -8,12 +8,6 @@ let
   nbhost = "03";
   host = "jarvis";
   user = "sinsry";
-
-  # ollamaWait = pkgs.writeShellScript "ollama-wait" ''
-  #   until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
-  #     sleep 1
-  #   done
-  # '';
 in
 {
   imports = [
@@ -113,112 +107,10 @@ in
   #==== Virtualisation ====
   virtualisation = {
     docker.enable = true;
-    # oci-containers = {
-    #   backend = "docker";
-    #   containers = {
-    #     ollama = {
-    #       image = "ollama/ollama:latest";
-    #       ports = [ "11434:11434" ];
-    #       volumes = [ "ollama:/root/.ollama" ];
-    #       autoStart = true;
-    #       extraOptions = [
-    #         "--device=nvidia.com/gpu=all"
-    #         "--network=ollama-net"
-    #       ];
-    #       environment.OLLAMA_KEEP_ALIVE = "-1";
-    #     };
-    #     open-webui = {
-    #       image = "ghcr.io/open-webui/open-webui:latest";
-    #       ports = [ "3000:8080" ];
-    #       volumes = [ "open-webui:/app/backend/data" ];
-    #       environment = {
-    #         OLLAMA_BASE_URL = "http://ollama:11434";
-    #         ENABLE_API_KEYS = "true";
-    #         USER_PERMISSIONS_FEATURES_API_KEYS = "true";
-    #       };
-    #       extraOptions = [ "--network=ollama-net" ];
-    #       autoStart = true;
-    #       dependsOn = [ "ollama" ];
-    #     };
-    #   };
-    # };
   };
 
   #==== Systemd ====
   systemd.services = {
-    #   nvidia-cdi-generate = {
-    #     description = "Generate NVIDIA CDI config";
-    #     before = [ "docker-ollama.service" ];
-    #     wantedBy = [ "multi-user.target" ];
-    #     serviceConfig = {
-    #       Type = "oneshot";
-    #       RemainAfterExit = true;
-    #       ExecStartPre = pkgs.writeShellScript "wait-nvidia" ''
-    #         until [ -e /dev/nvidia0 ]; do
-    #           sleep 1
-    #         done
-    #       '';
-    #       ExecStart = pkgs.writeShellScript "nvidia-cdi-generate" ''
-    #         mkdir -p /etc/cdi
-    #         ${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk cdi generate \
-    #           --output=/etc/cdi/nvidia.yaml \
-    #           --mode=csv \
-    #           --nvidia-ctk-path=${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk \
-    #           --ldconfig-path=${pkgs.glibc.bin}/bin/ldconfig
-    #       '';
-    #     };
-    #   };
-
-    #   docker-ollama-net = {
-    #     description = "Create ollama docker network";
-    #     after = [ "docker.service" ];
-    #     wants = [ "docker.service" ];
-    #     wantedBy = [ "multi-user.target" ];
-    #     serviceConfig = {
-    #       Type = "oneshot";
-    #       RemainAfterExit = true;
-    #       ExecStart = pkgs.writeShellScript "create-ollama-net" ''
-    #         ${pkgs.docker}/bin/docker network create ollama-net 2>/dev/null || true
-    #       '';
-    #     };
-    #   };
-
-    #   docker-ollama = {
-    #     after = [
-    #       "docker-ollama-net.service"
-    #       "nvidia-cdi-generate.service"
-    #     ];
-    #     requires = [
-    #       "docker-ollama-net.service"
-    #       "nvidia-cdi-generate.service"
-    #     ];
-    #   };
-
-    #   ollama-pull = {
-    #     description = "Pull Ollama models";
-    #     after = [
-    #       "docker-ollama.service"
-    #       "docker-ollama-net.service"
-    #     ];
-    #     requires = [
-    #       "docker-ollama.service"
-    #       "docker-ollama-net.service"
-    #     ];
-    #     wantedBy = [ "multi-user.target" ];
-    #     serviceConfig = {
-    #       Type = "oneshot";
-    #       RemainAfterExit = true;
-    #       ExecStartPre = ollamaWait;
-    #       ExecStart = pkgs.writeShellScript "ollama-pull" ''
-    #         ${pkgs.docker}/bin/docker exec ollama ollama pull qwen2.5-coder:14b-instruct-q5_K_M
-    #         ${pkgs.docker}/bin/docker exec ollama ollama pull qwen2.5-coder:7b-instruct-q5_K_M
-    #         ${pkgs.docker}/bin/docker exec ollama ollama pull qwen2.5-coder:3b-instruct-q5_K_M
-    #         ${pkgs.docker}/bin/docker exec ollama ollama pull nomic-embed-text
-    #         ${pkgs.docker}/bin/docker exec ollama ollama pull booktrail/gemma3_tools:12b-it-qat
-    #       '';
-    #     };
-    #   };
-
     ollama-preload = {
       description = "Preload Ollama model into VRAM";
       after = [ "ollama.service" ];
