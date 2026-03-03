@@ -172,8 +172,10 @@ in
           done
         '';
         ExecStart = pkgs.writeShellScript "ollama-pull" ''
+          ${pkgs.docker}/bin/docker exec ollama ollama pull qwen2.5-coder:3b
           ${pkgs.docker}/bin/docker exec ollama ollama pull qwen2.5-coder:14b-instruct-q5_K_M
           ${pkgs.docker}/bin/docker exec ollama ollama pull qwen3.5:9b-q8_0
+          ${pkgs.docker}/bin/docker exec ollama ollama pull qwen3.5:4b-q4_K_M
           ${pkgs.docker}/bin/docker exec ollama ollama pull nomic-embed-text
           ${pkgs.docker}/bin/docker exec ollama ollama pull booktrail/gemma3_tools:12b-it-qat
         '';
@@ -194,7 +196,7 @@ in
         '';
         ExecStart = pkgs.writeShellScript "ollama-preload" ''
           ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-            -d '{"model": "qwen3.5:9b-q8_0", "prompt": ""}'
+            -d '{"model": "qwen2.5-coder:3b", "prompt": ""}'
         '';
       };
     };
