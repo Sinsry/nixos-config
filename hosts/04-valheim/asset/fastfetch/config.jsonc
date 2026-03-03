@@ -28,11 +28,6 @@
       "key": "        CPU ",
       "format": "{1}"
     },
-    // {
-    //   "type": "gpu",
-    //   "key": "        GPU ",
-    //   "format": "{2}"
-    // },
     {
       "type": "custom",
       "format": "              ─────────────────────"

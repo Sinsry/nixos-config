@@ -31,7 +31,8 @@
     {
       "type": "gpu",
       "key": "        GPU ",
-      "format": "{2}"
+      "format": "{2}",
+      "index": 1
     },
     {
       "type": "custom",
