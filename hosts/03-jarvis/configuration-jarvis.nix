@@ -248,7 +248,7 @@ in
       allowReboot = true;
       rebootWindow = {
         lower = "06:00";
-        upper = "07:00";
+        upper = "06:30";
       };
     };
   };
