@@ -61,7 +61,7 @@ in
     qemuGuest.enable = true;
     ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
       host = "0.0.0.0";
       # loadModels = [ "qwen2.5-coder:3b-instruct-q5_K_M" ];
     };
