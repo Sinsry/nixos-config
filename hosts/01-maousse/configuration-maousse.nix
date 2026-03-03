@@ -146,7 +146,7 @@ in
     ];
 
     etc = {
-      "libinput/local-overrides-g903.quirks".source = ../../asset/local-overrides-g903.quirks;
+      "libinput/local-overrides.quirks".source = ../../asset/local-overrides-g903.quirks;
     };
   };
 
