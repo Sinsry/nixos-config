@@ -119,6 +119,11 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = pkgs.writeShellScript "ollama-wait" ''
+          until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
+            sleep 1
+          done
+        '';
         ExecStart = pkgs.writeShellScript "ollama-preload" ''
           ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
             -d '{"model": "qwen2.5-coder:3b-instruct-q5_K_M", "prompt": ""}'
