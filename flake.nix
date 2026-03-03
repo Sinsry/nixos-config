@@ -41,7 +41,7 @@
               owner = "ollama";
               repo = "ollama";
               rev = "v${version}";
-              hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+              hash = "sha256-MPcLs9O7GZoPLnpGq3LQU13j6Nhhb4InoeXLts6yncU=";
             };
           });
         }
