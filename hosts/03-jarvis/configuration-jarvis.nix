@@ -63,7 +63,16 @@ in
       enable = true;
       package = pkgs.ollama-cuda;
       host = "0.0.0.0";
-      loadModels = [ "qwen2.5-coder:3b-instruct-q5_K_M" ];
+      loadModels = [
+        "nomic-embed-text"
+        "qwen2.5-coder:3b-instruct-q5_K_M"
+        "qwen2.5-coder:7b-instruct-q5_K_M"
+        "qwen2.5-coder:14b-instruct-q5_K_M"
+        "booktrail/gemma3_tools:12b-it-qat"
+      ];
+      environmentVariables = {
+        OLLAMA_KEEP_ALIVE = "-1";
+      };
     };
 
     transmission = {
