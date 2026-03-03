@@ -71,24 +71,6 @@ in
     ];
   };
 
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      auto-optimise-store = true;
-      download-buffer-size = 1073741824; # 1 GiB
-      max-jobs = "auto";
-      cores = 0;
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 15d";
-    };
-  };
-
   #==== Programmes ====
   programs = {
     git = {
@@ -202,22 +184,23 @@ in
       enable = true;
       allowReboot = true;
       rebootWindow = {
-    lower = "06:00";
-    upper = "07:00";
-      flake = nixosConfigPath;
-      dates = "hourly";
-      upgrade = false;
-      flags = [
-        "--update-input"
-        "nixpkgs"
-        "--commit-lock-file"
-      ];
+        lower = "06:00";
+        upper = "07:00";
+        flake = nixosConfigPath;
+        dates = "hourly";
+        upgrade = false;
+        flags = [
+          "--update-input"
+          "nixpkgs"
+          "--commit-lock-file"
+        ];
+      };
     };
-  };
 
-  #==== Swap ====
-  zramSwap = {
-    enable = true;
-    memoryPercent = 12;
+    #==== Swap ====
+    zramSwap = {
+      enable = true;
+      memoryPercent = 12;
+    };
   };
 }
