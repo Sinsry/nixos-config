@@ -32,7 +32,7 @@
       "type": "gpu",
       "key": "        GPU ",
       "format": "{2}",
-      "index": 1
+      "hideType": "unknown"
     },
     {
       "type": "custom",
