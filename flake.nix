@@ -35,7 +35,7 @@
       );
       ollamaOverlay = (
         final: prev: {
-          ollama = prev.ollama-cuda.overrideAttrs (oldAttrs: rec {
+          ollama-cuda = prev.ollama-cuda.overrideAttrs (oldAttrs: rec {
             version = "0.17.5";
             src = prev.fetchFromGitHub {
               owner = "ollama";
