@@ -64,7 +64,6 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
             { nixpkgs.config.cudaSupport = true; }
             ./hosts/03-jarvis/configuration-jarvis.nix
             agenix.nixosModules.default
