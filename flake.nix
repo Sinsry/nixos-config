@@ -64,12 +64,15 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
+            { nixpkgs.pkgs = pkgs; }
             {
-              nixpkgs.config = {
-                allowUnfree = true;
-                cudaSupport = true;
-              };
+              nixpkgs.overlays = [
+                (final: prev: {
+                  config.cudaSupport = true;
+                })
+              ];
             }
+
             ./hosts/03-jarvis/configuration-jarvis.nix
             agenix.nixosModules.default
           ];
