@@ -33,10 +33,9 @@
           });
         }
       );
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        overlays = [ faugusOverlay ];
+      commonModule = {
+        nixpkgs.config.allowUnfree = true;
+        nixpkgs.overlays = [ faugusOverlay ];
       };
     in
     {
@@ -45,7 +44,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            commonModule
             ./hosts/01-maousse/configuration-maousse.nix
           ];
         };
@@ -54,7 +53,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            commonModule
             ./hosts/02-travail/configuration-travail.nix
             agenix.nixosModules.default
           ];
@@ -64,15 +63,12 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            commonModule
             {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  config.cudaSupport = true;
-                })
-              ];
+              nixpkgs.config = {
+                cudaSupport = true;
+              };
             }
-
             ./hosts/03-jarvis/configuration-jarvis.nix
             agenix.nixosModules.default
           ];
@@ -82,7 +78,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            commonModule
             ./hosts/04-valheim/configuration-valheim.nix
             agenix.nixosModules.default
           ];
@@ -92,7 +88,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            { nixpkgs.pkgs = pkgs; }
+            commonModule
             ./hosts/99-VM/configuration-VM.nix
             agenix.nixosModules.default
           ];
