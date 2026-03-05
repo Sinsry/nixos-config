@@ -126,7 +126,9 @@ in
         '';
         ExecStart = pkgs.writeShellScript "ollama-preload" ''
           ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-            -d '{"model": "qwen2.5-coder:3b-instruct-q5_K_M", "prompt": ""}'
+            -d '{"model": "qwen2.5-coder-3b", "prompt": ""}'
+          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
+            -d '{"model": "qwen2.5-coder-7b", "prompt": ""}'
         '';
       };
     };
