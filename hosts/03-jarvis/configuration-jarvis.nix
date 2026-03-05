@@ -81,7 +81,7 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:11434";
           extraConfig = ''
-            if ($http_authorization != "a4f010509c750a3295421579b0f254886f42ca3a44a7dd78cbf7bf79a6e9f5ce") {
+            if ($http_authorization != "Bearer a4f010509c750a3295421579b0f254886f42ca3a44a7dd78cbf7bf79a6e9f5ce") {
               return 401;
             }
             proxy_read_timeout 300s;
