@@ -56,7 +56,7 @@ in
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
-      host = "0.0.0.0";
+      host = "127.0.0.1";
       loadModels = [
         "nomic-embed-text"
         "qwen2.5-coder:3b-instruct-q5_K_M"
@@ -66,6 +66,28 @@ in
       ];
       environmentVariables = {
         OLLAMA_KEEP_ALIVE = "-1";
+      };
+    };
+
+    nginx = {
+      enable = true;
+      virtualHosts."ollama" = {
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = 11435;
+          }
+        ]; # port externe différent
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:11434";
+          extraConfig = ''
+            if ($http_authorization != "a4f010509c750a3295421579b0f254886f42ca3a44a7dd78cbf7bf79a6e9f5ce") {
+              return 401;
+            }
+            proxy_read_timeout 300s;
+            proxy_connect_timeout 300s;
+          '';
+        };
       };
     };
 
@@ -91,6 +113,7 @@ in
         utp-enabled = false;
       };
     };
+
   };
 
   #==== Matériel ====
