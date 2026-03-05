@@ -3,7 +3,7 @@
 # ============================================================
 #  Mode dry-run (true = simulation, false = réel)
 # ============================================================
-DRY_RUN=false
+DRY_RUN=true
 
 # ============================================================
 #  Couleurs & helpers
@@ -186,7 +186,7 @@ fi
 success "Partitions montées"
 echo ""
 echo -e "  ${CYAN}$ROOT${RESET} → /mnt"
-echo -e "  ${CYAN}$EFI${RESET}  → /mnt/boot"
+echo -e "  ${CYAN}$EFI${RESET} → /mnt/boot"
 if [[ "$SWAP_TYPE" == "1" ]]; then
     echo -e "  ${CYAN}$SWAP${RESET} → swap"
 fi
