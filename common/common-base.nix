@@ -133,6 +133,7 @@ in
   environment = {
     systemPackages = with pkgs; [
       cifs-utils
+      dnslookup
       dnsmasq
       duf
       ethtool

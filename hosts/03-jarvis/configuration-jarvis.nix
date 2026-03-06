@@ -56,7 +56,8 @@ in
     defaults.email = "yiramas@gmail.com";
   };
 
-  security.acme.certs."aperobros.fr" = {
+  security.acme.certs."aperobros.net" = {
+    extraDomainNames = [ "ollama.aperobros.net" ];
     dnsProvider = "cloudflare";
     credentialsFile = config.age.secrets.cloudflare-api.path;
   };
@@ -84,9 +85,9 @@ in
 
     nginx = {
       enable = true;
-      virtualHosts."ollama.aperobros.fr" = {
+      virtualHosts."ollama.aperobros.net" = {
         forceSSL = true;
-        useACMEHost = "aperobros.fr";
+        useACMEHost = "aperobros.net";
         listen = [
           {
             addr = "0.0.0.0";
