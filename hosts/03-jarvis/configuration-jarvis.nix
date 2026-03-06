@@ -93,7 +93,7 @@ in
           {
             addr = "0.0.0.0";
             port = 11435;
-            ssl = true;
+            ssl = false;
           }
         ];
         extraConfig = "return 444;";
