@@ -67,16 +67,21 @@
       "type": "custom",
       "format": "              ──────────────────────────────────"
     },
+    // {
+    //   "type": "publicip",
+    //   "key": "IP Publique ",
+    //   "timeout": 1000
+    // },
+    // {
+    //   "type": "localip",
+    //   "key": "  IP Locale "
+    // },
     {
-      "type": "publicip",
-      "key": "IP Publique ",
-      "timeout": 1000,
-      "hideIfCanNotDetect": false
-    },
-    {
-      "type": "localip",
-      "key": "  IP Locale "
-    },
+      "type": "custom",
+      "key": "IPs",
+      "command": "echo \"IP Publique : $(curl -s ifconfig.me 2>/dev/null || echo 'N/A')\" && echo \"IP Locale   : $(hostname -I 2>/dev/null | awk '{print $1}' || echo 'N/A')\"",
+      "format": "{0}"
+    }
     {
       "type": "custom",
       "format": "              ───────────────"
