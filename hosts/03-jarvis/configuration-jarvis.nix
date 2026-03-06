@@ -15,7 +15,7 @@ in
     ../../common/common-base.nix
   ];
 
-  #==== Identité ==== Test
+  #==== Identité ====
   networking = {
     hostName = host;
     interfaces.eth0.ipv4.addresses = [
