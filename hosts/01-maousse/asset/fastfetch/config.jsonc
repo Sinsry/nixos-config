@@ -69,7 +69,8 @@
     },
     {
       "type": "publicip",
-      "key": "IP Publique "
+      "key": "IP Publique ",
+      "timeout": 1000
     },
     {
       "type": "localip",
