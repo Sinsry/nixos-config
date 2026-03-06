@@ -119,6 +119,7 @@ in
 
     nginx = {
       enable = true;
+      mapHashBucketSize = 128;
       commonHttpConfig = ''
         include ${config.sops.templates."nginx-ollama-token.conf".path};
       '';
