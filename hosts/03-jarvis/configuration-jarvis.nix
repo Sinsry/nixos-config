@@ -88,6 +88,17 @@ in
 
     nginx = {
       enable = true;
+      virtualHosts."default" = {
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = 11435;
+            ssl = false;
+          }
+        ];
+        extraConfig = "return 444;";
+        default = true;
+      };
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
