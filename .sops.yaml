@@ -1,0 +1,8 @@
+keys:
+  - &main age1etp62audldgw4mpkn2v08vwzlyzmjw8vhcgv7w0tshp35v9qg3zqmr07x2
+
+creation_rules:
+  - path_regex: hosts/.*\.yaml$
+    key_groups:
+      - age:
+        - *main

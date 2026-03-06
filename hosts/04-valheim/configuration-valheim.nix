@@ -82,7 +82,7 @@ in
           "/home/sinsry/valheim-server/data:/opt/valheim"
         ];
         environment = {
-          SERVER_NAME = "AperoBros";
+          SERVER_NAME = "AperosBros";
           WORLD_NAME = "AperosBros";
         };
         environmentFiles = [

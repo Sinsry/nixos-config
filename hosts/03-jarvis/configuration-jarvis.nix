@@ -41,18 +41,48 @@ in
   #==== Clavier ====
   console.keyMap = "us";
 
-  #==== Age ====
-  age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-  age.secrets.transmission-env = {
-    file = ./asset/transmission-env.age;
+  # #==== Age ====
+  # age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  # age.secrets.transmission-env = {
+  #   file = ./asset/transmission-env.age;
+  #   owner = "transmission";
+  # };
+  # age.secrets.cloudflare-api = {
+  #   file = ./asset/cloudflare-api.age;
+  # };
+  # # age.secrets.ollama-token = {
+  # #   file = ./asset/ollama-token.age;
+  # # };
+
+  #==== Sops ====
+  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.defaultSopsFile = ./asset/secrets.yaml;
+
+  sops.secrets.transmission-rpc-username = { };
+  sops.secrets.transmission-rpc-password = { };
+  sops.secrets.cloudflare-api-token = { };
+  sops.secrets.ollama-token = { };
+
+  sops.templates."transmission-credentials.json" = {
+    content = ''
+      {
+        "rpc-username": "${config.sops.placeholder.transmission-rpc-username}",
+        "rpc-password": "${config.sops.placeholder.transmission-rpc-password}"
+      }
+    '';
     owner = "transmission";
   };
-  age.secrets.cloudflare-api = {
-    file = ./asset/cloudflare-api.age;
+
+  sops.templates."nginx-ollama-token.conf" = {
+    content = ''
+      map $http_authorization $auth_ok {
+        "Bearer ${config.sops.placeholder.ollama-token}" 1;
+        default 0;
+      }
+    '';
+    owner = "nginx";
   };
-  # age.secrets.ollama-token = {
-  #   file = ./asset/ollama-token.age;
-  # };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "yiramas@gmail.com";
@@ -61,7 +91,8 @@ in
   security.acme.certs."aperosbros.net" = {
     extraDomainNames = [ "ollama.aperosbros.net" ];
     dnsProvider = "cloudflare";
-    credentialsFile = config.age.secrets.cloudflare-api.path;
+    credentialsFile = config.sops.secrets.cloudflare-api-token.path;
+    # credentialsFile = config.age.secrets.cloudflare-api.path;
     group = "nginx";
   };
 
@@ -88,17 +119,9 @@ in
 
     nginx = {
       enable = true;
-      # virtualHosts."default" = {
-      #   listen = [
-      #     {
-      #       addr = "0.0.0.0";
-      #       port = 11435;
-      #       ssl = false;
-      #     }
-      #   ];
-      #   extraConfig = "return 444;";
-      #   default = true;
-      # };
+      commonHttpConfig = ''
+        include ${config.sops.templates."nginx-ollama-token.conf".path};
+      '';
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
@@ -112,7 +135,7 @@ in
         locations."/" = {
           proxyPass = "http://127.0.0.1:11434";
           extraConfig = ''
-            if ($http_authorization != "Bearer a4f010509c750a3295421579b0f254886f42ca3a44a7dd78cbf7bf79a6e9f5ce") {
+            if ($auth_ok != 1) {
               return 401;
             }
             proxy_read_timeout 300s;
@@ -124,7 +147,8 @@ in
 
     transmission = {
       enable = true;
-      credentialsFile = config.age.secrets.transmission-env.path;
+      credentialsFile = config.sops.templates."transmission-credentials.json".path;
+      # credentialsFile = config.age.secrets.transmission-env.path;
       settings = {
         download-dir = "/mnt/Torrents";
         incomplete-dir = "/mnt/Torrents";
