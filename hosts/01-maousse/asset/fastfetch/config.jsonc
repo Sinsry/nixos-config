@@ -81,7 +81,7 @@
       "key": "IPs",
       "command": "echo \"IP Publique : $(curl -s ifconfig.me 2>/dev/null || echo 'N/A')\" && echo \"IP Locale   : $(hostname -I 2>/dev/null | awk '{print $1}' || echo 'N/A')\"",
       "format": "{0}"
-    }
+    },
     {
       "type": "custom",
       "format": "              ───────────────"
