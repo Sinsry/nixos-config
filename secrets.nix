@@ -5,4 +5,5 @@ in
   "hosts/04-valheim/asset/valheim-env.age".publicKeys = [ key ];
   "hosts/03-jarvis/asset/transmission-env.age".publicKeys = [ key ];
   "hosts/03-jarvis/asset/cloudflare-api.age".publicKeys = [ key ];
+  "hosts/03-jarvis/asset/ollama-token.age".publicKeys = [ key ];
 }

@@ -50,7 +50,9 @@ in
   age.secrets.cloudflare-api = {
     file = ./asset/cloudflare-api.age;
   };
-
+  # age.secrets.ollama-token = {
+  #   file = ./asset/ollama-token.age;
+  # };
   security.acme = {
     acceptTerms = true;
     defaults.email = "yiramas@gmail.com";
