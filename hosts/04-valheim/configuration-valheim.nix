@@ -35,7 +35,6 @@ in
   };
 
   users.users.${user} = {
-
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHIB9gJxYTUgrC25g6iRw5L1CBzBnpkigigJzHbKb8B"
     ];
@@ -60,11 +59,19 @@ in
     qemuGuest.enable = true;
   };
 
-  age.secrets.valheim-env = {
-    file = ./asset/valheim-env.age;
-  };
+  #==== Sops ====
+  sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.defaultSopsFile = ./asset/secrets.yaml;
 
-  age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
+  sops.secrets.SERVER_PASS = { };
+  sops.secrets.ADMINLIST_IDS = { };
+
+  sops.templates."valheim-env" = {
+    content = ''
+      SERVER_PASS=${config.sops.placeholder.SERVER_PASS}
+      ADMINLIST_IDS=${config.sops.placeholder.ADMINLIST_IDS}
+    '';
+  };
 
   virtualisation = {
     docker = {
@@ -86,7 +93,7 @@ in
           WORLD_NAME = "AperosBros";
         };
         environmentFiles = [
-          config.age.secrets.valheim-env.path
+          config.sops.templates."valheim-env".path
         ];
 
         extraOptions = [
