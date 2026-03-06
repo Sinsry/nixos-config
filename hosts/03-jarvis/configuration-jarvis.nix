@@ -47,6 +47,19 @@ in
     file = ./asset/transmission-env.age;
     owner = "transmission";
   };
+  age.secrets.cloudflare-api = {
+    file = ./asset/cloudflare-api.age;
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "yiramas@gmail.com";
+  };
+
+  security.acme.certs."aperobros.fr" = {
+    dnsProvider = "cloudflare";
+    credentialsFile = config.age.secrets.cloudflare-api.path;
+  };
 
   #==== Services ====
   services = {
@@ -71,13 +84,16 @@ in
 
     nginx = {
       enable = true;
-      virtualHosts."ollama" = {
+      virtualHosts."ollama.aperobros.fr" = {
+        forceSSL = true;
+        useACMEHost = "aperobros.fr";
         listen = [
           {
             addr = "0.0.0.0";
             port = 11435;
+            ssl = true;
           }
-        ]; # port externe différent
+        ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:11434";
           extraConfig = ''
