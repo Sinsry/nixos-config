@@ -60,6 +60,7 @@ in
     extraDomainNames = [ "ollama.aperobros.net" ];
     dnsProvider = "cloudflare";
     credentialsFile = config.age.secrets.cloudflare-api.path;
+    group = "nginx";
   };
 
   #==== Services ====
