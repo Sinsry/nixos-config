@@ -15,7 +15,7 @@ in
     ../../common/common-base.nix
   ];
 
-  #==== Identité ====
+  #==== Identité ==== Test
   networking = {
     hostName = host;
     interfaces.eth0.ipv4.addresses = [
@@ -93,7 +93,7 @@ in
           {
             addr = "0.0.0.0";
             port = 11435;
-            ssl = false;
+            ssl = true;
           }
         ];
         extraConfig = "return 444;";
