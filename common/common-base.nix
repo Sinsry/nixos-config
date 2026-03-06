@@ -150,6 +150,7 @@ in
       psmisc
       rar
       rsync
+      ssh-to-age
       usbutils
       unzip
     ];
@@ -174,6 +175,21 @@ in
       set show-all-if-ambiguous on
       set completion-map-case on
     '';
+  };
+
+  #==== Sops Age Key ====
+  systemd.user.services.sops-age-key = {
+    description = "Generate sops age key from SSH key";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "sops-age-key" ''
+        mkdir -p $HOME/.config/sops/age
+        ${pkgs.ssh-to-age}/bin/ssh-to-age -private-key < $HOME/.ssh/id_ed25519 \
+          > $HOME/.config/sops/age/keys.txt
+        chmod 600 $HOME/.config/sops/age/keys.txt
+      '';
+    };
   };
 
   #==== Système ====
