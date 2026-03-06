@@ -70,7 +70,8 @@
     {
       "type": "publicip",
       "key": "IP Publique ",
-      "timeout": 1000
+      "timeout": 1000,
+      "hideIfCanNotDetect": false
     },
     {
       "type": "localip",
