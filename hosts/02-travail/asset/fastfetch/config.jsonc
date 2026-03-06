@@ -61,12 +61,14 @@
       "format": "              ────────────────────────────────────"
     },
     {
-      "type": "publicip",
-      "key": "IP Publique "
+      "type": "command",
+      "key": "IP Publique ",
+      "text": "curl -s --connect-timeout 1 api.ipify.org 2>/dev/null || echo 'N/A'"
     },
     {
-      "type": "localip",
-      "key": "  IP Locale "
+      "type": "command",
+      "key": " IP Locale  ",
+      "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
     },
     {
       "type": "custom",
