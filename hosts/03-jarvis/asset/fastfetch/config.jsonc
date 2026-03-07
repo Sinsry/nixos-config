@@ -31,7 +31,8 @@
     {
       "type": "gpu",
       "key": "󰾲 ",
-      "format": "{2}"
+      "format": "{2}",
+      "hideType": "unknown"
     },
     {
       "type": "custom",
