@@ -27,6 +27,7 @@ in
 
   #==== Networking ====
   networking = {
+    search = [ "lan" ];
     networkmanager = {
       enable = true;
       settings = {
