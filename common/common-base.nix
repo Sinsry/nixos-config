@@ -66,6 +66,10 @@ in
     hashedPassword = "$6$jG8elZ.qpjJ4/SIV$zBkmT9VLJK5DG8zcWfiQB7CvN68LZz2wIiSYOyzgAdhhObPhSaT/UK84a7yJeyiDH9UUKLeKdL3eyfCplOSAt/";
   };
 
+  hardware = {
+    i2c.enable = true;
+  };
+
   users.users.${user} = {
     hashedPassword = "$6$0dVqmZkohmN71nL.$E9cdlaxTsKG9nHYjORbpSB6ExtgPXTj5th1HYwgwt1l6kkeYbE7oGRx1y6bt.JVYuKlHNr4v1W/dUBEv4T1tT1";
     isNormalUser = true;
@@ -73,6 +77,7 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "i2c"
     ];
   };
 
@@ -133,6 +138,7 @@ in
   #==== Paquets ====
   environment = {
     systemPackages = with pkgs; [
+      binutils
       cifs-utils
       dnslookup
       dnsmasq
