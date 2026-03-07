@@ -110,7 +110,7 @@ in
           name = gitName;
           email = gitEmail;
         };
-        credential.helper = "cache --timeout=86400"; # 24h — plus raisonnable qu'une semaine
+        credential.helper = "cache --timeout=86400";
         commit.template = pkgs.writeText "commit-template" "Update\n";
         safe.directory = nixosConfigPath;
       };
@@ -119,20 +119,6 @@ in
     bash = {
       completion.enable = true;
       interactiveShellInit = "clear && fastfetch";
-    };
-  };
-
-  services.keyd = {
-    enable = false;
-    keyboards.default = {
-      ids = [ "046d:407c" ];
-      settings = {
-        main = {
-        };
-        "meta" = {
-          f8 = "macro(g 20ms i 20ms t 20ms space 20ms c 20ms l 20ms o 20ms n 20ms e 20ms space 20ms h 20ms t 20ms t 20ms p 20ms s 20ms : 20ms / 20ms / 20ms g 20ms i 20ms t 20ms h 20ms u 20ms b 20ms . 20ms c 20ms o 20ms m 20ms / 20ms s 20ms i 20ms n 20ms s 20ms r 20ms y 20ms / 20ms n 20ms i 20ms x 20ms o 20ms s 20ms - 20ms c 20ms o 20ms n 20ms f 20ms i 20ms g 20ms . 20ms g 20ms i 20ms t)";
-        };
-      };
     };
   };
 
