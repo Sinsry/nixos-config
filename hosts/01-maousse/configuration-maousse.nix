@@ -105,7 +105,6 @@ in
         extraArgs = "-language french";
       };
     };
-    mangohud.enable = true;
     partition-manager.enable = true;
   };
 
@@ -119,6 +118,7 @@ in
       dualsensectl
       faugus-launcher
       goverlay
+      mangohud
       virt-viewer
       wowup-cf
     ];
