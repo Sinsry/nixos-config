@@ -6,10 +6,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    # agenix.url = "github:ryantm/agenix";
-    # agenix.inputs.nixpkgs.follows = "nixpkgs";
-    # agenix.inputs.darwin.follows = "";
-    # agenix.inputs.home-manager.follows = "";
   };
 
   #==== Configuration ====
@@ -18,31 +14,18 @@
       self,
       nixpkgs,
       sops-nix,
-      # agenix,
       ...
     }:
+
     let
       system = "x86_64-linux";
-      faugusOverlay = (
-        final: prev: {
-          faugus-launcher = prev.faugus-launcher.overrideAttrs (oldAttrs: rec {
-            version = "main";
-            src = prev.fetchFromGitHub {
-              owner = "Faugus";
-              repo = "faugus-launcher";
-              rev = "${version}";
-              hash = "sha256-eSNSxwI+FImSkjN4icmb1NO6iwsfLdYI1bmdD3vU+rk=";
-            };
-          });
-        }
-      );
       commonModule = {
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
-          faugusOverlay
         ];
       };
     in
+
     {
       nixosConfigurations = {
         maousse = nixpkgs.lib.nixosSystem {
@@ -52,7 +35,6 @@
             commonModule
             ./hosts/01-maousse/configuration-maousse.nix
             sops-nix.nixosModules.sops
-            # agenix.nixosModules.default
           ];
         };
 
@@ -63,7 +45,6 @@
             commonModule
             ./hosts/02-travail/configuration-travail.nix
             sops-nix.nixosModules.sops
-            # agenix.nixosModules.default
           ];
         };
 
@@ -79,7 +60,6 @@
             }
             ./hosts/03-jarvis/configuration-jarvis.nix
             sops-nix.nixosModules.sops
-            # agenix.nixosModules.default
           ];
         };
 
@@ -90,7 +70,6 @@
             commonModule
             ./hosts/04-valheim/configuration-valheim.nix
             sops-nix.nixosModules.sops
-            # agenix.nixosModules.default
           ];
         };
 
@@ -101,7 +80,6 @@
             commonModule
             ./hosts/99-VM/configuration-VM.nix
             sops-nix.nixosModules.sops
-            # agenix.nixosModules.default
           ];
         };
       };
