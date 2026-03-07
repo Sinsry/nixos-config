@@ -146,6 +146,7 @@ in
   #==== Environnement ====
   environment = {
     systemPackages = with pkgs; [
+      ddcutil
       discord
       ffmpeg
       google-chrome
