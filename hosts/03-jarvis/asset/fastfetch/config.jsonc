@@ -73,12 +73,12 @@
     {
       "type": "command",
       "key": "󱦂 ",
-      "text": "curl -s --connect-timeout 1 api.ipify.org 2>/dev/null || echo 'N/A'"
+      "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
     },
     {
       "type": "command",
       "key": "󱦂 ",
-      "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
+      "text": "curl -s --connect-timeout 1 'ip-api.com/json' | jq -r '\"\\(.query) (\\(.countryCode))\"' 2>/dev/null || echo 'N/A'"
     },
     {
       "type": "custom",
