@@ -155,13 +155,14 @@ in
         rebuild = "sudo nixos-rebuild switch --flake ${nixosConfigPath}";
       in
       {
+        nixclone = "git clone https://github.com/sinsry/nixos-config.git";
+        nixdiff = "nvd diff $(ls -d /nix/var/nix/profiles/system-*-link | tail -2)"; # Diff des 2 dernières générations
+        nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
+        nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+        nixpull = "${git-nixos} pull";
+        nixpush = "${git-nixos} add . && (${git-nixos} commit -m 'Update' || true) && ${git-nixos} pull --rebase && ${git-nixos} push";
         nixrebuild = rebuild;
         nixupdate = "nix flake update --flake ${nixosConfigPath} && ${rebuild}";
-        nixpush = "${git-nixos} add . && (${git-nixos} commit -m 'Update' || true) && ${git-nixos} pull --rebase && ${git-nixos} push";
-        nixpull = "${git-nixos} pull";
-        nixlistenv = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
-        nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
-        nixdiff = "nvd diff $(ls -d /nix/var/nix/profiles/system-*-link | tail -2)"; # Diff des 2 dernières générations
       };
 
     etc."inputrc".text = ''
