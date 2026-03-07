@@ -190,6 +190,10 @@ in
     };
   };
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.dejavu-sans-mono
+  ];
+
   #==== Qt ====
   qt = {
     enable = true;
