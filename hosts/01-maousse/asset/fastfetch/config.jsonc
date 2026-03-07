@@ -13,86 +13,79 @@
     "break",
     {
       "type": "os",
-      "key": "         OS "
+      "key": " "
     },
     {
       "type": "kernel",
-      "key": "     Noyaux "
+      "key": " "
     },
     {
       "type": "custom",
-      "format": "              ────────────"
+      "format": ""
     },
     {
       "type": "cpu",
-      "key": "        CPU ",
+      "key": " ",
       "format": "{1}"
     },
     {
       "type": "gpu",
-      "key": "        GPU ",
+      "key": "󰾲 ",
       "format": "{2}"
     },
     {
       "type": "custom",
-      "format": "              ─────────────────────"
+      "format": ""
     },
     {
       "type": "memory",
-      "key": "    Memoire "
+      "key": " "
     },
     {
       "type": "swap",
-      "key": "       Swap "
+      "key": "󰾵 "
     },
     {
       "type": "custom",
-      "format": "              ─────────────────────────"
+      "format": ""
     },
     {
       "type": "disk",
-      "key": "      NixOS ",
+      "key": " ",
       "folders": [
         "/"
-      ]
+      ],
+      "format": "{1} / {2} ({3})"
     },
     {
       "type": "disk",
-      "key": "       Jeux ",
+      "key": " ",
       "folders": [
         "/home/sinsry/Jeux"
-      ]
+      ],
+      "format": "{1} / {2} ({3})"
     },
     {
       "type": "custom",
-      "format": "              ──────────────────────────────────"
+      "format": ""
     },
-    // {
-    //   "type": "publicip",
-    //   "key": "IP Publique ",
-    //   "timeout": 1000
-    // },
-    // {
-    //   "type": "localip",
-    //   "key": "  IP Locale "
-    // },
     {
       "type": "command",
-      "key": "IP Publique ",
+      "key": "󱦂 ",
       "text": "curl -s --connect-timeout 1 api.ipify.org 2>/dev/null || echo 'N/A'"
     },
     {
       "type": "command",
-      "key": " IP Locale  ",
+      "key": "󱦂 ",
       "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
     },
     {
       "type": "custom",
-      "format": "              ───────────────"
+      "format": ""
     },
     {
       "type": "command",
-      "key": "   Installé ",
+      "key": "󰔠 ",
       "shell": "/run/current-system/sw/bin/bash",
       "text": "/etc/nixos/asset/date.sh"
     }

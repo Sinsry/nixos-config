@@ -215,6 +215,6 @@ in
   #==== Swap ====
   zramSwap = {
     enable = true;
-    memoryPercent = 25; # 12% est insuffisant pour absorber des pics mémoire
+    memoryPercent = 25;
   };
 }
