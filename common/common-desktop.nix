@@ -192,6 +192,7 @@ in
 
   fonts.packages = with pkgs; [
     nerd-fonts.dejavu-sans-mono
+    nerd-fonts.hack
   ];
 
   #==== Qt ====
