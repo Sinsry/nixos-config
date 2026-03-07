@@ -95,7 +95,6 @@ in
       enableRenice = true;
       settings.general.renice = 10;
     };
-    partition-manager.enable = true;
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -106,6 +105,8 @@ in
         extraArgs = "-language french";
       };
     };
+    mangohud.enable = true;
+    partition-manager.enable = true;
   };
 
   #==== Utilisateur ====
@@ -118,7 +119,6 @@ in
       dualsensectl
       faugus-launcher
       goverlay
-      mangohud
       virt-viewer
       wowup-cf
     ];
