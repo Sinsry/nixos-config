@@ -131,6 +131,7 @@ in
       dnsmasq
       duf
       ethtool
+      eza
       fastfetch
       jq
       nfs-utils
@@ -155,6 +156,7 @@ in
         rebuild = "sudo nixos-rebuild switch --flake ${nixosConfigPath}";
       in
       {
+        ls = "eza --color=always --group-directories-first --icons=always";
         nixclone = "git clone https://github.com/sinsry/nixos-config.git";
         nixdiff = "nvd diff $(ls -d /nix/var/nix/profiles/system-*-link | tail -2)"; # Diff des 2 dernières générations
         nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
