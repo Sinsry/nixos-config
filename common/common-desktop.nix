@@ -105,7 +105,7 @@ in
     };
   };
 
-  #==== Services Systemd ====
+  #==== Systemd ====
   systemd = {
     services = {
       NetworkManager-wait-online.enable = false;
@@ -113,7 +113,6 @@ in
       samba-smbd.wantedBy = lib.mkForce [ ];
       samba-nmbd.wantedBy = lib.mkForce [ ];
       samba-winbindd.wantedBy = lib.mkForce [ ];
-
     };
   };
 
@@ -141,6 +140,7 @@ in
     dconf.enable = true;
   };
 
+  #==== Sécurité ====
   security.rtkit.enable = true;
 
   #==== Environnement ====
