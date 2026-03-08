@@ -37,23 +37,6 @@ in
   # ==== Overlay (temporaire) ====
   # nixpkgs.overlays = [ ... ];
 
-  #==== SDDM input ====
-  system.activationScripts = {
-    sddmKcminputrc = ''
-      mkdir -p /var/lib/sddm/.config
-      cat > /var/lib/sddm/.config/kcminputrc << 'EOF'
-      ${kcminputrc}
-      EOF
-    '';
-
-    fastfetch = ''
-      mkdir -p /home/${user}/.config/fastfetch
-      chown ${user}:users /home/${user}/.config/fastfetch
-      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
-      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
-    '';
-  };
-
   #==== Identité ====
   networking.hostName = host;
 
@@ -88,6 +71,9 @@ in
     ];
   };
 
+  #==== Utilisateur ====
+  users.users.${user}.extraGroups = lib.mkAfter [ "gamemode" ];
+
   #==== Programmes spécifiques ====
   programs = {
     gamemode = {
@@ -108,8 +94,29 @@ in
     partition-manager.enable = true;
   };
 
-  #==== Utilisateur ====
-  users.users.${user}.extraGroups = lib.mkAfter [ "gamemode" ];
+  #==== Système ====
+  system.activationScripts = {
+    sddmKcminputrc = ''
+      mkdir -p /var/lib/sddm/.config
+      cat > /var/lib/sddm/.config/kcminputrc << 'EOF'
+      ${kcminputrc}
+      EOF
+    '';
+
+    fastfetch = ''
+      mkdir -p /home/${user}/.config/fastfetch
+      chown ${user}:users /home/${user}/.config/fastfetch
+      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
+    '';
+  };
+
+  # swapDevices = [
+  #   {
+  #     device = "/var/lib/swapfile";
+  #     size = 32 * 1024;
+  #   }
+  # ];
 
   #==== Paquets spécifiques ====
   environment = {
@@ -126,11 +133,4 @@ in
       "libinput/local-overrides.quirks".source = ../../asset/local-overrides-g903.quirks;
     };
   };
-
-  # swapDevices = [
-  #   {
-  #     device = "/var/lib/swapfile";
-  #     size = 32 * 1024;
-  #   }
-  # ];
 }
