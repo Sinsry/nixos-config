@@ -28,6 +28,24 @@ in
     nameservers = [ "192.168.1.254" ];
   };
 
+  #==== Boot spécifique ====
+  boot.blacklistedKernelModules = [ "nouveau" ];
+
+  #==== Clavier ====
+  console.keyMap = "us";
+
+  #==== Matériel ====
+  hardware = {
+    nvidia = {
+      open = true;
+      modesetting.enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+    # nvidia-container-toolkit.enable = true; # nvidia dans docker
+    graphics.enable = true;
+  };
+
+  #==== Utilisateurs ====
   users.users.${user} = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHIB9gJxYTUgrC25g6iRw5L1CBzBnpkigigJzHbKb8B"
@@ -35,24 +53,18 @@ in
     extraGroups = [ "docker" ];
   };
 
-  #==== Boot spécifique ====
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  #==== Sécurité ====
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "yiramas@gmail.com";
+  };
 
-  #==== Clavier ====
-  console.keyMap = "us";
-
-  # #==== Age ====
-  # age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
-  # age.secrets.transmission-env = {
-  #   file = ./asset/transmission-env.age;
-  #   owner = "transmission";
-  # };
-  # age.secrets.cloudflare-api = {
-  #   file = ./asset/cloudflare-api.age;
-  # };
-  # # age.secrets.ollama-token = {
-  # #   file = ./asset/ollama-token.age;
-  # # };
+  security.acme.certs."aperosbros.net" = {
+    extraDomainNames = [ "ollama.aperosbros.net" ];
+    dnsProvider = "cloudflare";
+    credentialsFile = config.sops.secrets.cloudflare-api-token.path;
+    group = "nginx";
+  };
 
   #==== Sops ====
   sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
@@ -81,19 +93,6 @@ in
       }
     '';
     owner = "nginx";
-  };
-
-  security.acme = {
-    acceptTerms = true;
-    defaults.email = "yiramas@gmail.com";
-  };
-
-  security.acme.certs."aperosbros.net" = {
-    extraDomainNames = [ "ollama.aperosbros.net" ];
-    dnsProvider = "cloudflare";
-    credentialsFile = config.sops.secrets.cloudflare-api-token.path;
-    # credentialsFile = config.age.secrets.cloudflare-api.path;
-    group = "nginx";
   };
 
   #==== Services ====
@@ -149,7 +148,6 @@ in
     transmission = {
       enable = true;
       credentialsFile = config.sops.templates."transmission-credentials.json".path;
-      # credentialsFile = config.age.secrets.transmission-env.path;
       settings = {
         download-dir = "/mnt/Torrents";
         incomplete-dir = "/mnt/Torrents";
@@ -169,18 +167,6 @@ in
         utp-enabled = false;
       };
     };
-
-  };
-
-  #==== Matériel ====
-  hardware = {
-    nvidia = {
-      open = true;
-      modesetting.enable = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
-    # nvidia-container-toolkit.enable = true;
-    graphics.enable = true;
   };
 
   #==== Virtualisation ====

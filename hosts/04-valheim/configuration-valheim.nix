@@ -1,6 +1,4 @@
-# Configuration spécifique à travail
-# Hardware : VM dédié à valheim
-# vCore : 4/8 / Ram : 4/8 Gio / Disk : 50 G
+# vCore : 4/8 / Ram : 4/8 Gio / Disk : 256 G
 
 {
   pkgs,

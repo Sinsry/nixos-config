@@ -47,7 +47,6 @@ in
   environment = {
     systemPackages = with pkgs; [
       btop
-
     ];
   };
 
@@ -58,12 +57,6 @@ in
     openssh.enable = true;
     qemuGuest.enable = true;
   };
-
-  # age.secrets.VM-env = {
-  #   file = ./asset/VM-env.age;
-  # };
-
-  age.identityPaths = [ "/home/${user}/.ssh/id_ed25519" ];
 
   virtualisation = {
     docker = {
