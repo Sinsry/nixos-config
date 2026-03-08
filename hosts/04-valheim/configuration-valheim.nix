@@ -32,6 +32,10 @@ in
     nameservers = [ "192.168.1.254" ];
   };
 
+  #==== Clavier ====
+  console.keyMap = "us";
+
+  #==== Utilisateurs ====
   users.users.${user} = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEHIB9gJxYTUgrC25g6iRw5L1CBzBnpkigigJzHbKb8B"
@@ -39,22 +43,6 @@ in
     extraGroups = [
       "docker"
     ];
-  };
-
-  #==== Paquets spécifiques ====
-  environment = {
-    systemPackages = with pkgs; [
-      btop
-
-    ];
-  };
-
-  #==== Clavier ====
-  console.keyMap = "us";
-
-  services = {
-    openssh.enable = true;
-    qemuGuest.enable = true;
   };
 
   #==== Sops ====
@@ -71,6 +59,13 @@ in
     '';
   };
 
+  #==== Services ====
+  services = {
+    openssh.enable = true;
+    qemuGuest.enable = true;
+  };
+
+  #==== Virtualisation ====
   virtualisation = {
     docker = {
       enable = true;
@@ -93,7 +88,6 @@ in
         environmentFiles = [
           config.sops.templates."valheim-env".path
         ];
-
         extraOptions = [
           "--cap-add=sys_nice"
           "--stop-timeout=120"
@@ -103,16 +97,26 @@ in
     };
   };
 
+  #==== Système ====
   system.activationScripts.fastfetch = ''
     mkdir -p /home/${user}/.config/fastfetch
     chown -R ${user}:users /home/${user}/.config
     ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
     ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/date.sh /home/${user}/.config/fastfetch/date.sh
   '';
+
+  #==== Swap ====
   swapDevices = [
     {
       device = "/var/lib/swapfile";
       size = 8 * 1024;
     }
   ];
+
+  #==== Paquets spécifiques ====
+  environment = {
+    systemPackages = with pkgs; [
+      btop
+    ];
+  };
 }
