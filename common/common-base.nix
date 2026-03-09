@@ -120,6 +120,11 @@ in
       completion.enable = true;
       interactiveShellInit = "clear && fastfetch";
     };
+    nix-ld = {
+      enable = true;
+      # libraries = with pkgs; [
+      # ];
+    };
   };
 
   #==== Paquets ====
