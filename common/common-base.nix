@@ -172,6 +172,7 @@ in
       ssh-to-age
       usbutils
       unzip
+      wireguard-tools
     ];
 
     shellAliases =
