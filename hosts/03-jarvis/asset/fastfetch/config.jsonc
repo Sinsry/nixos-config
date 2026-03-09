@@ -72,12 +72,17 @@
     },
     {
       "type": "command",
+      "key": "󰖂 ",
+      "text": "ip addr show $HOSTNAME 2>/dev/null | awk '/inet 10/{print $2}' | cut -d'/' -f1 || echo 'N/A'"
+    },
+    {
+      "type": "command",
       "key": "󱦂 ",
       "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
     },
     {
       "type": "command",
-      "key": "󱦂 ",
+      "key": " ",
       "text": "curl -s --connect-timeout 1 'ip-api.com/json' | jq -r '\"\\(.query) (\\(.countryCode))\"' 2>/dev/null || echo 'N/A'"
     },
     {
