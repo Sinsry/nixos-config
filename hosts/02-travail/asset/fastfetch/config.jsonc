@@ -76,8 +76,13 @@
     },
     {
       "type": "command",
-      "key": "󱦂 ",
+      "key": " ",
       "text": "curl -s --connect-timeout 1 'ip-api.com/json' | jq -r '\"\\(.query) (\\(.countryCode))\"' 2>/dev/null || echo 'N/A'"
+    },
+    {
+      "type": "command",
+      "key": "󰖂 ",
+      "text": "ip addr show wg0 2>/dev/null | awk '/inet /{print $2}' || echo 'N/A'"
     },
     {
       "type": "custom",
