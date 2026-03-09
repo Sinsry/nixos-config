@@ -122,8 +122,23 @@ in
     };
     nix-ld = {
       enable = true;
-      # libraries = with pkgs; [
-      # ];
+      libraries = with pkgs; [
+        stdenv.cc.cc.lib
+        zlib
+        libGL
+        xorg.libX11
+        xorg.libXext
+        xorg.libXrandr
+        xorg.libXi
+        xorg.libXcursor
+        xorg.libXinerama
+        libxkbcommon
+        wayland
+        SDL2
+        SDL2_mixer
+        SDL2_image
+        SDL2_ttf
+      ];
     };
   };
 
