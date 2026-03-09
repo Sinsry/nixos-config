@@ -126,12 +126,12 @@ in
         stdenv.cc.cc.lib
         zlib
         libGL
-        xorg.libX11
-        xorg.libXext
-        xorg.libXrandr
-        xorg.libXi
-        xorg.libXcursor
-        xorg.libXinerama
+        libX11
+        libXext
+        libXrandr
+        libXi
+        libXcursor
+        libXinerama
         libxkbcommon
         wayland
         SDL2
