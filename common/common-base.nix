@@ -138,6 +138,8 @@ in
         SDL2_mixer
         SDL2_image
         SDL2_ttf
+        libpulseaudio
+        pipewire
       ];
     };
   };
