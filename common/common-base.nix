@@ -147,6 +147,7 @@ in
   #==== Paquets ====
   environment = {
     systemPackages = with pkgs; [
+      age
       binutils
       cifs-utils
       dnslookup
@@ -165,6 +166,7 @@ in
       parted
       pciutils
       psmisc
+      sops
       rar
       rsync
       ssh-to-age
