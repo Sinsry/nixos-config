@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VPN Toggle — OPNsense</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg:        #0a0c0a;
+    --bg2:       #0e110e;
+    --border:    #1a2e1a;
+    --green:     #39ff14;
+    --green-dim: #1a7a06;
+    --green-mid: #22cc08;
+    --red:       #ff3131;
+    --red-dim:   #7a0606;
+    --yellow:    #ffd700;
+    --cyan:      #00ffcc;
+    --text:      #a8c8a8;
+    --text-dim:  #4a6b4a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Scanlines overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.15) 2px,
+      rgba(0,0,0,0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* CRT glow */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(57,255,20,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  /* Header */
+  .header {
+    border: 1px solid var(--green-dim);
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    background: var(--bg2);
+  }
+
+  .header::before {
+    content: '■ ■ ■';
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    color: var(--green-dim);
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+  }
+
+  .header-title {
+    color: var(--green);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px var(--green), 0 0 40px rgba(57,255,20,0.3);
+  }
+
+  .header-sub {
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    margin-top: 0.25rem;
+    letter-spacing: 1px;
+  }
+
+  /* Breadcrumb path */
+  .breadcrumb {
+    color: var(--text-dim);
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    padding: 0.4rem 1.5rem;
+    border: 1px solid var(--border);
+    border-top: none;
+    margin-bottom: 1.5rem;
+    background: var(--bg);
+  }
+
+  .breadcrumb span { color: var(--green-dim); }
+
+  /* Status panel */
+  .panel {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .panel-title {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(57,255,20,0.02);
+  }
+
+  .panel-body { padding: 1rem 1.2rem; }
+
+  /* Status rows */
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+
+  .status-row:last-child { border-bottom: none; }
+
+  .status-label {
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .status-label::before { content: '›'; color: var(--green-dim); }
+
+  .badge {
+    padding: 0.15rem 0.6rem;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    border: 1px solid;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+
+  .badge.on {
+    color: var(--green);
+    border-color: var(--green-dim);
+    background: rgba(57,255,20,0.05);
+    text-shadow: 0 0 10px var(--green);
+    box-shadow: 0 0 10px rgba(57,255,20,0.1);
+    animation: pulse-green 2s infinite;
+  }
+
+  .badge.off {
+    color: var(--red);
+    border-color: var(--red-dim);
+    background: rgba(255,49,49,0.05);
+  }
+
+  .badge.dns-vpn {
+    color: var(--cyan);
+    border-color: rgba(0,255,204,0.3);
+    background: rgba(0,255,204,0.05);
+  }
+
+  .badge.dns-dot {
+    color: var(--yellow);
+    border-color: rgba(255,215,0,0.3);
+    background: rgba(255,215,0,0.05);
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 10px rgba(57,255,20,0.1); }
+    50%       { box-shadow: 0 0 20px rgba(57,255,20,0.25); }
+  }
+
+  /* Buttons */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    position: relative;
+    padding: 0.9rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid;
+    background: var(--bg2);
+    cursor: pointer;
+    transition: all 0.15s;
+    outline: none;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover::before { opacity: 1; }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-on {
+    color: var(--green);
+    border-color: var(--green-dim);
+  }
+
+  .btn-on::before { background: rgba(57,255,20,0.06); }
+
+  .btn-on:hover {
+    border-color: var(--green);
+    text-shadow: 0 0 10px var(--green);
+    box-shadow: 0 0 20px rgba(57,255,20,0.15), inset 0 0 20px rgba(57,255,20,0.05);
+  }
+
+  .btn-off {
+    color: var(--red);
+    border-color: var(--red-dim);
+  }
+
+  .btn-off::before { background: rgba(255,49,49,0.06); }
+
+  .btn-off:hover {
+    border-color: var(--red);
+    text-shadow: 0 0 10px var(--red);
+    box-shadow: 0 0 20px rgba(255,49,49,0.15), inset 0 0 20px rgba(255,49,49,0.05);
+  }
+
+  .btn-status {
+    grid-column: span 2;
+    color: var(--text-dim);
+    border-color: var(--border);
+    letter-spacing: 2px;
+    font-weight: 400;
+  }
+
+  .btn-status:hover {
+    color: var(--cyan);
+    border-color: rgba(0,255,204,0.3);
+    box-shadow: 0 0 15px rgba(0,255,204,0.08);
+  }
+
+  /* Terminal log */
+  .terminal {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 0.72rem;
+    line-height: 1.7;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .terminal-bar-label {
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .terminal-bar-dots {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    opacity: 0.4;
+  }
+
+  .dot.active {
+    background: var(--green);
+    opacity: 1;
+    box-shadow: 0 0 6px var(--green);
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  .terminal-output {
+    padding: 0.75rem 1rem;
+    min-height: 140px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+
+  .terminal-output::-webkit-scrollbar { width: 3px; }
+  .terminal-output::-webkit-scrollbar-track { background: var(--bg); }
+  .terminal-output::-webkit-scrollbar-thumb { background: var(--green-dim); }
+
+  .log-line {
+    display: flex;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    animation: slide-in 0.2s forwards;
+  }
+
+  @keyframes slide-in {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .log-time { color: var(--text-dim); flex-shrink: 0; }
+  .log-icon { flex-shrink: 0; width: 1em; text-align: center; }
+  .log-text { color: var(--text); }
+  .log-text.success { color: var(--green); }
+  .log-text.error   { color: var(--red); }
+  .log-text.info    { color: var(--cyan); }
+  .log-text.warn    { color: var(--yellow); }
+
+  .cursor {
+    display: inline-block;
+    width: 0.5em;
+    height: 1em;
+    background: var(--green);
+    vertical-align: middle;
+    animation: blink 0.8s step-end infinite;
+    margin-left: 2px;
+  }
+
+  /* Config info */
+  .config {
+    margin-top: 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .config-row {
+    display: flex;
+    align-items: baseline;
+    padding: 0.35rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.65rem;
+    gap: 1rem;
+  }
+
+  .config-row:last-child { border-bottom: none; }
+
+  .config-key {
+    color: var(--text-dim);
+    min-width: 120px;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+  }
+
+  .config-val {
+    color: var(--text);
+    word-break: break-all;
+    opacity: 0.6;
+    font-size: 0.6rem;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    display: none;
+    color: var(--green-dim);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    animation: spin-text 0.5s steps(4) infinite;
+  }
+
+  @keyframes spin-text {
+    0%   { content: '⠋'; }
+    25%  { content: '⠙'; }
+    50%  { content: '⠸'; }
+    75%  { content: '⠴'; }
+    100% { content: '⠦'; }
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-title">VPN TOGGLE</div>
+    <div class="header-sub">OPNsense API · 192.168.1.254:8443</div>
+  </div>
+
+  <div class="breadcrumb">
+    <span>~</span>/scripts/vpn_toggle.sh · bash 5.2 · sinsry@opnsense
+  </div>
+
+  <!-- Status panel -->
+  <div class="panel">
+    <div class="panel-title">// status</div>
+    <div class="panel-body">
+      <div class="status-row">
+        <span class="status-label">VPN Gateway</span>
+        <span class="badge off" id="vpn-badge">DÉSACTIVÉ</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">Route LAN</span>
+        <span class="badge off" id="lan-badge">FAI</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">DNS Resolver</span>
+        <span class="badge dns-dot" id="dns-badge">Cloudflare+Quad9 DoT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn btn-on" onclick="triggerAction('on')">[ ON ]</button>
+    <button class="btn btn-off" onclick="triggerAction('off')">[ OFF ]</button>
+    <button class="btn btn-status" onclick="triggerAction('status')">[ STATUS ]</button>
+  </div>
+
+  <!-- Terminal log -->
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="terminal-bar-label">output</span>
+      <div class="terminal-bar-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot active" id="dot-active"></div>
+      </div>
+    </div>
+    <div class="terminal-output" id="terminal-output">
+      <div class="log-line">
+        <span class="log-time">00:00:00</span>
+        <span class="log-icon" style="color:var(--text-dim)">$</span>
+        <span class="log-text">./vpn_toggle.sh status<span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Config info -->
+  <div class="config">
+    <div class="config-row">
+      <span class="config-key">HOST</span>
+      <span class="config-val">192.168.1.254:8443</span>
+    </div>
+    <div class="config-row">
+      <span class="config-key">RULE_LAN</span>
+      <span class="config-val">ebb8b9e6-e1ff-48eb-bbfb-5038b71aef86</span>
+    </div>
+    <div class="config-row">
+      <span class="config-key">RULE_HOMEVPN</span>
+      <span class="config-val">cce21f14-6e14-4f68-b86a-a4320146e5ac</span>
+    </div>
+  </div>
+
+  <div class="footer">VPN TOGGLE v1.0 · PAR SINSRY · JAN 2026</div>
+
+</div>
+
+<script>
+  // --- State ---
+  let vpnEnabled = false;
+  let dnsForwarding = false;
+
+  function now() {
+    return new Date().toTimeString().slice(0, 8);
+  }
+
+  function addLog(icon, text, cls = '') {
+    const out = document.getElementById('terminal-output');
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.style.animationDelay = '0ms';
+    line.innerHTML = `
+      <span class="log-time">${now()}</span>
+      <span class="log-icon">${icon}</span>
+      <span class="log-text ${cls}">${text}</span>
+    `;
+    out.appendChild(line);
+    out.scrollTop = out.scrollHeight;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function updateStatus() {
+    const vpnBadge = document.getElementById('vpn-badge');
+    const lanBadge = document.getElementById('lan-badge');
+    const dnsBadge = document.getElementById('dns-badge');
+
+    if (vpnEnabled) {
+      vpnBadge.textContent = 'ACTIVÉ';
+      vpnBadge.className = 'badge on';
+      lanBadge.textContent = 'VPN_GW';
+      lanBadge.className = 'badge on';
+    } else {
+      vpnBadge.textContent = 'DÉSACTIVÉ';
+      vpnBadge.className = 'badge off';
+      lanBadge.textContent = 'FAI';
+      lanBadge.className = 'badge off';
+    }
+
+    if (dnsForwarding) {
+      dnsBadge.textContent = '10.2.0.1 System NS';
+      dnsBadge.className = 'badge dns-vpn';
+    } else {
+      dnsBadge.textContent = 'Cloudflare+Quad9 DoT';
+      dnsBadge.className = 'badge dns-dot';
+    }
+  }
+
+  async function triggerAction(action) {
+    const dot = document.getElementById('dot-active');
+    dot.style.background = 'var(--yellow)';
+
+    if (action === 'on') {
+      addLog('$', './vpn_toggle.sh on');
+      await sleep(200);
+      addLog('ℹ', 'Activation règle VPN...', 'info');
+      await sleep(500);
+      addLog('✓', 'Règles VPN activées', 'success');
+      await sleep(300);
+      addLog('ℹ', 'Application firewall...', 'info');
+      await sleep(600);
+      addLog('✓', 'Firewall appliqué', 'success');
+      await sleep(200);
+      addLog('ℹ', 'Activation System Nameservers...', 'info');
+      await sleep(400);
+      addLog('✓', 'System Nameservers activé', 'success');
+      await sleep(300);
+      addLog('ℹ', 'Application DNS...', 'info');
+      await sleep(500);
+      addLog('✓', 'DNS appliqué', 'success');
+      await sleep(200);
+      addLog('✓', 'VPN ACTIVÉ !', 'success');
+      vpnEnabled = true;
+      dnsForwarding = true;
+
+    } else if (action === 'off') {
+      addLog('$', './vpn_toggle.sh off');
+      await sleep(200);
+      addLog('ℹ', 'Désactivation règle VPN...', 'info');
+      await sleep(500);
+      addLog('✓', 'Règles VPN désactivées', 'success');
+      await sleep(300);
+      addLog('ℹ', 'Application firewall...', 'info');
+      await sleep(600);
+      addLog('✓', 'Firewall appliqué', 'success');
+      await sleep(200);
+      addLog('ℹ', 'Désactivation System Nameservers...', 'info');
+      await sleep(400);
+      addLog('✓', 'System Nameservers désactivé', 'success');
+      await sleep(300);
+      addLog('ℹ', 'Application DNS...', 'info');
+      await sleep(500);
+      addLog('✓', 'DNS appliqué', 'success');
+      await sleep(200);
+      addLog('✗', 'VPN DÉSACTIVÉ', 'warn');
+      vpnEnabled = false;
+      dnsForwarding = false;
+
+    } else if (action === 'status') {
+      addLog('$', './vpn_toggle.sh status');
+      await sleep(300);
+      addLog('═', '═══════════════════════════════', 'info');
+      await sleep(150);
+      addLog(vpnEnabled ? '✓' : '✗',
+        vpnEnabled ? 'VPN: ACTIVÉ (via VPN_GW)' : 'VPN: DÉSACTIVÉ (via FAI)',
+        vpnEnabled ? 'success' : 'error');
+      await sleep(150);
+      addLog('ℹ',
+        dnsForwarding ? 'DNS: 10.2.0.1 (System Nameservers)' : 'DNS: Cloudflare+Quad9 (DoT)',
+        dnsForwarding ? 'info' : 'warn');
+      await sleep(150);
+      addLog('═', '═══════════════════════════════', 'info');
+    }
+
+    updateStatus();
+    dot.style.background = 'var(--green)';
+  }
+</script>
+</body>
+</html>
