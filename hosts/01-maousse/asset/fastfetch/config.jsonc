@@ -10,10 +10,18 @@
       }
     }
   },
+  // "logo": {
+  //   "source": "/etc/nixos/asset/Gruul.png",
+  //   "type": "kitty",
+  //   "width": 20,
+  //   "padding": {
+  //     "left": 3,
+  //     "top": 1
+  //   }
   "logo": {
-    "source": "/etc/nixos/asset/Gruul.png",
-    "type": "kitty",
-    "width": 20,
+    "type": "command-raw",
+    "source": "toilet -f future -F metal $(hostname)",
+    "width": 10,
     "padding": {
       "left": 3,
       "top": 1

@@ -171,6 +171,7 @@ in
       rar
       rsync
       ssh-to-age
+      toilet
       usbutils
       unzip
       wireguard-tools
