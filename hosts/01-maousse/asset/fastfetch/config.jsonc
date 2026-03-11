@@ -1,5 +1,15 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "display": {
+    "separator": "",
+    "bar": {
+      "width": 15,
+      "char": {
+        "elapsed": "■",
+        "total": "-"
+      }
+    }
+  },
   "logo": {
     "source": "/etc/nixos/asset/Gruul.png",
     "type": "kitty",
@@ -13,11 +23,11 @@
     "break",
     {
       "type": "os",
-      "key": " "
+      "key": "  "
     },
     {
       "type": "kernel",
-      "key": " "
+      "key": "  "
     },
     {
       "type": "custom",
@@ -25,13 +35,12 @@
     },
     {
       "type": "cpu",
-      "key": " ",
-      // "format": "{1}"
+      "key": "  ",
       "format": "{1} - {3}C/{4}T"
     },
     {
       "type": "gpu",
-      "key": "󰾲 ",
+      "key": "󰾲  ",
       "format": "{2}"
     },
     {
@@ -40,11 +49,11 @@
     },
     {
       "type": "memory",
-      "key": " "
+      "key": "  "
     },
     {
       "type": "swap",
-      "key": "󰾵 "
+      "key": "󰾵  "
     },
     {
       "type": "custom",
@@ -52,7 +61,7 @@
     },
     {
       "type": "disk",
-      "key": " ",
+      "key": "  ",
       "folders": [
         "/"
       ],
@@ -60,29 +69,39 @@
     },
     {
       "type": "disk",
-      "key": " ",
+      "key": "  ",
       "folders": [
         "/home/sinsry/Jeux"
       ],
       "format": "{1} / {2} ({3})"
     },
+    // {
+    //   "type": "disk",
+    //   "key": "   ",
+    //   "folders": [
+    //     "/home/sinsry/Jeux"
+    //   ],
+    //   "percent": {
+    //     "type": 6
+    //   }
+    // },
     {
       "type": "custom",
       "format": ""
     },
     {
       "type": "command",
-      "key": "󰖂 ",
+      "key": "󰖂  ",
       "text": "ip addr show $HOSTNAME 2>/dev/null | awk '/inet 10/{print $2}' | cut -d'/' -f1 || echo 'N/A'"
     },
     {
       "type": "command",
-      "key": "󱦂 ",
+      "key": "󱦂  ",
       "text": "ip=$(hostname -I 2>/dev/null | awk '{print $1}'); [ -z \"$ip\" ] && echo \"N/A\" || echo \"$ip\""
     },
     {
       "type": "command",
-      "key": " ",
+      "key": "  ",
       "text": "curl -s --connect-timeout 1 'ip-api.com/json' | jq -r '\"\\(.query) (\\(.countryCode))\"' 2>/dev/null || echo 'N/A'"
     },
     {
@@ -91,7 +110,7 @@
     },
     {
       "type": "command",
-      "key": "󰔠 ",
+      "key": "󰔠  ",
       "shell": "/run/current-system/sw/bin/bash",
       "text": "/etc/nixos/asset/date.sh"
     }

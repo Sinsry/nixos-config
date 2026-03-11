@@ -164,6 +164,7 @@ in
       nvd
       openssl
       parted
+      python3
       pciutils
       psmisc
       sops
