@@ -1,15 +1,15 @@
 {
   // "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
-  "display": {
-    "separator": "",
-    "bar": {
-      "width": 15,
-      "char": {
-        "elapsed": "■",
-        "total": "-"
-      }
-    }
-  },
+  // "display": {
+  //   "separator": "",
+  //   "bar": {
+  //     "width": 15,
+  //     "char": {
+  //       "elapsed": "■",
+  //       "total": "-"
+  //     }
+  //   }
+  // },
   // "logo": {
   //   "source": "/etc/nixos/asset/Gruul.png",
   //   "type": "kitty",
