@@ -20,10 +20,9 @@
   //   }
   "logo": {
     "type": "command-raw",
-    "source": "toilet -f future -F metal $(hostname)",
-    "width": 10,
+    "source": "echo -e \"\\e[36m$(toilet -f future $(hostname))\\e[0m\"",
     "padding": {
-      "left": 3,
+      "left": 2,
       "top": 1
     }
   },
