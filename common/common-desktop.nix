@@ -163,6 +163,7 @@ in
       protonvpn-gui
       remmina
       transmission-remote-gtk
+      virt-viewer
       vlc
       vorta
       vscode-fhs

@@ -126,7 +126,6 @@ in
       faugus-launcher
       goverlay
       mangohud
-      virt-viewer
       wowup-cf
     ];
     etc = {
