@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  // "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
   "display": {
     "separator": "",
     "bar": {
@@ -48,7 +48,8 @@
     {
       "type": "gpu",
       "key": "󰾲  ",
-      "format": "{2}"
+      "format": "{2}",
+      "hideType": "unknown"
     },
     {
       "type": "custom",
