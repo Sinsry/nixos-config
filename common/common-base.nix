@@ -182,7 +182,7 @@ in
       in
       {
         ls = "eza --color=always --group-directories-first --icons=always";
-        nixcheck = "/etc/nixos/scripts/nixos-status.sh";
+        nixcheck = "/etc/nixos/asset/nixcheck.sh";
         nixclone = "git clone https://github.com/sinsry/nixos-config.git";
         nixdiff = "nvd diff $(find /nix/var/nix/profiles -maxdepth 1 -name 'system-*-link' | sort -V | tail -2)"; # Diff des 2 dernières générations
         nixgarbage = "sudo nix-collect-garbage -d && sudo nixos-rebuild boot";
