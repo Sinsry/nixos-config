@@ -110,9 +110,8 @@
     },
     {
       "type": "command",
-      "key": "󰔠  ",
-      "shell": "/run/current-system/sw/bin/bash",
-      "text": "/etc/nixos/asset/date.sh"
+      "key": "  ",
+      "text": "d=$(stat -c %w / | cut -d' ' -f1); days=$(( ( $(date +%s) - $(date -d \"$d\" +%s) ) / 86400 )); echo \"$d\" | awk -F'-' '{print $3\"/\"$2\"/\"$1\" - '\"$days\"' jours\"}'"
     }
     // "format": "{1}{2}{3}{4}{5}{6}{7}{8}"
   ]
