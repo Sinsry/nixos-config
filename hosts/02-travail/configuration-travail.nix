@@ -3,7 +3,7 @@
   ...
 }:
 let
-  nbhost = "02";
+  # nbhost = "02";
   host = "travail";
   user = "sinsry";
 in
@@ -28,7 +28,7 @@ in
   system.activationScripts.fastfetch = ''
     mkdir -p /home/${user}/.config/fastfetch
     chown ${user}:users /home/${user}/.config/fastfetch
-    ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+    ln -sfn /etc/nixos/asset/fastfetch.jsonc /home/${user}/.config/fastfetch/config.jsonc
   '';
 
   #==== Paquets spécifiques ====

@@ -4,7 +4,7 @@
   ...
 }:
 let
-  nbhost = "01";
+  # nbhost = "01";
   host = "maousse";
   user = "sinsry";
   g903Devices = [
@@ -106,7 +106,7 @@ in
     fastfetch = ''
       mkdir -p /home/${user}/.config/fastfetch
       chown ${user}:users /home/${user}/.config/fastfetch
-      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+      ln -sfn /etc/nixos/asset/fastfetch.jsonc /home/${user}/.config/fastfetch/config.jsonc
     '';
   };
 

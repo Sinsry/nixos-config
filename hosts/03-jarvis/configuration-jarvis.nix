@@ -5,7 +5,7 @@
   ...
 }:
 let
-  nbhost = "03";
+  # nbhost = "03";
   host = "jarvis";
   user = "sinsry";
 in
@@ -204,7 +204,7 @@ in
     activationScripts.fastfetch = ''
       mkdir -p /home/${user}/.config/fastfetch
       chown ${user}:users /home/${user}/.config/fastfetch
-      ln -sfn /etc/nixos/hosts/${nbhost}-${host}/asset/fastfetch/config.jsonc /home/${user}/.config/fastfetch/config.jsonc
+      ln -sfn /etc/nixos/asset/fastfetch.jsonc /home/${user}/.config/fastfetch/config.jsonc
     '';
 
     autoUpgrade = {
