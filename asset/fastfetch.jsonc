@@ -20,7 +20,7 @@
   //   }
   "logo": {
     "type": "command-raw",
-    "source": "echo -e \"\\e[36m$(toilet -f future $(hostname))\\e[0m\"",
+    "source": "if [ \"$TERM\" = 'linux' ]; then toilet -f ascii9 $(hostname); else toilet -f future $(hostname); fi",
     "width": 5,
     "padding": {
       "left": 2,
