@@ -6,7 +6,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    faugus.url = "github:Faugus/faugus-launcher/1.16.3";
+    faugus-launcher = {
+      url = "github:Faugus/faugus-launcher/1.16.3";
+      flake = false;
+    };
   };
 
   #==== Configuration ====
@@ -15,7 +18,7 @@
       self,
       nixpkgs,
       sops-nix,
-      faugus,
+      faugus-launcher,
       ...
     }:
 
@@ -25,7 +28,10 @@
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
           (final: prev: {
-            faugus-launcher = faugus.packages.${system}.default;
+            faugus-launcher = prev.faugus-launcher.overrideAttrs (_: {
+              src = faugus-launcher;
+              version = "git-${faugus-launcher.shortRev}";
+            });
           })
         ];
       };

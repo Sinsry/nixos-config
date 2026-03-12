@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "faugus-launcher": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773240370,
+        "narHash": "sha256-k5NS+lQVZ/TM5mK0xaKPup4i/2Lz5Dd3uKTx4f4zEJ8=",
+        "owner": "Faugus",
+        "repo": "faugus-launcher",
+        "rev": "d27cbe0c0f59a5eda3c28fe4f7372537dfef8997",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Faugus",
+        "ref": "1.16.3",
+        "repo": "faugus-launcher",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1773122722,
@@ -18,6 +35,7 @@
     },
     "root": {
       "inputs": {
+        "faugus-launcher": "faugus-launcher",
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix"
       }
