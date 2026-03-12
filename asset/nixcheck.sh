@@ -9,9 +9,9 @@ DIM='\033[2m'
 RESET='\033[0m'
 
 echo""
-echo -e "${DIM}┌────────────────────────┐${RESET}"
-echo -e "${DIM}│${RESET}  ${CYAN}NixOS channel status${RESET}  ${DIM}│${RESET}"
-echo -e "${DIM}├────────────────────────┤${RESET}"
-echo -e "${DIM}│${RESET}     local : ${CYAN}${local}${RESET}    ${DIM}│${RESET}"
-echo -e "${DIM}│${RESET}   distant : ${CYAN}${remote}${RESET}    ${DIM}│${RESET}"
-echo -e "${DIM}└────────────────────────┘${RESET}"
+echo -e "${DIM} ────────────────────────${RESET}"
+echo -e "${DIM}${RESET}   ${CYAN}NixOS channel status${RESET}  ${DIM}${RESET}"
+echo -e "${DIM} ────────────────────────${RESET}"
+echo -e "${DIM}${RESET}      local : ${CYAN}${local}${RESET}    ${DIM}${RESET}"
+echo -e "${DIM}${RESET}    distant : ${CYAN}${remote}${RESET}    ${DIM}${RESET}"
+echo -e "${DIM} ────────────────────────${RESET}"
