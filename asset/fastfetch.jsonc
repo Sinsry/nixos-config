@@ -20,7 +20,7 @@
   //   }
   "logo": {
     "type": "command-raw",
-    "source": "if [ \"$TERM\" = 'linux' ]; then toilet -f wideterm $(hostname); else toilet -f future $(hostname); fi",
+    "source": "if [ \"$TERM\" = 'linux' ]; then toilet -f ascii9 $(hostname); else toilet -f future $(hostname); fi",
     "width": 5,
     "padding": {
       "left": 2,
