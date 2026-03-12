@@ -6,6 +6,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    faugus.url = "github:Faugus/faugus-launcher/1.16.3";
   };
 
   #==== Configuration ====
@@ -14,6 +15,7 @@
       self,
       nixpkgs,
       sops-nix,
+      faugus,
       ...
     }:
 
@@ -22,6 +24,9 @@
       commonModule = {
         nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = [
+          (final: prev: {
+            faugus-launcher = faugus.packages.${system}.default;
+          })
         ];
       };
     in
