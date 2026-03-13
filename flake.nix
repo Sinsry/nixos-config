@@ -73,26 +73,6 @@
             sops-nix.nixosModules.sops
           ];
         };
-
-        valheim = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
-            commonModule
-            ./hosts/04-valheim/configuration-valheim.nix
-            sops-nix.nixosModules.sops
-          ];
-        };
-
-        VM = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
-            commonModule
-            ./hosts/99-VM/configuration-VM.nix
-            sops-nix.nixosModules.sops
-          ];
-        };
       };
     };
 }
