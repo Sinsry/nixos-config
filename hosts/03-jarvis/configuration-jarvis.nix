@@ -130,21 +130,21 @@ in
           tryFiles = "$uri $uri/ /index.html";
         };
       };
-      virtualHosts."opnsense.aperosbros.net" = {
-        forceSSL = true;
-        useACMEHost = "aperosbros.net";
-        locations."/" = {
-          proxyPass = "https://192.168.1.254:8443";
-          extraConfig = ''
-            proxy_ssl_verify off;
-            proxy_ssl_server_name on;
-            proxy_read_timeout 60s;
-            proxy_connect_timeout 60s;
-            proxy_set_header Host 192.168.1.254:8443;
-            proxy_set_header X-Real-IP $remote_addr;
-          '';
-        };
-      };
+      # virtualHosts."opnsense.aperosbros.net" = {
+      #   forceSSL = true;
+      #   useACMEHost = "aperosbros.net";
+      #   locations."/" = {
+      #     proxyPass = "https://192.168.1.254:8443";
+      #     extraConfig = ''
+      #       proxy_ssl_verify off;
+      #       proxy_ssl_server_name on;
+      #       proxy_read_timeout 60s;
+      #       proxy_connect_timeout 60s;
+      #       proxy_set_header Host 192.168.1.254:8443;
+      #       proxy_set_header X-Real-IP $remote_addr;
+      #     '';
+      #   };
+      # };
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
