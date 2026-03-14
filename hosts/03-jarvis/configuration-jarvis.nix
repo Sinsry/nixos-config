@@ -140,6 +140,10 @@ in
       virtualHosts."pve.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
+        root = "/var/www/aperosbros";
+        extraConfig = ''
+          error_page 403 404 /index.html;
+        '';
         locations."/" = {
           proxyPass = "https://192.168.1.2:8006";
           extraConfig = ''
@@ -161,6 +165,10 @@ in
       virtualHosts."sinsap.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
+        root = "/var/www/aperosbros";
+        extraConfig = ''
+          error_page 403 404 /index.html;
+        '';
         locations."/" = {
           proxyPass = "https://192.168.1.40";
           extraConfig = ''
@@ -180,6 +188,10 @@ in
       virtualHosts."opnsense.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
+        root = "/var/www/aperosbros";
+        extraConfig = ''
+          error_page 403 404 /index.html;
+        '';
         locations."/" = {
           proxyPass = "https://192.168.1.254:8443";
           extraConfig = ''
@@ -214,6 +226,15 @@ in
             proxy_read_timeout 300s;
             proxy_connect_timeout 300s;
           '';
+        };
+      };
+      virtualHosts."_" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        serverName = "*.aperosbros.net";
+        root = "/var/www/aperosbros";
+        locations."/" = {
+          tryFiles = "$uri $uri/ /index.html";
         };
       };
     };
