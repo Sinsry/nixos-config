@@ -143,6 +143,9 @@ in
         locations."/" = {
           proxyPass = "https://192.168.1.2:8006";
           extraConfig = ''
+            allow 192.168.1.0/24;
+            allow 10.3.0.0/24;
+            deny all;
             proxy_ssl_verify off;
             proxy_read_timeout 60s;
             proxy_ssl_server_name on;
@@ -161,6 +164,9 @@ in
         locations."/" = {
           proxyPass = "https://192.168.1.40";
           extraConfig = ''
+            allow 192.168.1.0/24;
+            allow 10.3.0.0/24;
+            deny all;
             proxy_ssl_verify off;
             proxy_ssl_server_name on;
             proxy_read_timeout 60s;
@@ -177,6 +183,9 @@ in
         locations."/" = {
           proxyPass = "https://192.168.1.254:8443";
           extraConfig = ''
+            allow 192.168.1.0/24;
+            allow 10.3.0.0/24;
+            deny all;
             proxy_ssl_verify off;
             proxy_ssl_server_name on;
             proxy_read_timeout 60s;
