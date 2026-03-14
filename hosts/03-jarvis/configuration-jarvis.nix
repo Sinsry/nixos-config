@@ -60,7 +60,7 @@ in
   };
 
   security.acme.certs."aperosbros.net" = {
-    extraDomainNames = [ "ollama.aperosbros.net" ];
+    extraDomainNames = [ "*.aperosbros.net" ];
     dnsProvider = "cloudflare";
     credentialsFile = config.sops.secrets.cloudflare-api-token.path;
     group = "nginx";
