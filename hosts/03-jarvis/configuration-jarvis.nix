@@ -122,6 +122,13 @@ in
       commonHttpConfig = ''
         include ${config.sops.templates."nginx-ollama-token.conf".path};
       '';
+      virtualHosts."aperosbros.net" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        locations."/" = {
+          return = "404";
+        };
+      };
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
