@@ -145,11 +145,28 @@ in
           extraConfig = ''
             proxy_ssl_verify off;
             proxy_read_timeout 60s;
+            proxy_ssl_server_name on;
             proxy_connect_timeout 60s;
             proxy_set_header Host 192.168.1.2:8006;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
+            proxy_http_version 1.1;
+          '';
+        };
+      };
+      virtualHosts."sinsap.aperosbros.net" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        locations."/" = {
+          proxyPass = "https://192.168.1.40";
+          extraConfig = ''
+            proxy_ssl_verify off;
+            proxy_ssl_server_name on;
+            proxy_read_timeout 60s;
+            proxy_connect_timeout 60s;
+            proxy_set_header Host 192.168.1.40;
+            proxy_set_header X-Real-IP $remote_addr;
             proxy_http_version 1.1;
           '';
         };
@@ -185,6 +202,7 @@ in
             if ($auth_ok != 1) {
               return 401;
             }
+            proxy_ssl_server_name on;
             proxy_read_timeout 300s;
             proxy_connect_timeout 300s;
           '';
