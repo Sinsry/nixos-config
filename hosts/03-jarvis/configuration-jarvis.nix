@@ -62,7 +62,7 @@ in
   security.acme.certs."aperosbros.net" = {
     extraDomainNames = [ "*.aperosbros.net" ];
     dnsProvider = "cloudflare";
-    credentialsFile = config.sops.secrets.cloudflare-api-token.path;
+    credentialsFile = config.sops.templates."cloudflare-acme.conf".path;
     group = "nginx";
   };
 
@@ -83,6 +83,13 @@ in
       }
     '';
     owner = "transmission";
+  };
+
+  sops.templates."cloudflare-acme.conf" = {
+    content = ''
+      CF_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-api-token}
+    '';
+    owner = "acme";
   };
 
   sops.templates."nginx-ollama-token.conf" = {
