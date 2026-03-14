@@ -125,8 +125,9 @@ in
       virtualHosts."aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
+        root = "/var/www/aperosbros";
         locations."/" = {
-          return = "404";
+          tryFiles = "$uri $uri/ =404";
         };
       };
       virtualHosts."ollama.aperosbros.net" = {
@@ -182,6 +183,11 @@ in
   };
 
   #==== Systemd ====
+  systemd.services = {
+    tmpfiles.rules = [
+      "d /var/www/aperosbros 0755 nginx nginx -"
+    ];
+  };
   systemd.services = {
     ollama-preload = {
       description = "Preload Ollama model into VRAM";
