@@ -130,6 +130,16 @@ in
           tryFiles = "$uri $uri/ /index.html";
         };
       };
+      virtualHosts."opnsense.aperosbros.net" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        locations."/" = {
+          proxyPass = "https://192.168.1.254:8443";
+          extraConfig = ''
+            proxy_ssl_verify off;
+          '';
+        };
+      };
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
