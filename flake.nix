@@ -7,7 +7,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     faugus-launcher = {
-      url = "github:Faugus/faugus-launcher/1.16.4";
+      url = "github:Faugus/faugus-launcher/1.16.5";
       flake = false;
     };
   };
