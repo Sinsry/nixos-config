@@ -3,16 +3,16 @@
     "faugus-launcher": {
       "flake": false,
       "locked": {
-        "lastModified": 1773428332,
-        "narHash": "sha256-j10goWZVoYdJIYP4uAXrnaIYn81s9d0fvTawqlV2GFY=",
+        "lastModified": 1773522194,
+        "narHash": "sha256-p4VSSBnPDGJVF67WL/DgQ/Q7PX7hfdB14btQaQRXS5Y=",
         "owner": "Faugus",
         "repo": "faugus-launcher",
-        "rev": "d5d98f53222071094487c05161b775a7ca317fc6",
+        "rev": "2af5ca4322e776540927d5852f590feaeb82855d",
         "type": "github"
       },
       "original": {
         "owner": "Faugus",
-        "ref": "1.16.4",
+        "ref": "1.16.5",
         "repo": "faugus-launcher",
         "type": "github"
       }
