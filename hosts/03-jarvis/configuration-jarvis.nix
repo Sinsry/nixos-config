@@ -141,15 +141,13 @@ in
         forceSSL = true;
         useACMEHost = "aperosbros.net";
         root = "/var/www/aperosbros";
-        extraConfig = ''
-          error_page 403 404 /index.html;
-        '';
         locations."/" = {
           proxyPass = "https://192.168.1.2:8006";
           extraConfig = ''
             allow 192.168.1.0/24;
             allow 10.3.0.0/24;
             deny all;
+            error_page 403 =200 @guru;
             proxy_ssl_verify off;
             proxy_read_timeout 60s;
             proxy_ssl_server_name on;
@@ -161,20 +159,24 @@ in
             proxy_http_version 1.1;
           '';
         };
+        locations."@guru" = {
+          root = "/var/www/aperosbros";
+          extraConfig = ''
+            rewrite ^ /index.html break;
+          '';
+        };
       };
       virtualHosts."sinsap.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
         root = "/var/www/aperosbros";
-        extraConfig = ''
-          error_page 403 404 /index.html;
-        '';
         locations."/" = {
           proxyPass = "https://192.168.1.40";
           extraConfig = ''
             allow 192.168.1.0/24;
             allow 10.3.0.0/24;
             deny all;
+            error_page 403 =200 @guru;
             proxy_ssl_verify off;
             proxy_ssl_server_name on;
             proxy_read_timeout 60s;
@@ -184,26 +186,36 @@ in
             proxy_http_version 1.1;
           '';
         };
+        locations."@guru" = {
+          root = "/var/www/aperosbros";
+          extraConfig = ''
+            rewrite ^ /index.html break;
+          '';
+        };
       };
       virtualHosts."opnsense.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
         root = "/var/www/aperosbros";
-        extraConfig = ''
-          error_page 403 404 /index.html;
-        '';
         locations."/" = {
           proxyPass = "https://192.168.1.254:8443";
           extraConfig = ''
             allow 192.168.1.0/24;
             allow 10.3.0.0/24;
             deny all;
+            error_page 403 =200 @guru;
             proxy_ssl_verify off;
             proxy_ssl_server_name on;
             proxy_read_timeout 60s;
             proxy_connect_timeout 60s;
             proxy_set_header Host 192.168.1.254:8443;
             proxy_set_header X-Real-IP $remote_addr;
+          '';
+        };
+        locations."@guru" = {
+          root = "/var/www/aperosbros";
+          extraConfig = ''
+            rewrite ^ /index.html break;
           '';
         };
       };
