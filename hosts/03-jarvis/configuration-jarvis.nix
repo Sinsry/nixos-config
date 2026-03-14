@@ -202,7 +202,6 @@ in
             if ($auth_ok != 1) {
               return 401;
             }
-            proxy_ssl_server_name on;
             proxy_read_timeout 300s;
             proxy_connect_timeout 300s;
           '';
