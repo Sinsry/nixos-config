@@ -137,6 +137,23 @@ in
           tryFiles = "$uri $uri/ /index.html";
         };
       };
+      virtualHosts."pve.aperosbros.net" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        locations."/" = {
+          proxyPass = "https://192.168.1.2:8006";
+          extraConfig = ''
+            proxy_ssl_verify off;
+            proxy_read_timeout 60s;
+            proxy_connect_timeout 60s;
+            proxy_set_header Host 192.168.1.2:8006;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_http_version 1.1;
+          '';
+        };
+      };
       virtualHosts."opnsense.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
