@@ -166,6 +166,30 @@ in
           '';
         };
       };
+      virtualHosts."transmission.aperosbros.net" = {
+        forceSSL = true;
+        useACMEHost = "aperosbros.net";
+        root = "/var/www/aperosbros";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:9091";
+          extraConfig = ''
+            allow 192.168.1.0/24;
+            allow 10.3.0.0/24;
+            deny all;
+            error_page 403 =200 @guru;
+            proxy_read_timeout 60s;
+            proxy_connect_timeout 60s;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+          '';
+        };
+        locations."@guru" = {
+          root = "/var/www/aperosbros";
+          extraConfig = ''
+            rewrite ^ /index.html break;
+          '';
+        };
+      };
       virtualHosts."sinsap.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
