@@ -5,9 +5,35 @@
   ...
 }:
 let
-  # nbhost = "03";
   host = "jarvis";
   user = "sinsry";
+  internalVhost =
+    {
+      proxyPass,
+      extraProxyConfig ? "",
+    }:
+    {
+      forceSSL = true;
+      useACMEHost = "aperosbros.net";
+      root = "/var/www/aperosbros";
+      locations."/" = {
+        inherit proxyPass;
+        extraConfig = ''
+          allow 192.168.1.0/24;
+          allow 10.3.0.0/24;
+          deny all;
+          error_page 403 =200 @guru;
+          proxy_read_timeout 60s;
+          proxy_connect_timeout 60s;
+          proxy_set_header X-Real-IP $remote_addr;
+        ''
+        + extraProxyConfig;
+      };
+      locations."@guru" = {
+        root = "/var/www/aperosbros";
+        extraConfig = "rewrite ^ /index.html break;";
+      };
+    };
 in
 {
   imports = [
@@ -41,7 +67,6 @@ in
       modesetting.enable = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
-    # nvidia-container-toolkit.enable = true; # nvidia dans docker
     graphics.enable = true;
   };
 
@@ -137,111 +162,39 @@ in
           tryFiles = "$uri $uri/ /index.html";
         };
       };
-      virtualHosts."pve.aperosbros.net" = {
-        forceSSL = true;
-        useACMEHost = "aperosbros.net";
-        root = "/var/www/aperosbros";
-        locations."/" = {
-          proxyPass = "https://192.168.1.2:8006";
-          extraConfig = ''
-            allow 192.168.1.0/24;
-            allow 10.3.0.0/24;
-            deny all;
-            error_page 403 =200 @guru;
-            proxy_ssl_verify off;
-            proxy_read_timeout 60s;
-            proxy_ssl_server_name on;
-            proxy_connect_timeout 60s;
-            proxy_set_header Host 192.168.1.2:8006;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-            proxy_http_version 1.1;
-          '';
-        };
-        locations."@guru" = {
-          root = "/var/www/aperosbros";
-          extraConfig = ''
-            rewrite ^ /index.html break;
-          '';
-        };
+      virtualHosts."pve.aperosbros.net" = internalVhost {
+        proxyPass = "https://192.168.1.2:8006";
+        extraProxyConfig = ''
+          proxy_ssl_verify off;
+          proxy_ssl_server_name on;
+          proxy_set_header Host 192.168.1.2:8006;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_http_version 1.1;
+        '';
       };
-      virtualHosts."transmission.aperosbros.net" = {
-        forceSSL = true;
-        useACMEHost = "aperosbros.net";
-        root = "/var/www/aperosbros";
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:9091";
-          extraConfig = ''
-            allow 192.168.1.0/24;
-            allow 10.3.0.0/24;
-            deny all;
-            error_page 403 =200 @guru;
-            proxy_read_timeout 60s;
-            proxy_connect_timeout 60s;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-          '';
-        };
-        locations."@guru" = {
-          root = "/var/www/aperosbros";
-          extraConfig = ''
-            rewrite ^ /index.html break;
-          '';
-        };
+      virtualHosts."transmission.aperosbros.net" = internalVhost {
+        proxyPass = "http://127.0.0.1:9091";
+        extraProxyConfig = ''
+          proxy_set_header Host $host;
+        '';
       };
-      virtualHosts."sinsap.aperosbros.net" = {
-        forceSSL = true;
-        useACMEHost = "aperosbros.net";
-        root = "/var/www/aperosbros";
-        locations."/" = {
-          proxyPass = "https://192.168.1.40";
-          extraConfig = ''
-            allow 192.168.1.0/24;
-            allow 10.3.0.0/24;
-            deny all;
-            error_page 403 =200 @guru;
-            proxy_ssl_verify off;
-            proxy_ssl_server_name on;
-            proxy_read_timeout 60s;
-            proxy_connect_timeout 60s;
-            proxy_set_header Host 192.168.1.40;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_http_version 1.1;
-          '';
-        };
-        locations."@guru" = {
-          root = "/var/www/aperosbros";
-          extraConfig = ''
-            rewrite ^ /index.html break;
-          '';
-        };
+      virtualHosts."sinsap.aperosbros.net" = internalVhost {
+        proxyPass = "https://192.168.1.40";
+        extraProxyConfig = ''
+          proxy_ssl_verify off;
+          proxy_ssl_server_name on;
+          proxy_set_header Host 192.168.1.40;
+          proxy_http_version 1.1;
+        '';
       };
-      virtualHosts."opnsense.aperosbros.net" = {
-        forceSSL = true;
-        useACMEHost = "aperosbros.net";
-        root = "/var/www/aperosbros";
-        locations."/" = {
-          proxyPass = "https://192.168.1.254:8443";
-          extraConfig = ''
-            allow 192.168.1.0/24;
-            allow 10.3.0.0/24;
-            deny all;
-            error_page 403 =200 @guru;
-            proxy_ssl_verify off;
-            proxy_ssl_server_name on;
-            proxy_read_timeout 60s;
-            proxy_connect_timeout 60s;
-            proxy_set_header Host 192.168.1.254:8443;
-            proxy_set_header X-Real-IP $remote_addr;
-          '';
-        };
-        locations."@guru" = {
-          root = "/var/www/aperosbros";
-          extraConfig = ''
-            rewrite ^ /index.html break;
-          '';
-        };
+      virtualHosts."opnsense.aperosbros.net" = internalVhost {
+        proxyPass = "https://192.168.1.254:8443";
+        extraProxyConfig = ''
+          proxy_ssl_verify off;
+          proxy_ssl_server_name on;
+          proxy_set_header Host 192.168.1.254:8443;
+        '';
       };
       virtualHosts."ollama.aperosbros.net" = {
         forceSSL = true;
