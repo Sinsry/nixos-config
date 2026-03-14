@@ -127,7 +127,7 @@ in
         useACMEHost = "aperosbros.net";
         root = "/var/www/aperosbros";
         locations."/" = {
-          tryFiles = "$uri $uri/ =404";
+          tryFiles = "$uri $uri/ /index.html";
         };
       };
       virtualHosts."ollama.aperosbros.net" = {
