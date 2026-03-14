@@ -183,11 +183,10 @@ in
   };
 
   #==== Systemd ====
-  systemd.services = {
-    tmpfiles.rules = [
-      "d /var/www/aperosbros 0755 nginx nginx -"
-    ];
-  };
+  systemd.tmpfiles.rules = [
+    "d /var/www/aperosbros 0755 nginx nginx -"
+  ];
+
   systemd.services = {
     ollama-preload = {
       description = "Preload Ollama model into VRAM";
