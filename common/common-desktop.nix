@@ -153,6 +153,7 @@ in
       kdePackages.breeze-gtk
       kdePackages.keditbookmarks
       kdePackages.filelight
+      kdePackages.isoimagewriter
       kdePackages.ksshaskpass
       kdePackages.plasma-browser-integration
       kdePackages.qtwebengine
