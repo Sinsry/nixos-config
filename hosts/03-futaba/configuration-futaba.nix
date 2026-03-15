@@ -296,7 +296,7 @@ in
       '';
       aperosbros = ''
         mkdir -p /var/www/aperosbros
-        ln -sf /etc/nixos/path/vers/index.html /var/www/aperosbros/index.html
+        ln -sf /etc/nixos/hosts/03-futaba/asset/index.html /var/www/aperosbros/index.html
       '';
     };
     autoUpgrade = {
