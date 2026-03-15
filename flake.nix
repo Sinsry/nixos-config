@@ -59,7 +59,7 @@
           ];
         };
 
-        jarvis = nixpkgs.lib.nixosSystem {
+        futaba = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
@@ -69,7 +69,7 @@
                 cudaSupport = true;
               };
             }
-            ./hosts/03-jarvis/configuration-jarvis.nix
+            ./hosts/03-futaba/configuration-futaba.nix
             sops-nix.nixosModules.sops
           ];
         };

@@ -5,7 +5,7 @@
   ...
 }:
 let
-  host = "jarvis";
+  host = "futaba";
   user = "sinsry";
   internalVhost =
     {
