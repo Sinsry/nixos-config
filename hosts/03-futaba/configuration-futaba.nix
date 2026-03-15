@@ -288,12 +288,17 @@ in
 
   #==== Système ====
   system = {
-    activationScripts.fastfetch = ''
-      mkdir -p /home/${user}/.config/fastfetch
-      chown ${user}:users /home/${user}/.config/fastfetch
-      ln -sfn /etc/nixos/asset/fastfetch.jsonc /home/${user}/.config/fastfetch/config.jsonc
-    '';
-
+    activationScripts = {
+      fastfetch = ''
+        mkdir -p /home/${user}/.config/fastfetch
+        chown ${user}:users /home/${user}/.config/fastfetch
+        ln -sfn /etc/nixos/asset/fastfetch.jsonc /home/${user}/.config/fastfetch/config.jsonc
+      '';
+      aperosbros = ''
+        mkdir -p /var/www/aperosbros
+        ln -sf /etc/nixos/path/vers/index.html /var/www/aperosbros/index.html
+      '';
+    };
     autoUpgrade = {
       enable = true;
       allowReboot = true;
