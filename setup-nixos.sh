@@ -95,7 +95,7 @@ fi
 #  Détection du host
 # ============================================================
 echo ""
-VALID_HOSTS=("maousse" "travail" "futaba" "ada")
+VALID_HOSTS=("maousse" "travail" "futaba" "ada" "test")
 
 echo -e "${BOLD}Hosts disponibles :${RESET}"
 for i in "${!VALID_HOSTS[@]}"; do
