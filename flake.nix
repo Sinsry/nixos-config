@@ -73,6 +73,20 @@
             sops-nix.nixosModules.sops
           ];
         };
+        ada = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            commonModule
+            {
+              nixpkgs.config = {
+                cudaSupport = true;
+              };
+            }
+            ./hosts/04-ada/configuration-ada.nix
+            sops-nix.nixosModules.sops
+          ];
+        };
       };
     };
 }
