@@ -174,6 +174,7 @@ in
       toilet
       usbutils
       unzip
+      wget
       wireguard-tools
     ];
 
