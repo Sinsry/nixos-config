@@ -44,7 +44,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             commonModule
-            ./hosts/01-maousse/configuration-maousse.nix
+            ./hosts/01-maousse/configuration.nix
             sops-nix.nixosModules.sops
           ];
         };
@@ -54,7 +54,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             commonModule
-            ./hosts/02-travail/configuration-travail.nix
+            ./hosts/02-travail/configuration.nix
             sops-nix.nixosModules.sops
           ];
         };
@@ -69,7 +69,7 @@
                 cudaSupport = true;
               };
             }
-            ./hosts/03-futaba/configuration-futaba.nix
+            ./hosts/03-futaba/configuration.nix
             sops-nix.nixosModules.sops
           ];
         };
@@ -83,7 +83,7 @@
                 cudaSupport = true;
               };
             }
-            ./hosts/04-ada/configuration-ada.nix
+            ./hosts/04-ada/configuration.nix
             sops-nix.nixosModules.sops
           ];
         };
