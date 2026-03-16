@@ -164,7 +164,6 @@ in
       papirus-icon-theme
       protonvpn-gui
       remmina
-      transmission-remote-gtk
       virt-viewer
       vlc
       vorta

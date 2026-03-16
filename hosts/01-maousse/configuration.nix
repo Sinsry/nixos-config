@@ -125,6 +125,7 @@ in
       faugus-launcher
       goverlay
       mangohud
+      transmission-remote-gtk
       wowup-cf
     ];
     etc = {
