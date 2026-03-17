@@ -8,6 +8,7 @@ let
   gitEmail = "Sinsry@users.noreply.github.com";
   gitName = "Sinsry";
   nixosConfigPath = "/etc/nixos";
+  ansConfigPath = "/devs/ansible";
 in
 {
   imports = [ ./network-mounts.nix ];
@@ -181,6 +182,7 @@ in
     shellAliases =
       let
         git-nixos = "git -C ${nixosConfigPath}";
+        git-ans = "git -C ${ansConfigPath}";
         rebuild = "sudo nixos-rebuild switch --flake ${nixosConfigPath}";
       in
       {
@@ -194,6 +196,9 @@ in
         nixpush = "${git-nixos} add . && (${git-nixos} commit -m 'Update' || true) && ${git-nixos} pull --rebase && ${git-nixos} push";
         nixrebuild = rebuild;
         nixupdate = "nix flake update --flake ${nixosConfigPath} && ${rebuild}";
+        ansclone = "git clone https://github.com/sinsry/ansible.git";
+        anspull = "${git-ans} pull";
+        anspush = "${git-ans} add . && (${git-ans} commit -m 'Update' || true) && ${git-ans} pull --rebase && ${git-ans} push";
       };
 
     etc."inputrc".text = ''
