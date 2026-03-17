@@ -40,7 +40,7 @@ in
 
   #==== Matériel ====
   hardware = {
-    amdgpu.overdrive.enable = false;
+    amdgpu.overdrive.enable = true;
 
     bluetooth = {
       enable = true;
