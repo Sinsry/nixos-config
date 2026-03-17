@@ -8,7 +8,7 @@ let
   gitEmail = "Sinsry@users.noreply.github.com";
   gitName = "Sinsry";
   nixosConfigPath = "/etc/nixos";
-  ansConfigPath = "/devs/ansible";
+  ansConfigPath = "~/devs/ansible";
 in
 {
   imports = [ ./network-mounts.nix ];
