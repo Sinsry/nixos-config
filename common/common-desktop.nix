@@ -175,6 +175,10 @@ in
         [General]
         background=${nixosConfigPath}/asset/wallpaper.png
       '')
+
+      (pkgs.writeShellScriptBin "spectacle" ''
+        KDE_COREDUMP_NOTIFY=0 exec ${pkgs.kdePackages.spectacle}/bin/spectacle "$@"
+      '')
     ];
 
     etc = {
