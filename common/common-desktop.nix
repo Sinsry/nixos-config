@@ -179,6 +179,11 @@ in
       (pkgs.writeShellScriptBin "spectacle" ''
         KDE_COREDUMP_NOTIFY=0 exec ${pkgs.kdePackages.spectacle}/bin/spectacle "$@"
       '')
+      (pkgs.kdePackages.spectacle.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          sed -i 's|Exec=.*spectacle|Exec=spectacle|g' $out/share/applications/org.kde.spectacle.desktop
+        '';
+      }))
     ];
 
     etc = {
