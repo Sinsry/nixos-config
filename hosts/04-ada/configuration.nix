@@ -135,7 +135,7 @@ in
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
-      # host = "127.0.0.1";
+      host = "127.0.0.1";
       loadModels = [
         "nomic-embed-text"
         "qwen2.5-coder:3b-instruct-q5_K_M"
@@ -272,14 +272,14 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
         ExecStartPre = pkgs.writeShellScript "ollama-wait" ''
-          until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
+          until ${pkgs.curl}/bin/curl -s http://localhost:11435 > /dev/null 2>&1; do
             sleep 1
           done
         '';
         ExecStart = pkgs.writeShellScript "ollama-preload" ''
-          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
+          ${pkgs.curl}/bin/curl -s http://localhost:11435/api/generate \
             -d '{"model": "qwen2.5-coder-3b", "prompt": ""}'
-          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
+          ${pkgs.curl}/bin/curl -s http://localhost:11435/api/generate \
             -d '{"model": "qwen2.5-coder-7b", "prompt": ""}'
         '';
       };
