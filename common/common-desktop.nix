@@ -199,6 +199,7 @@ in
     sessionVariables = {
       GTK_THEME = "Breeze-Dark";
       SSH_ASKPASS_REQUIRE = "prefer";
+      SDL_JOYSTICK_HIDAPI = "0";
     };
   };
 
