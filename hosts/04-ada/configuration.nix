@@ -135,7 +135,7 @@ in
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
-      host = "127.0.0.1";
+      # host = "127.0.0.1";
       loadModels = [
         "nomic-embed-text"
         "qwen2.5-coder:3b-instruct-q5_K_M"
