@@ -136,13 +136,13 @@ in
       enable = true;
       package = pkgs.ollama-cuda;
       # host = "127.0.0.1";
-      # loadModels = [
-      #   "nomic-embed-text"
-      #   "qwen2.5-coder:3b-instruct-q5_K_M"
-      #   "qwen2.5-coder:7b-instruct-q5_K_M"
-      #   "qwen2.5-coder:14b-instruct-q5_K_M"
-      #   "booktrail/gemma3_tools:12b-it-qat"
-      # ];
+      loadModels = [
+        "nomic-embed-text"
+        "qwen2.5-coder:3b-instruct-q5_K_M"
+        "qwen2.5-coder:7b-instruct-q5_K_M"
+        "qwen2.5-coder:14b-instruct-q5_K_M"
+        "booktrail/gemma3_tools:12b-it-qat"
+      ];
       environmentVariables = {
         OLLAMA_KEEP_ALIVE = "-1";
       };
@@ -263,27 +263,27 @@ in
   # ];
 
   systemd.services = {
-    # ollama-preload = {
-    #   description = "Preload Ollama model into VRAM";
-    #   after = [ "ollama.service" ];
-    #   requires = [ "ollama.service" ];
-    #   wantedBy = [ "multi-user.target" ];
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     RemainAfterExit = true;
-    #     ExecStartPre = pkgs.writeShellScript "ollama-wait" ''
-    #       until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
-    #         sleep 1
-    #       done
-    #     '';
-    #     ExecStart = pkgs.writeShellScript "ollama-preload" ''
-    #       ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-    #         -d '{"model": "qwen2.5-coder-3b", "prompt": ""}'
-    #       ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-    #         -d '{"model": "qwen2.5-coder-7b", "prompt": ""}'
-    #     '';
-    #   };
-    # };
+    ollama-preload = {
+      description = "Preload Ollama model into VRAM";
+      after = [ "ollama.service" ];
+      requires = [ "ollama.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStartPre = pkgs.writeShellScript "ollama-wait" ''
+          until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
+            sleep 1
+          done
+        '';
+        ExecStart = pkgs.writeShellScript "ollama-preload" ''
+          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
+            -d '{"model": "qwen2.5-coder-3b", "prompt": ""}'
+          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
+            -d '{"model": "qwen2.5-coder-7b", "prompt": ""}'
+        '';
+      };
+    };
   };
 
   #==== Système ====
