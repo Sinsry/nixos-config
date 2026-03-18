@@ -1,7 +1,7 @@
 # vCore : 4/8 / Ram : 4/8 Gio / Disk : 256 G
 {
   pkgs,
-  # config,
+  config,
   ...
 }:
 let
@@ -61,14 +61,14 @@ in
   console.keyMap = "us";
 
   #==== Matériel ====
-  # hardware = {
-  #   nvidia = {
-  #     open = true;
-  #     modesetting.enable = true;
-  #     package = config.boot.kernelPackages.nvidiaPackages.stable;
-  #   };
-  #   graphics.enable = true;
-  # };
+  hardware = {
+    nvidia = {
+      open = true;
+      modesetting.enable = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+    graphics.enable = true;
+  };
 
   #==== Utilisateurs ====
   users.users.${user} = {
@@ -130,23 +130,23 @@ in
   #==== Services ====
   services = {
     openssh.enable = true;
-    # xserver.videoDrivers = [ "nvidia" ];
+    xserver.videoDrivers = [ "nvidia" ];
     qemuGuest.enable = true;
-    # ollama = {
-    #   enable = true;
-    #   package = pkgs.ollama-cuda;
-    #   host = "127.0.0.1";
-    #   loadModels = [
-    #     "nomic-embed-text"
-    #     "qwen2.5-coder:3b-instruct-q5_K_M"
-    #     "qwen2.5-coder:7b-instruct-q5_K_M"
-    #     "qwen2.5-coder:14b-instruct-q5_K_M"
-    #     "booktrail/gemma3_tools:12b-it-qat"
-    #   ];
-    #   environmentVariables = {
-    #     OLLAMA_KEEP_ALIVE = "-1";
-    #   };
-    # };
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cuda;
+      # host = "127.0.0.1";
+      # loadModels = [
+      #   "nomic-embed-text"
+      #   "qwen2.5-coder:3b-instruct-q5_K_M"
+      #   "qwen2.5-coder:7b-instruct-q5_K_M"
+      #   "qwen2.5-coder:14b-instruct-q5_K_M"
+      #   "booktrail/gemma3_tools:12b-it-qat"
+      # ];
+      environmentVariables = {
+        OLLAMA_KEEP_ALIVE = "-1";
+      };
+    };
 
     # nginx = {
     #   enable = true;
