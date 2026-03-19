@@ -23,6 +23,8 @@ let
           allow 10.3.0.0/24;
           deny all;
           error_page 403 =200 @guru;
+          error_page 401 =200 @guru;
+          proxy_intercept_errors on;
           proxy_read_timeout 60s;
           proxy_connect_timeout 60s;
           proxy_set_header X-Real-IP $remote_addr;
