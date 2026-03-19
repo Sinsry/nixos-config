@@ -161,7 +161,7 @@ in
           proxy_http_version 1.1;
         '';
       };
-      virtualHosts."transmission.aperosbros.net" = internalVhost {
+      virtualHosts."nerv.aperosbros.net" = internalVhost {
         proxyPass = "http://192.168.1.5:9091";
         extraProxyConfig = ''
           proxy_set_header Host $host;
