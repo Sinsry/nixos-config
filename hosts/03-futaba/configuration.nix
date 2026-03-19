@@ -95,20 +95,8 @@ in
   sops.age.sshKeyPaths = [ "/home/${user}/.ssh/id_ed25519" ];
   sops.defaultSopsFile = ./asset/secrets.yaml;
 
-  sops.secrets.transmission-rpc-username = { };
-  sops.secrets.transmission-rpc-password = { };
   sops.secrets.cloudflare-api-token = { };
   sops.secrets.ollama-token = { };
-
-  sops.templates."transmission-credentials.json" = {
-    content = ''
-      {
-        "rpc-username": "${config.sops.placeholder.transmission-rpc-username}",
-        "rpc-password": "${config.sops.placeholder.transmission-rpc-password}"
-      }
-    '';
-    owner = "transmission";
-  };
 
   sops.templates."cloudflare-acme.conf" = {
     content = ''
