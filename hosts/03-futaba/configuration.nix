@@ -230,24 +230,23 @@ in
 
     transmission = {
       enable = true;
-      credentialsFile = config.sops.templates."transmission-credentials.json".path;
       settings = {
         download-dir = "/mnt/Torrents";
         incomplete-dir = "/mnt/Torrents";
         incomplete-dir-enabled = true;
         rpc-bind-address = "0.0.0.0";
         rpc-whitelist-enabled = false;
-        rpc-authentication-required = true;
-        peer-limit-global = 200;
-        peer-limit-per-torrent = 50;
+        rpc-authentication-required = false;
+        peer-limit-global = 400;
+        peer-limit-per-torrent = 100;
         ratio-limit = 2.0;
         ratio-limit-enabled = true;
         speed-limit-up = 6144;
         speed-limit-up-enabled = true;
-        dht-enabled = false;
-        pex-enabled = false;
-        lpd-enabled = false;
-        utp-enabled = false;
+        dht-enabled = true;
+        pex-enabled = true;
+        lpd-enabled = true;
+        utp-enabled = true;
       };
     };
   };
