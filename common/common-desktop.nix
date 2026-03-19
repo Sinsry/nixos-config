@@ -153,7 +153,6 @@ in
       google-chrome
       kdePackages.breeze-gtk
       kdePackages.keditbookmarks
-      # kdePackages.kup
       kdePackages.filelight
       kdePackages.isoimagewriter
       kdePackages.ksshaskpass
