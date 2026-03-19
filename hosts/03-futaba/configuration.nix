@@ -180,11 +180,11 @@ in
         '';
       };
       virtualHosts."sinsap.aperosbros.net" = internalVhost {
-        proxyPass = "https://192.168.1.40";
+        proxyPass = "https://192.168.1.41";
         extraProxyConfig = ''
           proxy_ssl_verify off;
           proxy_ssl_server_name on;
-          proxy_set_header Host 192.168.1.40;
+          proxy_set_header Host 192.168.1.41;
           proxy_http_version 1.1;
         '';
       };
