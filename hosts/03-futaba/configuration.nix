@@ -222,6 +222,8 @@ in
         download-dir = "/mnt/Torrents";
         incomplete-dir = "/mnt/Torrents";
         incomplete-dir-enabled = true;
+        rpc-host-whitelist-enabled = false;
+        rpc-host-whitelist = "*";
         rpc-bind-address = "0.0.0.0";
         rpc-whitelist-enabled = false;
         rpc-authentication-required = false;
