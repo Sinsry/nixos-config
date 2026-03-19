@@ -162,7 +162,7 @@ in
         '';
       };
       virtualHosts."transmission.aperosbros.net" = internalVhost {
-        proxyPass = "http://127.0.0.1:9091";
+        proxyPass = "http://192.168.1.5:9091";
         extraProxyConfig = ''
           proxy_set_header Host $host;
         '';
@@ -216,29 +216,29 @@ in
       };
     };
 
-    transmission = {
-      enable = true;
-      settings = {
-        download-dir = "/mnt/Torrents";
-        incomplete-dir = "/mnt/Torrents";
-        incomplete-dir-enabled = true;
-        rpc-host-whitelist-enabled = false;
-        rpc-host-whitelist = "*";
-        rpc-bind-address = "0.0.0.0";
-        rpc-whitelist-enabled = false;
-        rpc-authentication-required = false;
-        peer-limit-global = 400;
-        peer-limit-per-torrent = 100;
-        ratio-limit = 2.0;
-        ratio-limit-enabled = true;
-        speed-limit-up = 6144;
-        speed-limit-up-enabled = true;
-        dht-enabled = true;
-        pex-enabled = true;
-        lpd-enabled = true;
-        utp-enabled = true;
-      };
-    };
+    # transmission = {
+    #   enable = true;
+    #   settings = {
+    #     download-dir = "/mnt/Torrents";
+    #     incomplete-dir = "/mnt/Torrents";
+    #     incomplete-dir-enabled = true;
+    #     rpc-host-whitelist-enabled = false;
+    #     rpc-host-whitelist = "*";
+    #     rpc-bind-address = "0.0.0.0";
+    #     rpc-whitelist-enabled = false;
+    #     rpc-authentication-required = false;
+    #     peer-limit-global = 400;
+    #     peer-limit-per-torrent = 100;
+    #     ratio-limit = 2.0;
+    #     ratio-limit-enabled = true;
+    #     speed-limit-up = 6144;
+    #     speed-limit-up-enabled = true;
+    #     dht-enabled = true;
+    #     pex-enabled = true;
+    #     lpd-enabled = true;
+    #     utp-enabled = true;
+    #   };
+    # };
   };
 
   #==== Virtualisation ====
