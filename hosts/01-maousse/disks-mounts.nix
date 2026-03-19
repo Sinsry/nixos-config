@@ -13,16 +13,7 @@
     };
 
     "/mnt/Windows" = {
-      device = "/dev/disk/by-uuid/90B4C5E3B4C5CBC2";
-      fsType = "ntfs";
-      options = [
-        "nofail"
-        "noperm"
-      ];
-    };
-
-    "/mnt/Data_Windows" = {
-      device = "/dev/disk/by-uuid/D8CA1469CA1445E2";
+      device = "/dev/disk/by-uuid/DA060B51060B2DD7";
       fsType = "ntfs";
       options = [
         "nofail"
@@ -47,7 +38,6 @@
   systemd.tmpfiles.rules = [
     "d /mnt/Ventoy          0755 root   root  -"
     "d /mnt/Windows         0755 root   root  -"
-    "d /mnt/Data_Windows    0755 root   root  -"
     "d /home/sinsry/Jeux    0755 sinsry users -"
   ];
 }
