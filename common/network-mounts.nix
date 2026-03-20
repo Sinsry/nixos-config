@@ -1,23 +1,21 @@
 let
   nas = "192.168.1.2";
 
-  nfsOptions = [
+  smbOptions = [
     "rw"
-    "_netdev"
-    "nfsvers=4.2"
+    "uid=1000" # Ton UID sur NixOS pour être maître des fichiers
+    "gid=100" # Groupe users
+    "credentials=/etc/nixos/smb-secrets"
     "x-systemd.automount"
-    "x-systemd.mount-timeout=10"
-    "timeo=14"
-    "retrans=2"
-    "soft"
-    "nolock"
     "noatime"
+    "dir_mode=0777" # Pour être sûr que Dolphin puisse créer .trash
+    "file_mode=0777"
   ];
 
-  mkNfsMount = share: {
-    device = "${nas}:/NAS/${share}";
-    fsType = "nfs";
-    options = nfsOptions;
+  mkSmbMount = share: {
+    device = "//${nas}/${share}";
+    fsType = "cifs";
+    options = smbOptions;
   };
 
   mounts = [
@@ -26,12 +24,10 @@ let
   ];
 in
 {
-  systemd.tmpfiles.rules = map (m: "d /mnt/${m} 0755 root root -") mounts;
-
   fileSystems = builtins.listToAttrs (
     map (m: {
       name = "/mnt/${m}";
-      value = mkNfsMount m;
+      value = mkSmbMount m;
     }) mounts
   );
 }
