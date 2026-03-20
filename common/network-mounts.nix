@@ -2,14 +2,15 @@ let
   nas = "192.168.1.2";
 
   nfsOptions = [
+    "rw"
     "_netdev"
     "v4"
     "x-systemd.automount"
-    "x-systemd.mount-timeout=1s"
+    "x-systemd.mount-timeout=2s"
     "timeo=14"
     "retrans=2"
-    "nolock"
     "soft"
+    # "nolock"
   ];
 
   mkNfsMount = share: {
