@@ -4,14 +4,14 @@ let
   nfsOptions = [
     "rw"
     "_netdev"
-    "nfsvers=3"
+    "nfsvers=4.2"
     "x-systemd.automount"
-    "x-systemd.mount-timeout=2s"
+    "x-systemd.mount-timeout=10"
     "timeo=14"
-    "lookupcache=none"
     "retrans=2"
     "soft"
     "nolock"
+    "noatime"
   ];
 
   mkNfsMount = share: {
