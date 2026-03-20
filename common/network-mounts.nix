@@ -4,7 +4,7 @@ let
   nfsOptions = [
     "rw"
     "_netdev"
-    "v4"
+    "nfsvers=3"
     "x-systemd.automount"
     "x-systemd.mount-timeout=2s"
     "timeo=14"
