@@ -3,13 +3,14 @@ let
 
   smbOptions = [
     "rw"
-    "uid=1000" # Ton UID sur NixOS pour être maître des fichiers
-    "gid=100" # Groupe users
-    "credentials=/etc/nixos/smb-secrets"
+    "guest"
+    "uid=1000"
+    "gid=100"
     "x-systemd.automount"
     "noatime"
-    "dir_mode=0777" # Pour être sûr que Dolphin puisse créer .trash
+    "dir_mode=0777"
     "file_mode=0777"
+    "nounix"
   ];
 
   mkSmbMount = share: {
