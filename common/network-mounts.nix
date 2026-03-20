@@ -8,9 +8,10 @@ let
     "x-systemd.automount"
     "x-systemd.mount-timeout=2s"
     "timeo=14"
+    "lookupcache=none"
     "retrans=2"
     "soft"
-    # "nolock"
+    "nolock"
   ];
 
   mkNfsMount = share: {
