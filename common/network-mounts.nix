@@ -7,19 +7,13 @@ let
     "echo_interval=1"
     "x-systemd.mount-timeout=1s"
     "noauto"
-    "x-systemd.automount"
-    "x-systemd.makefs=false"
-    "x-systemd.idle-timeout=0"
-    # --- LE LIANT UNIVERSEL ---
-    "user" # Autorise Dolphin à "posséder" le point de montage
-    "exec" # Permet aux scripts de s'exécuter (essentiel pour le CLI)
-    "dev" # Permet l'interprétation des périphériques
-    "suid" # Garde les droits nécessaires pour l'automount
-    # --------------------------
+    "x-systemd.automount" # Le déclencheur (pour le serveur)
+    "user" # Le sésame pour Dolphin (pour la corbeille)
+    "exec" # Autorise l'exécution (aide le CLI)
     "guest"
     "uid=1000"
     "gid=100"
-    "noserverino" # UNIQUE SOLUTION pour la corbeille (Inodes stables)
+    "noserverino" # INDISPENSABLE pour la corbeille
     "nounix"
     "vers=3.1.1"
   ];
