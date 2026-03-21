@@ -8,6 +8,8 @@ let
     "echo_interval=1"
     "_netdev"
     "x-systemd.mount-timeout=1s"
+    "noauto"
+    "user"
     "guest"
     "uid=1000"
     "gid=100"
@@ -15,6 +17,7 @@ let
     "dir_mode=0777"
     "file_mode=0777"
     "nounix"
+    "vers=3.1.1"
   ];
 
   mkSmbMount = share: {
