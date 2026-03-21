@@ -13,6 +13,8 @@ let
     "x-systemd.mount-timeout=5s"
     "_netdev"
     "noatime"
+    "actimeo=0"
+    "cache=none"
     "dir_mode=0777"
     "file_mode=0777"
     "nounix"
