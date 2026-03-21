@@ -8,6 +8,7 @@ let
     "x-systemd.mount-timeout=1s"
     "noauto"
     "x-systemd.automount"
+    "x-systemd.makefs=false"
     "x-systemd.idle-timeout=0"
     # --- LE LIANT UNIVERSEL ---
     "user" # Autorise Dolphin à "posséder" le point de montage
