@@ -4,9 +4,9 @@ let
   smbOptions = [
     "rw"
     "soft"
-    "retrans=2"
+    # "retrans=2"
     "echo_interval=1"
-    "_netdev"
+    # "_netdev"
     "x-systemd.mount-timeout=1s"
     "noauto"
     "user"
@@ -14,8 +14,8 @@ let
     "uid=1000"
     "gid=100"
     "noserverino"
-    "dir_mode=0777"
-    "file_mode=0777"
+    # "dir_mode=0777"
+    # "file_mode=0777"
     "nounix"
     "vers=3.1.1"
   ];
