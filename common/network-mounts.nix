@@ -8,13 +8,17 @@ let
     "x-systemd.mount-timeout=1s"
     "noauto"
     "x-systemd.automount"
-    "x-systemd.makefs=false"
-    "user"
+    "x-systemd.idle-timeout=0"
+    # --- LE LIANT UNIVERSEL ---
+    "user" # Autorise Dolphin à "posséder" le point de montage
+    "exec" # Permet aux scripts de s'exécuter (essentiel pour le CLI)
+    "dev" # Permet l'interprétation des périphériques
+    "suid" # Garde les droits nécessaires pour l'automount
+    # --------------------------
     "guest"
     "uid=1000"
     "gid=100"
-    "noserverino"
-
+    "noserverino" # UNIQUE SOLUTION pour la corbeille (Inodes stables)
     "nounix"
     "vers=3.1.1"
   ];
