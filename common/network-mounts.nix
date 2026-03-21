@@ -8,7 +8,6 @@ let
     "gid=100"
     "noserverino"
     "noauto"
-    "x-systemd.automount"
     "x-systemd.device-timeout=5s"
     "x-systemd.mount-timeout=5s"
     "_netdev"
