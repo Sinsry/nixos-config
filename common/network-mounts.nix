@@ -7,14 +7,13 @@ let
     "echo_interval=1"
     "x-systemd.mount-timeout=1s"
     "noauto"
-    "x-systemd.automount" # Le déclencheur (pour le serveur)
-    "user" # Le sésame pour Dolphin (pour la corbeille)
-    "exec" # Autorise l'exécution (aide le CLI)
+    "x-systemd.automount" # Le serveur sera content (réveil au ls)
     "guest"
+    "x-gvfs-show"
     "uid=1000"
     "gid=100"
-    "noserverino" # INDISPENSABLE pour la corbeille
-    "nounix"
+    "noserverino" # Vital pour Dolphin
+    "nounix" # Vital pour Dolphin
     "vers=3.1.1"
   ];
 
