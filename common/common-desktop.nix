@@ -164,6 +164,7 @@ in
       papirus-icon-theme
       protonvpn-gui
       remmina
+      rustdesk
       virt-viewer
       vlc
       vorta
