@@ -120,21 +120,6 @@ in
     openssh.enable = true;
     xserver.videoDrivers = [ "nvidia" ];
     qemuGuest.enable = true;
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-cuda;
-      host = "127.0.0.1";
-      loadModels = [
-        "nomic-embed-text"
-        "qwen2.5-coder:3b-instruct-q5_K_M"
-        "qwen2.5-coder:7b-instruct-q5_K_M"
-        "qwen2.5-coder:14b-instruct-q5_K_M"
-        "booktrail/gemma3_tools:12b-it-qat"
-      ];
-      environmentVariables = {
-        OLLAMA_KEEP_ALIVE = "-1";
-      };
-    };
 
     nginx = {
       enable = true;
@@ -195,7 +180,7 @@ in
           }
         ];
         locations."/" = {
-          proxyPass = "http://127.0.0.1:11434";
+          proxyPass = "http://192.168.1.4:11434";
           extraConfig = ''
             if ($auth_ok != 1) {
               return 401;
@@ -226,30 +211,6 @@ in
   systemd.tmpfiles.rules = [
     "d /var/www/aperosbros 0755 nginx nginx -"
   ];
-
-  systemd.services = {
-    ollama-preload = {
-      description = "Preload Ollama model into VRAM";
-      after = [ "ollama.service" ];
-      requires = [ "ollama.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStartPre = pkgs.writeShellScript "ollama-wait" ''
-          until ${pkgs.curl}/bin/curl -s http://localhost:11434 > /dev/null 2>&1; do
-            sleep 1
-          done
-        '';
-        ExecStart = pkgs.writeShellScript "ollama-preload" ''
-          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-            -d '{"model": "qwen2.5-coder-3b", "prompt": ""}'
-          ${pkgs.curl}/bin/curl -s http://localhost:11434/api/generate \
-            -d '{"model": "qwen2.5-coder-7b", "prompt": ""}'
-        '';
-      };
-    };
-  };
 
   #==== Système ====
   system = {
@@ -284,6 +245,6 @@ in
 
   #==== Paquets spécifiques ====
   environment.systemPackages = with pkgs; [
-    btop-cuda
+    btop
   ];
 }
