@@ -169,7 +169,7 @@ in
           proxy_set_header Host 192.168.1.254:8443;
         '';
       };
-      virtualHosts."ollama.aperosbros.net" = {
+      virtualHosts."ada.aperosbros.net" = {
         forceSSL = true;
         useACMEHost = "aperosbros.net";
         listen = [
