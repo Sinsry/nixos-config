@@ -1,4 +1,4 @@
-# vCore : 4/8 / Ram : 4/8 Gio / Disk : 256 G - Test
+# vCore : 4/8 / Ram : 4/8 Gio / Disk : 256 G
 {
   pkgs,
   config,
