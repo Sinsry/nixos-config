@@ -24,6 +24,26 @@ in
   console.keyMap = "fr";
   services.xserver.xkb.layout = "fr";
 
+  #==== Programmes spécifiques ====
+  programs = {
+    gamemode = {
+      enable = true;
+      enableRenice = true;
+      settings.general.renice = 10;
+    };
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      package = pkgs.steam.override {
+        extraEnv.STEAM_FORCE_DESKTOPUI_SCALING = "1";
+        extraArgs = "-language french";
+      };
+    };
+    partition-manager.enable = true;
+  };
+
   #==== Activation ====
   system.activationScripts.fastfetch = ''
     mkdir -p /home/${user}/.config/fastfetch
